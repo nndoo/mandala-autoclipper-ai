@@ -6,8 +6,9 @@ transport. Run commands from the project root.
 
 New agent or device? Start with the [AI agent reading guide](docs/AGENT_GUIDE.md),
 [handoff](HANDOFF_README.md), and [Markdown catalog](docs/markdown-catalog.md).
-The latest local [Stage 6.3.5 Tahap D checkpoint](docs/stage63/stage635-stage-d-completion-2026-10-16.md)
-records TEST_ONLY integration PASS; local tests do not establish production readiness.
+The latest [Stage 6.3.5 Tahap F checkpoint](docs/stage63/stage635-stage-f-checkpoint-2026-10-16.md)
+records a successful TEST_ONLY Docker canary and a **BLOCKED** deployment readiness
+decision due to missing historical fixtures and unresolved dependency audit findings.
 
 ## Local setup
 
@@ -48,6 +49,8 @@ ruff check scripts tests
 ```
 
 Files named `poc_*` are live experiments and are excluded from the offline suite.
+Full `test_*.py` discovery currently fails where restored historical media and
+receipts are missing; see the [Tahap F checkpoint](docs/stage63/stage635-stage-f-checkpoint-2026-10-16.md).
 The default speech backend is remote; a local Whisper model is optional and is
 not installed by these setup commands. See [remote ASR](docs/remote-speech-asr-v01.md).
 
@@ -92,11 +95,11 @@ The existing Media Worker remains the source/download service on `:3002`.
 repository root, with `backend.editing_worker` as its `:3003` entrypoint. Local
 Stage 6.3.5 recovery added the PostgreSQL schema, source admission, authenticated
 HTTP API, dispatcher, and nine role modules. Read the [API contract](docs/stage63/stage635-api-contract.md),
-[role map](backend/roles/README.md), and [checkpoints A–D](docs/stage63/README.md)
-before changing them. Tahap A–D passed their stated local TEST_ONLY scopes;
-Tahap D now includes actual synthetic render, Technical QA, both Reviewer
-phases, and bounded revision selection. Docker/image readiness, live provider,
-full historical regression, and production readiness remain unproved. Recheck
+[role map](backend/roles/README.md), and [checkpoints A–F](docs/stage63/README.md)
+before changing them. Tahap A–E passed their stated local TEST_ONLY scopes;
+Tahap F built and tested the Docker image locally, then stopped with a
+BLOCKED deployment-readiness decision. Live provider, full historical
+regression, and production eligibility remain unproved. Recheck
 source and tests for current state.
 
 The [two-worker architecture](docs/stage63/stage634-two-worker-architecture.md)

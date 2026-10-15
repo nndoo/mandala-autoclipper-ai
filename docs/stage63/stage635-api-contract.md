@@ -1,8 +1,8 @@
 # Stage 6.3.5 — kontrak HTTP internal
 
 **Status dokumen:** kontrak untuk implementasi lokal, bukan bukti endpoint
-production aktif. Tahap A–D memiliki checkpoint PASS sesuai cakupan lokal;
-[Tahap D](stage635-stage-d-completion-2026-10-16.md) memakai replay TEST_ONLY. Cocokkan setiap
+production aktif. Tahap A–E memiliki checkpoint PASS sesuai cakupan lokal;
+[Tahap E](stage635-stage-e-checkpoint-2026-10-16.md) memakai replay TEST_ONLY. Cocokkan setiap
 perilaku aktual dengan source dan integration test sebelum mengandalkannya.
 
 Base URL internal: `http://mandala-ai-editing-worker:3003`. Tidak ada domain
@@ -21,6 +21,11 @@ Versi kontrak: `stage6.3.5-v1`.
 | `GET /v1/tasks/{id}` | Poll status dan hasil task | 200 |
 | `GET /v1/jobs/{id}` | State, version, next_action, gate terpisah | 200 |
 | `GET /v1/jobs/{id}/artifacts` | Manifest ID, path relatif, SHA-256, byte | 200 |
+
+`/health` tetap liveness murah dan membawa `roles_ready=false` untuk
+kompatibilitas respons lama. Gunakan status dan `roles_ready` dari
+`/health/ready` sebagai gate operasional; 200 hanya setelah seluruh check
+service lulus. Ini tetap bukan human review atau izin production.
 
 Admission body:
 

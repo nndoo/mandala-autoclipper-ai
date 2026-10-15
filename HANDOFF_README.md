@@ -15,6 +15,8 @@ memuat perubahan tersebut.
 | B | [PostgreSQL 16 dan admission](docs/stage63/stage635-stage-b-checkpoint-2026-10-15.md) PASS | Database lokal `TEST_ONLY` |
 | C | [HTTP, queue, recovery](docs/stage63/stage635-stage-c-checkpoint-2026-10-15.md) PASS | Mock executor dan readiness yang disuntik test |
 | D | [Sembilan role](docs/stage63/stage635-stage-d-completion-2026-10-16.md) PASS lokal | Proof fisik, render/QA, Reviewer dan Controller diuji dengan replay TEST_ONLY; belum proof Docker/live |
+| E | [Synthetic HTTP end-to-end](docs/stage63/stage635-stage-e-checkpoint-2026-10-16.md) PASS lokal | PostgreSQL dan provider replay TEST_ONLY, bukan evidence historis |
+| F | [Docker dan regression](docs/stage63/stage635-stage-f-checkpoint-2026-10-16.md) BLOCKED | Build/canary lokal PASS; historical regression dan audit dependensi belum selesai |
 
 Pada PC Windows lama, implementasi Stage 6.3.5 pernah dikerjakan tetapi tidak
 di-push. [Laporan implementasi](docs/stage63/stage635-implementation-report.md)

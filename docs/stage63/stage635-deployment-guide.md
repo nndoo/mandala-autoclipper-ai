@@ -1,12 +1,13 @@
 # Stage 6.3.5 — migration, konfigurasi, dan rencana Coolify
 
 **Status 16 Oktober 2026:** panduan ini belum dijalankan pada production.
-[Checkpoint Tahap D](stage635-stage-d-completion-2026-10-16.md) lulus pada
-lingkungan lokal TEST_ONLY; proof image Docker dan provider live belum diuji.
-Jangan gunakan checklist di bawah sebagai pernyataan bahwa image/service saat
-ini siap deploy. Validasi ulang source, tests, proof, dan izin operator terlebih
-dahulu. Provider live memerlukan opt-in `MANDALA_EDITING_LIVE_ROLES_ENABLED=1`;
-checkpoint D hanya menggunakan replay `TEST_ONLY`.
+[Checkpoint Tahap E](stage635-stage-e-checkpoint-2026-10-16.md) lulus pada
+lingkungan lokal TEST_ONLY. Build dan canary image Docker lokal juga telah
+diverifikasi; rincian serta batasnya ada di
+[checkpoint Tahap F](stage635-stage-f-checkpoint-2026-10-16.md). Jangan gunakan
+hasil lokal sebagai izin deploy. Provider live memerlukan opt-in
+`MANDALA_EDITING_LIVE_ROLES_ENABLED=1`; canary memakai executor replay yang
+disuntik eksplisit, tanpa panggilan provider.
 
 **Belum dieksekusi pada Coolify atau PostgreSQL produksi.** Panduan ini hanya
 untuk tahap persetujuan/deployment berikutnya.
@@ -34,6 +35,8 @@ menjalankan `SET TRANSACTION READ ONLY` untuk kedua query source.
 | `MANDALA_EDITING_PROOF` | Path `proof.json` sintetis Stage 5 yang valid pada volume output |
 | `MANDALA_EDITING_PORT` | Tetap `3003` |
 | `AUTOCLIPPER_SOURCE_ROOT` | Tetap `/data/source` |
+| `MANDALA_OPENCLAW_PROVIDER_ID` | ID provider non-secret yang harus sama dengan manifest hasil build |
+| `MANDALA_EDITING_LIVE_ROLES_ENABLED` | Opt-in executor live; jangan aktifkan untuk canary atau sebelum izin inference dan review konfigurasi |
 
 Jangan menyimpan URL DB/token dalam repo, log, body n8n, atau domain publik.
 Tanpa DSN editing, image masih melayani `/health` dengan `roles_ready=false`
@@ -41,6 +44,13 @@ seperti Stage 6.3.4. Tanpa proof atau migration, `/health/ready` memberi 503.
 Proof dibuat dengan CLI Stage 5 `run_automatic_editing_v01.py proof` pada
 image/volume editing yang sama, lalu direplay readiness; proof harus dibuat
 ulang bila kode/lingkungan berubah. Proof sintetis tidak memberi izin publish.
+`/health` adalah liveness dan selalu membawa `roles_ready=false`; gunakan
+`/health/ready` sebagai gate operasional. Dalam canary lokal, CMD default
+memberi health 200 dan ready 503 karena executor live tidak diaktifkan;
+executor replay TEST_ONLY memberi ready 200 setelah DB, storage, dan proof
+lulus. Lima temuan audit transitive pada paket `npm` (tiga high, dua moderate)
+masih perlu triase sebelum keputusan deployment; uji `npm audit fix` pada
+salinan lockfile tidak menghilangkannya.
 
 ## Checklist deploy setelah izin pengguna
 

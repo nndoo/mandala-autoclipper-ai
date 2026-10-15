@@ -28,6 +28,7 @@ def tearDownModule():guard.stop()
 
 class IntegrationTests(unittest.TestCase):
     def setUp(self):
+        (PROJECT/'data/analyses').mkdir(parents=True,exist_ok=True)
         self.temp=tempfile.TemporaryDirectory(dir=PROJECT/'data/analyses',prefix='stage54-test-')
         self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name);self.out=self.root/'output';self.packet=f.packet('present');self.plan=f.plan(self.packet)
