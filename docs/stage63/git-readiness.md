@@ -1,5 +1,10 @@
 # Stage 6.3.4 — GitHub Source Preparation
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](stage634-two-worker-architecture.md).
+
 Tanggal: 15 Oktober 2026. **Status source: READY_FOR_INITIAL_PRIVATE_COMMIT.**
 Audit dimulai dengan **221** file untracked, bukan 220 karena laporan Coolify
 sebelumnya sudah bertambah. Setelah 10 snapshot historis dikeluarkan melalui

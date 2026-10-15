@@ -1,6 +1,7 @@
 """Offline image inventory; never print credential values or contact a provider."""
 
 import argparse
+import importlib
 import importlib.metadata
 import json
 import os
@@ -12,15 +13,21 @@ from pathlib import Path
 
 ROOT = Path('/app')
 RUNTIME = Path.home() / '.local/share/mandala-openclaw-runtime'
+SOURCE_VOLUME = Path('/data')
+ORIGINALS = SOURCE_VOLUME / 'source/originals'
+SOURCE_ALIAS = ROOT / 'original-store/source/originals'
+OUTPUT_ROOT = ROOT / 'data'
 PACKAGES = {
     'numpy': '2.5.4',
     'scipy': '1.18.1',
     'jsonschema': '4.25.1',
     'psycopg': '3.3.6',
-    'yt-dlp': '2026.8.19',
-    'curl-cffi': '0.16.3',
 }
 FILES = (
+    'requirements-av.txt',
+    'requirements-av.lock.txt',
+    'backend/editing_worker.py',
+    'scripts/run_automatic_editing_v01.py',
     'scripts/build_adaptive_director_input_v03.py',
     'src/schemas/adaptive-director-input.v0.3.schema.json',
     'openclaw/prompts/universal-video-analysis-v02.md',
@@ -28,6 +35,34 @@ FILES = (
     'openclaw/plugins/mandala-9router-video/dist/index.js',
     'openclaw/plugins/mandala-9router-video/openclaw.plugin.json',
 )
+
+
+def inspect_storage():
+    """Never write to the original mounts; probe writes only on editing output."""
+    errors = []
+    try:
+        for path in (ORIGINALS, SOURCE_ALIAS, OUTPUT_ROOT):
+            if not path.is_dir() or any(p.is_symlink() for p in (path, *path.parents)):
+                raise OSError('Missing or unsafe storage path')
+        for path in (ORIGINALS, SOURCE_ALIAS):
+            if not os.access(path, os.R_OK | os.X_OK):
+                errors.append('Original storage is not readable')
+            if not os.statvfs(path).f_flag & os.ST_RDONLY:
+                errors.append('Original storage must be mounted read-only')
+        if not os.path.samefile(ORIGINALS, SOURCE_ALIAS):
+            errors.append('Stage 3 and Stage 5 original paths are not the same directory')
+        if any(os.path.samefile(OUTPUT_ROOT, path) for path in (SOURCE_VOLUME, ORIGINALS, SOURCE_ALIAS)):
+            errors.append('Editing output must use a separate volume')
+        if os.statvfs(OUTPUT_ROOT).f_flag & os.ST_RDONLY:
+            errors.append('Editing output volume is read-only')
+        if errors:
+            return errors
+        with tempfile.TemporaryFile(dir=OUTPUT_ROOT) as probe:
+            probe.write(b'editing-output-permission-check')
+            probe.flush()
+    except OSError:
+        errors.append('Storage paths unavailable, unsafe or output not writable')
+    return errors
 
 
 def inspect(*, check_storage=False, require_service_env=False):
@@ -42,7 +77,11 @@ def inspect(*, check_storage=False, require_service_env=False):
             versions[name] = None
         if versions[name] != expected:
             errors.append(f'{name} version mismatch or missing')
-    for name in ('node', 'ffmpeg', 'ffprobe', 'prlimit'):
+        try:
+            importlib.import_module(name)
+        except (ImportError, OSError):
+            errors.append(f'{name} cannot be imported')
+    for name in ('node', 'ffmpeg', 'ffprobe', 'prlimit', 'timeout'):
         if shutil.which(name) is None:
             errors.append(f'{name} unavailable')
     for relative in FILES:
@@ -58,35 +97,24 @@ def inspect(*, check_storage=False, require_service_env=False):
     if not (RUNTIME / 'node_modules/openclaw/openclaw.mjs').is_file():
         errors.append('OpenClaw package missing')
 
-    provider_id = os.getenv('AUTOCLIPPER_OPENCLAW_PROVIDER_ID')
+    provider_id = os.getenv('MANDALA_OPENCLAW_PROVIDER_ID')
     manifest = ROOT / 'openclaw/plugins/mandala-9router-video/openclaw.plugin.json'
     if provider_id and manifest.is_file():
         try:
             configured = json.loads(manifest.read_text())['contracts']['mediaUnderstandingProviders']
             if configured != [provider_id]:
                 errors.append('9Router provider ID differs from image manifest')
-        except (ValueError, KeyError, TypeError):
+        except (OSError, ValueError, KeyError, TypeError):
             errors.append('9Router manifest invalid')
     if require_service_env:
-        for name in ('PGHOST', 'PGUSER', 'PGPASSWORD'):
-            if not os.getenv(name):
-                errors.append(f'{name} missing')
-        for name, default in (('PGPORT', '5432'), ('AUTOCLIPPER_WORKER_PORT', '3002')):
-            try:
-                if not 1 <= int(os.getenv(name, default)) <= 65535:
-                    raise ValueError
-            except ValueError:
-                errors.append(f'{name} invalid')
+        if not provider_id:
+            errors.append('MANDALA_OPENCLAW_PROVIDER_ID missing')
+        if os.getenv('MANDALA_EDITING_PORT', '3003') != '3003':
+            errors.append('MANDALA_EDITING_PORT must be 3003')
+        if os.getenv('AUTOCLIPPER_SOURCE_ROOT', '/data/source') != '/data/source':
+            errors.append('Intake source root must remain /data/source')
     if check_storage:
-        root = Path(os.getenv('AUTOCLIPPER_SOURCE_ROOT', '/data/source'))
-        if not root.is_relative_to('/data'):
-            errors.append('Source storage path outside /data')
-        else:
-            try:
-                with tempfile.TemporaryFile(dir=root.parent):
-                    pass
-            except OSError:
-                errors.append('Persistent storage is not writable')
+        errors.extend(inspect_storage())
 
     return {'status': 'PASS' if not errors else 'BLOCKED',
             'python': sys.version.split()[0], 'packages': versions, 'errors': errors}

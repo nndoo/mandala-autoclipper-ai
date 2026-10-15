@@ -1,5 +1,11 @@
 # Struktur repository setelah Stage 6.1
 
+Revisi aktif Stage 6.3.4: [dua worker](stage63/stage634-two-worker-architecture.md).
+`backend/editing_worker.py` adalah entrypoint service editing baru;
+`backend/compose.yaml` hanya mengelola service baru, dan `compose.canary.yaml`
+memakai volume fixture terpisah. Source API existing dipertahankan tanpa perubahan
+dan tidak dimasukkan ke image editing. Layout sebelumnya di bawah adalah riwayat.
+
 Tanggal: 14 Oktober 2026. Struktur ini memisahkan kebutuhan runtime, development,
 dan penyimpanan evidence tanpa mengubah path kontrak Stage 5.
 

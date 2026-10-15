@@ -1,5 +1,10 @@
 # Rancangan GitHub → Coolify untuk Stage 6.3
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](../stage63/stage634-two-worker-architecture.md).
+
 Audit lokal 14 Oktober 2026: checkout Mandala berada pada branch `main` **tanpa
 HEAD/commit dan tanpa remote Git** (`git rev-parse --verify HEAD` gagal, `git
 remote -v` kosong). Semua source/docs/config masih untracked. Tidak ada Dockerfile

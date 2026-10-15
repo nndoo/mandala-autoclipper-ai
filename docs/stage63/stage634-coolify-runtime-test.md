@@ -1,5 +1,10 @@
 # Stage 6.3.4 — audit uji runtime Coolify
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](stage634-two-worker-architecture.md).
+
 Audit 15 Oktober 2026. **Status: BLOCKED_SOURCE_DELIVERY.** Docker Engine VPS siap, tetapi source lokal Stage 6.3.4 belum tersedia untuk Coolify. Tidak ada canary yang dibuat, image yang dibangun, atau runtime container yang diuji. Media Worker production, PostgreSQL, workflow n8n, dan volume originals tidak diubah.
 
 ## Bukti akses dan kesiapan source

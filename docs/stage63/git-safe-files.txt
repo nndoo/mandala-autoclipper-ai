@@ -6,7 +6,9 @@ README.md
 backend/.env.example
 backend/Dockerfile
 backend/__init__.py
+backend/compose.canary.yaml
 backend/compose.yaml
+backend/editing_worker.py
 backend/media_worker/__init__.py
 backend/media_worker/app.py
 backend/media_worker/config.py
@@ -84,6 +86,8 @@ docs/stage63/stage632-intake-adapter.md
 docs/stage63/stage633-real-original-compatibility.md
 docs/stage63/stage634-coolify-runtime-test.md
 docs/stage63/stage634-docker-runtime.md
+docs/stage63/stage634-final-readiness.md
+docs/stage63/stage634-two-worker-architecture.md
 docs/stage63/vps-compose-observed.md
 docs/stage63/vps-dockerfile-observed.Dockerfile
 docs/tooling-installation-2026-10-12.md
@@ -194,6 +198,7 @@ tests/test_benchmark_v01.py
 tests/test_creative_text_v02.py
 tests/test_dark_scan_frame_counts_v02.py
 tests/test_director_diagnostics_v01.py
+tests/test_editing_worker_runtime.py
 tests/test_intake_adapter_stage632.py
 tests/test_media_worker_stage631.py
 tests/test_prepare_speech_review_v01.py

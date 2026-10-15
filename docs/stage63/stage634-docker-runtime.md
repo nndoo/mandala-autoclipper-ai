@@ -1,5 +1,10 @@
 # Stage 6.3.4 — persiapan Docker Runtime
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](stage634-two-worker-architecture.md).
+
 Tanggal audit: 15 Oktober 2026. Status: **source dan konfigurasi image disiapkan; image belum terbangun dan belum diuji di container**. Docker CLI lokal tersedia, tetapi Docker daemon/socket `/var/run/docker.sock` tidak ada. Tidak ada perubahan VPS, n8n, PostgreSQL, original media, commit, atau push.
 
 ## Hasil implementasi lokal

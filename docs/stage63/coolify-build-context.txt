@@ -2,9 +2,10 @@
 .python-version
 backend/Dockerfile
 backend/__init__.py
+backend/compose.canary.yaml
 backend/compose.yaml
+backend/editing_worker.py
 backend/media_worker/__init__.py
-backend/media_worker/app.py
 backend/media_worker/config.py
 backend/media_worker/intake_adapter.py
 backend/openclaw-runtime/openclaw

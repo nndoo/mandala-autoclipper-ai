@@ -1,5 +1,10 @@
 # Perubahan diperlukan dan urutan implementasi
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](../stage63/stage634-two-worker-architecture.md).
+
 Ini rencana setelah Stage 6.2; **tidak ada langkah implementasi/deploy dijalankan**.
 Prioritas memelihara original, source worker, PostgreSQL, network dan komponen engine.
 

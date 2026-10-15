@@ -1,4 +1,5 @@
-# Pinned linux/amd64 manifests match the current VPS architecture.
+# mandala-ai-editing-worker only; never replaces the existing source Media Worker.
+# Pinned linux/amd64 manifests match the observed VPS architecture.
 FROM --platform=linux/amd64 node:24.21.0-bookworm-slim@sha256:51b1100cc2a83d370c6a60952e3f2989c8a43159d0e38586e090f3b3326efefd AS node-runtime
 
 FROM --platform=linux/amd64 python:3.14.2-slim-bookworm@sha256:34bb71a7de6dbecc839d8d6f8aaff8c4bf67ce01634764eaf929cb64d3ae315e AS base
@@ -41,6 +42,7 @@ RUN mkdir -p /root/.local/share/mandala-openclaw-runtime/tools/node-v24.21.0/bin
 WORKDIR /app
 COPY backend /app/backend
 COPY scripts /app/scripts
+COPY requirements-av.txt requirements-av.lock.txt /app/
 COPY src/schemas /app/src/schemas
 COPY config /app/config
 COPY openclaw/prompts /app/openclaw/prompts
@@ -53,11 +55,8 @@ COPY --from=plugin-builder /app/openclaw/plugins/mandala-9router-video/dist /app
 RUN python -m backend.runtime_check \
     && test "$(node --version)" = v24.21.0 \
     && openclaw --version | grep -F 'OpenClaw 2026.9.9' \
-    && ffmpeg -hide_banner -filters > /tmp/mandala-ffmpeg-filters.txt \
-    && grep -q drawtext /tmp/mandala-ffmpeg-filters.txt \
-    && grep -q subtitles /tmp/mandala-ffmpeg-filters.txt \
-    && rm /tmp/mandala-ffmpeg-filters.txt \
+    && python -c "import renderer_core_v01 as r; e=r.environment(); required={f for group in r.FILTERS.values() for f in group}; assert required.issubset(e['available_filters']); assert e['libx264_available'] and e['aac_available'] and e['libass_filter_available']; assert e['font']['available'] and e['bold_font']['available']; print('Stage 5 FFmpeg inventory PASS (not a render proof)')" \
     && test -f /app/openclaw/plugins/mandala-9router-video/dist/index.js
 
-EXPOSE 3002
-CMD ["python", "-m", "backend.media_worker.app"]
+EXPOSE 3003
+CMD ["python", "-m", "backend.editing_worker"]

@@ -1,0 +1,12 @@
+# Use WITH compose.yaml. No production volume or credentials in runtime canary.
+# MANDALA_ORIGINAL_VOLUME must still be a non-production name during interpolation.
+services:
+  mandala-ai-editing-worker:
+    restart: 'no'
+
+volumes:
+  originals:
+    external: false
+    name: mandala-stage634-canary-originals
+  editing_data:
+    name: mandala-stage634-canary-output

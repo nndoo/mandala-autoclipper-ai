@@ -1,20 +1,24 @@
 # Mapping role → modul → endpoint → node n8n
 
-Semua file `backend/*` dan endpoint `/v1/*` di tabel ini **proposal**. Existing
+Revisi deployment 15 Oktober 2026 mengikuti
+[keputusan final dua worker](../stage63/stage634-two-worker-architecture.md).
+Modul role dan endpoint `/v1/*` di tabel ini **proposal**. Existing
 `scripts/*`, schema dan source `/tmp/worker.py` tetap di tempat. Satu HTTP Request
 node khusus per role mengirim task; node status/Wait digunakan ulang untuk menunggu.
 Validator, Renderer dan Technical QA adalah role deterministic, bukan model AI baru.
 
-Prefix proposal: `POST /v1/jobs/{job_id}/roles/`. API berada pada Media Worker
-port 3002; **satu backend modular di container yang sama** mengambil task dari
+Prefix proposal: `POST /v1/jobs/{job_id}/roles/`. API berada pada service BARU
+`mandala-ai-editing-worker:3003`; satu backend modular mengambil task dari
 PostgreSQL melalui loop internal dan menjalankan subprocess engine dengan batas
-resource. Tidak ada container executor tambahan dalam desain final. Endpoint
-berbeda tidak berarti delapan service atau delapan model baru.
+resource. Media Worker lama tetap permanen pada port 3002 untuk `/source/*`.
+Sembilan endpoint role tidak berarti sembilan service atau sembilan model baru. Saat ini
+entrypoint editing hanya menyediakan `/health`; job/role endpoints belum aktif.
 
 | Role | Backend file proposal | Reuse Stage 5 | Endpoint suffix | HTTP Request node proposal | Input/output artifacts |
 | --- | --- | --- | --- | --- | --- |
 | Analyst | `backend/roles/analyst.py` | OpenClaw Analyst + TS video adapter, `validate_universal_analysis_v02.py`; reuse `find_analysis()` normalizer, bukan main hardcoded Showcase | `analyst` | `AI Analyst - Analyze Source` | source receipt+profile → raw/request/usage/provenance+Universal V0.2 canonical+metadata |
-| Speech/Evidence | `backend/roles/speech_evidence.py` | `analyze_adaptive_av_evidence_v01.py`, `build_adaptive_director_input_v03.py`, automatic `timed_units`, `speech_evidence`, `verify_speech`; remote ASR helper | `speech-evidence` | `Speech & Evidence - Build Packet` | canonical+source → AV measurements, enriched packet, actual timed units/raw/upload receipts; NOT_REQUIRED or awaiting source speech review |
+| AV Evidence | `backend/roles/av_evidence.py` | `analyze_adaptive_av_evidence_v01.py`, `build_adaptive_director_input_v03.py`; reuse source-bound AV measurements/packet | `av-evidence` | `AV Evidence - Measure Source` | canonical+source → AV measurements, enriched packet, candidate region refs dan provenance; tidak melakukan ASR atau mengarang transcript |
+| Speech/ASR | `backend/roles/speech_asr.py` | `generate_remote_speech_evidence_v01.py`, automatic `timed_units`, `speech_evidence`, `verify_speech` | `speech-asr` | `Speech ASR - Transcribe Regions` | admitted AV packet+affected region IDs → upload/request/raw/timed units, final speech packet; NOT_REQUIRED atau menunggu source speech review |
 | Creative Director | `backend/roles/director.py` | `storyboard`, `prompt_for`, `run_adaptive_director_v03.live_response`, strict response parser | `director` | `Creative Director - Propose Edit` | bound packet/speech/storyboard+diagnosis+previous proposal → prompt/reservation/raw/typed automatic proposal+usage |
 | Validator | `backend/roles/validator.py` | `automatic_editing_validation_v01.validate`, V0.3 independent validator+typed text policy | `validator` | `Validator - Validate Proposal` | proposal+packet+speech → independent report, visual plan, execution spec, timeline, blockers/advisories |
 | Renderer | `backend/roles/renderer.py` | `automatic_editing_validation_v01.admit`, `renderer_revision_v02.encode`, compiler, existing render lock/publish | `renderer` | `Renderer - Encode Private Preview` | eligible bound plan/spec+current proof+fresh one-use permit → encoded MP4/ref+encode/decode/audio-mapping receipt; QA_PENDING |
@@ -28,16 +32,22 @@ bersama yang diperlukan: `backend/http_routes.py` (auth/HTTP), `backend/jobs.py`
 (hash dan receipt), `backend/runtime.py` (subprocess/resource gate). Setiap role
 memakai context job yang dimuat dari server, bukan menerima path/FFmpeg arguments
 dari n8n. Target satu image berisi Python, FFmpeg, Node/OpenClaw adapter dan file
-schema/prompt; ini belum tersedia pada container 512 MiB sekarang.
+schema/prompt dalam service editing baru; container Media Worker 512 MiB tidak
+menjalankan engine dan tidak diganti.
 
-Speech/Evidence memiliki dua phase pada endpoint yang sama: `measure` membuat AV
-packet/classification; `transcribe` melakukan conditional region ASR setelah packet
-tersedia. Tidak membuat timing bila provider tidak memberi timing. Source speech
-assessment dipanggil melalui **Reviewer endpoint/node** dengan mode `source_speech`,
-bukan paid call tersembunyi pada Speech/Evidence. Controller lalu memutuskan retry
-region konkret atau memfinalisasi speech eligibility, maksimum dua attempts per
-region. `verify_speech()` membutuhkan assessment yang terikat source; pemisahan ini
-perlu refactor, bukan kemampuan yang sudah ada sekarang.
+AV Evidence dan Speech/ASR adalah **dua role, dua file dan dua node HTTP**.
+AV Evidence `/av-evidence` hanya mengukur source dan menyiapkan enriched packet;
+candidate speech regions dari analisis tetap mempertahankan status provenance,
+bukan klaim timestamp/transcript terverifikasi. Speech/ASR `/speech-asr` memeriksa
+policy packet: bila tidak perlu ASR, simpan hasil `NOT_REQUIRED` tanpa paid call;
+bila perlu, proses hanya region admitted dengan reservation/budget yang sama
+seperti Stage 5. Jangan membuat timing bila provider tidak memberi timing.
+Source speech assessment tetap melalui **Reviewer endpoint/node** dengan mode
+`source_speech`, bukan paid call tersembunyi dalam AV Evidence. Controller
+memutuskan retry Speech/ASR pada region konkret atau memfinalisasi eligibility,
+maksimum dua ASR attempts per region. `verify_speech()` tetap membutuhkan
+assessment source-bound. Perakitan packet akhir menunggu speech admitted atau
+NOT_REQUIRED; extraction ini perlu refactor teruji, bukan capability aktif.
 
 Director baru dijalankan setelah speech admitted atau NOT_REQUIRED. Storyboard
 boleh disiapkan oleh intake/helper deterministic sebelum Director; frame references
@@ -55,12 +65,13 @@ juga tidak identik dengan schema inline automatic model_review.
 | Endpoint | Fungsi | Node/helper |
 | --- | --- | --- |
 | POST `/v1/jobs` | Admit source ORIGINAL_READY + expected SHA + service authorization + policy/budget; membuat durable editing job | `Editing Job - Admit Original` setelah `Original Saved?` true |
-| GET `/v1/tasks/{task_id}` | Status task dan refs hasil | `Task Status - Poll` + Wait + IF/Switch reusable subworkflow |
+| GET `/v1/tasks/{task_id}` | Status task dan refs hasil | `Task Status - Poll` + Wait + IF/Switch branch di workflow utama yang sama |
 | GET `/v1/jobs/{job_id}` | Status agregat dan eligibility terpisah | `Editing Job - Status` |
 | GET `/v1/jobs/{job_id}/artifacts` | Authorized manifest refs | `Editing Job - Read Results` |
 | GET `/health/ready` | Dependency/path/proof availability, DB/storage readiness; tanpa paid inference/render | Operational readiness probe |
 
-Existing `/health` dan `/source/*` dipertahankan kompatibel. Input task hanya IDs,
+Existing `/health` dan `/source/*` tetap di worker lama. Health editing terpisah
+di service baru; n8n tetap satu workflow dengan dua tujuan worker. Input task hanya IDs,
 role phase/mode, expected job version, attempt dan server-issued artifact refs;
 backend memuat dan memverifikasi payload authoritative. Jangan menjadikan n8n
 transport MP4/base64, renderer specs arbitrary, izin produksi atau ledger budget.
@@ -96,8 +107,8 @@ hanya berarti role menghasilkan artifact yang lolos gate role tersebut.
 | Role / phase | Prasyarat authoritative | Output minimum dan outcome |
 | --- | --- | --- |
 | Analyst / `analyze` | ORIGINAL_READY, byte/hash+duration <=180 detik+payload <=20 MiB, profile dan request budget | raw request/response, usage, prompt/router provenance, Universal V0.2 canonical, validation; BLOCKED bila transport/schema/semantic gagal |
-| Speech/Evidence / `measure` | canonical valid dan exact source | AV measurements, speech regions, enriched packet, timing class; `NOT_REQUIRED` bila music/no speech |
-| Speech/Evidence / `transcribe` | affected region IDs dari controller, source-bound packet, ASR slot tersedia | per-region upload/request/raw/timed units; `OUTCOME_UNKNOWN` reservation bila provider outcome tak terbaca, tanpa timestamps sintetis |
+| AV Evidence / `measure` | canonical valid dan exact source | AV measurements, candidate regions+provenance, enriched packet dan timing class; tidak ada ASR call |
+| Speech/ASR / `transcribe` | source-bound AV packet, affected region IDs dari controller, ASR policy/budget admitted | per-region upload/request/raw/timed units atau NOT_REQUIRED; OUTCOME_UNKNOWN tetap memakai reservation, tanpa timestamps sintetis |
 | Creative Director / `propose` | admitted packet/speech, storyboard, Director slot <=3 | bound prompt/reservation/raw/proposal + usage; malformed/failed invocation tetap memakai slot |
 | Validator / `validate` | proposal typed dan semua source refs | independent report, visual plan, execution spec, timeline; BLOCKED tidak dapat diteruskan ke render |
 | Renderer / `encode` | independent eligibility, current proof, exact one-use permit dan `admit()` replay | MP4+decode/audio mapping/permit receipts; `ENCODED_QA_PENDING`, bukan completed |
@@ -120,14 +131,15 @@ yang saat audit berawal dari manual trigger dan belum Published. Workflow Instag
 adalah pembanding pola, bukan workflow yang akan diubah. Satu workflow dimulai
 setelah source flow existing mencapai ORIGINAL_READY, lalu
 `Editing Job - Admit Original`. `Editing Job - Status` membaca `next_action` yang
-diterbitkan backend. Satu Switch dispatch mengarahkan ke **tepat satu** dari delapan
+diterbitkan backend. Satu Switch dispatch mengarahkan ke **tepat satu** dari sembilan
 HTTP Request node role pada tabel di atas. Setiap node mengirim POST dengan key
 stabil; seluruh cabang bergabung pada `Task Status - Poll` → Wait → GET task sampai
 terminal. Setelah task selesai, cabang menuju `Revision Controller - Decide Next
 Step`; hasilnya kembali ke `Editing Job - Status` atau ke terminal result. Reviewer
 dipanggil dua kali secara kondisional dengan `mode` berbeda melalui node Reviewer
-yang sama. Speech/Evidence memakai phase `measure` atau `transcribe` melalui node
-yang sama. Node n8n tidak menyusun ulang budget, mengubah permit, memilih kandidat,
+yang sama. AV Evidence dan Speech/ASR memakai node berbeda; conditional ASR dan
+region retry tidak mengubahnya menjadi workflow terpisah. Admission/status/Wait/
+Switch adalah helper nodes di luar sembilan role editing. Node n8n tidak menyusun ulang budget, mengubah permit, memilih kandidat,
 atau menyimpan MP4 dalam execution data.
 
 Cabang `Media Worker - Get Original File` → `Cloudinary - Upload Original` existing
@@ -141,20 +153,21 @@ flowchart LR
   J --> Q[GET job next_action]
   Q --> D{Switch role}
   D --> A[Analyst HTTP]
-  D --> E[Speech/Evidence HTTP]
+  D --> E[AV Evidence HTTP]
+  D --> S2[Speech ASR HTTP]
   D --> C[Creative Director HTTP]
   D --> V[Validator HTTP]
   D --> R[Renderer HTTP]
   D --> T[Technical QA HTTP]
   D --> M[Reviewer HTTP]
   D --> X[Revision Controller HTTP]
-  A & E & C & V & R & T & M & X --> P[GET task + Wait]
+  A & E & S2 & C & V & R & T & M & X --> P[GET task + Wait]
   P --> Q
   Q --> F[Terminal private-preview result]
 ```
 
 Revision Controller adalah satu-satunya pembuat attempt editorial baru. Source
-speech review dapat meminta ASR hanya region terdampak, maksimum dua ASR calls per
+speech review dapat meminta Speech/ASR ulang hanya region terdampak, maksimum dua ASR calls per
 region. Director maksimum tiga reservations, termasuk error/timeout. Setelah
 validator blocker atau QA failure, controller menulis diagnosis typed untuk
 proposal berikutnya. Kandidat eligible lama tetap tersedia bila proposal baru

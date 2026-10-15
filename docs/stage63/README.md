@@ -1,5 +1,10 @@
 # Stage 6.3.1 — import Media Worker existing
 
+**Keputusan aktif Stage 6.3.4:**
+[Media Worker permanen + editing worker baru](stage634-two-worker-architecture.md).
+[Finalisasi sembilan role dan kesiapan build](stage634-final-readiness.md).
+Dokumen di bawah menyimpan riwayat import dan pengujian sebelumnya.
+
 Tahap lanjutan: [Stage 6.3.2 Intake Adapter](stage632-intake-adapter.md).
 Audit media nyata: [Stage 6.3.3](stage633-real-original-compatibility.md).
 Persiapan image tunggal: [Stage 6.3.4 Docker Runtime](stage634-docker-runtime.md).

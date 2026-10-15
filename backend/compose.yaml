@@ -1,36 +1,43 @@
-# Local Git-backed equivalent of the observed VPS Compose service; not deployed.
+# Proposed NEW editing service only. The permanent Media Worker is not managed here.
 services:
-  autoclipper-media-worker:
+  mandala-ai-editing-worker:
     build:
       context: ..
       dockerfile: backend/Dockerfile
       args:
-        MANDALA_PROVIDER_ID: '${AUTOCLIPPER_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+        MANDALA_PROVIDER_ID: '${MANDALA_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
     restart: unless-stopped
     init: true
     environment:
       TZ: Asia/Jakarta
       PYTHONUNBUFFERED: '1'
       MALLOC_ARENA_MAX: '2'
-      PGHOST: '${AUTOCLIPPER_PGHOST:-}'
-      PGPORT: '${AUTOCLIPPER_PGPORT:-5432}'
-      PGUSER: '${AUTOCLIPPER_PGUSER:-}'
-      PGPASSWORD: '${AUTOCLIPPER_PGPASSWORD:-}'
-      PGDATABASE: '${AUTOCLIPPER_PGDATABASE:-mandala_autoclipper}'
-      AUTOCLIPPER_SOURCE_USERNAME: '${AUTOCLIPPER_SOURCE_USERNAME:-mandala.auto.kediri}'
-      AUTOCLIPPER_SOURCE_CHANNEL_ID: '${AUTOCLIPPER_SOURCE_CHANNEL_ID:-MS4wLjABAAAARRCOc1BxQyl9stiiH_Ow0X6508sdblTUyU7zoTpuwDnuasR9zOUesydpwPbbBVOo}'
-      AUTOCLIPPER_SOURCE_ROOT: '${AUTOCLIPPER_SOURCE_ROOT:-/data/source}'
-      AUTOCLIPPER_MAX_SOURCE_BYTES: '${AUTOCLIPPER_MAX_SOURCE_BYTES:-157286400}'
-      AUTOCLIPPER_WORKER_PORT: '${AUTOCLIPPER_WORKER_PORT:-3002}'
-      AUTOCLIPPER_OPENCLAW_PROVIDER_ID: '${AUTOCLIPPER_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+      MANDALA_EDITING_PORT: '3003'
+      MANDALA_OPENCLAW_PROVIDER_ID: '${MANDALA_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+      # Reuse intake's Stage 3 logical path; this service never downloads media.
+      AUTOCLIPPER_SOURCE_ROOT: /data/source
     volumes:
-      - autoclipper_data:/data
-      # Same volume inside the future Stage 5 project root; no media copy.
-      - autoclipper_data:/app/data
+      - type: volume
+        source: originals
+        target: /data
+        read_only: true
+        volume:
+          nocopy: true
+      - type: volume
+        source: originals
+        target: /app/original-store
+        read_only: true
+        volume:
+          nocopy: true
+      - type: volume
+        source: editing_data
+        target: /app/data
+        volume:
+          nocopy: true
     expose:
-      - '3002'
+      - '3003'
     healthcheck:
-      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3002/health', timeout=5)"]
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/health', timeout=5)"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -39,4 +46,8 @@ services:
     cpus: 1.5
 
 volumes:
-  autoclipper_data:
+  originals:
+    external: true
+    name: '${MANDALA_ORIGINAL_VOLUME:?Set the exact pre-existing originals volume name}'
+  editing_data:
+    name: '${MANDALA_EDITING_OUTPUT_VOLUME:-mandala-ai-editing-output}'

@@ -1,5 +1,10 @@
 # Kapasitas VPS dan alokasi Media Worker
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](../stage63/stage634-two-worker-architecture.md).
+
 Snapshot read-only 14 Oktober 2026 dari halaman server Coolify dan terminal host.
 Coolify menampilkan Ubuntu 24.04.4 x86_64, **2 CPU cores, RAM 7.4 GB**. `free -m`
 pada host: total 7623 MiB, used 2981 MiB, `MemAvailable` 4642 MiB, swap total

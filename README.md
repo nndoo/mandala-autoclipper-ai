@@ -79,11 +79,20 @@ from a future build context. Stage 6.1 does not deploy or integrate n8n.
 
 ## Stage 6.3 source and Docker preparation
 
-`backend/media_worker/` preserves the four source endpoints and adds the local
-Intake Adapter. `backend/Dockerfile` builds the proposed single-container runtime
-from the repository root; its builder regenerates the plugin binding. Runtime
+The existing Media Worker remains a permanent source/download service.
+`backend/Dockerfile` now builds ONLY the new `mandala-ai-editing-worker` from
+the repository root, with `backend.editing_worker` as its port 3003 entrypoint;
+its builder regenerates the plugin binding. Runtime
 dependencies are pinned in `backend/requirements.lock.txt` and the two npm
-lockfiles. AI role endpoints remain future work.
+lockfiles. Nine editing roles are planned, with AV Evidence and Speech/ASR as
+separate modules and HTTP nodes in the same main n8n workflow. AI role endpoints
+remain future work; only runtime preflight and
+`/health` exist in the editing service. Original storage is mounted read-only at
+`/data` and `/app/original-store`; a separate editing volume owns `/app/data`.
+See the [final two-worker architecture](docs/stage63/stage634-two-worker-architecture.md)
+for Compose/canary setup and approval gates. No cutover of the old worker is planned.
+The [final pre-push review](docs/stage63/stage634-final-readiness.md) records the
+nine-role mapping, full regression and remaining image build gates.
 
 See [Git source readiness](docs/stage63/git-readiness.md), the explicit
 [safe file list](docs/stage63/git-safe-files.txt), and

@@ -1,5 +1,10 @@
 # Stage 6.2 — kompatibilitas dan desain modular
 
+> **Revisi 15 Oktober 2026:** keputusan deployment/cutover dan jumlah file di
+> laporan ini adalah snapshot historis. Rancangan aktif memakai Media Worker
+> permanen + service editing baru dengan originals RO dan output terpisah.
+> Lihat [keputusan final dua worker](../stage63/stage634-two-worker-architecture.md).
+
 Tanggal audit: 14 Oktober 2026, Asia/Jakarta. **Audit/desain selesai; implementasi
 dan deployment belum dilakukan.** Tidak menjalankan workflow n8n, download baru,
 ASR/inference, render, migration database, restart, commit atau push.

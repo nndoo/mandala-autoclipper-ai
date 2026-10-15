@@ -68,6 +68,8 @@
 **/*.sqlite3
 **/*.db
 backend/vps_snapshot
+# Source API remains on its existing service; only config/intake are reused here.
+backend/media_worker/app.py
 # Always regenerate deployment binding and dist inside the plugin builder.
 openclaw/plugins/mandala-9router-video/src/provider-id.generated.ts
 openclaw/plugins/mandala-9router-video/openclaw.plugin.json
