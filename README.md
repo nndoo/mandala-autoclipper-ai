@@ -6,13 +6,14 @@ transport. Run commands from the project root.
 
 New agent or device? Start with the [AI agent reading guide](docs/AGENT_GUIDE.md),
 [handoff](HANDOFF_README.md), and [Markdown catalog](docs/markdown-catalog.md).
-The latest local [Stage 6.3.5 Tahap D checkpoint](docs/stage63/stage635-stage-d-checkpoint-2026-10-15.md)
-is **incomplete**; local tests do not establish production readiness.
+The latest local [Stage 6.3.5 Tahap D checkpoint](docs/stage63/stage635-stage-d-completion-2026-10-16.md)
+records TEST_ONLY integration PASS; local tests do not establish production readiness.
 
 ## Local setup
 
-The current Linux environment uses Python 3.14.2, Node 24.21.0 for isolated
-OpenClaw 2026.9.9, FFmpeg/FFprobe, and Ruff 0.17.0. Paths inside Python tools
+The Stage 6.3.5 Tahap A checkpoint verified Python 3.14.2, Node 24.21.0 for
+isolated OpenClaw 2026.9.9, FFmpeg/FFprobe, and Ruff 0.17.0. Recheck versions
+on the current host. Paths inside Python tools
 resolve from this checkout, so the folder can be moved without editing source.
 Use a fresh virtualenv when changing devices; copied virtualenvs are not portable.
 
@@ -69,9 +70,11 @@ provider ID requires regenerating the adapter binding before building it:
 Back it up separately; a clone will not restore it. Historical receipts remain
 bound to their original code/environment; new render proofs use new output bundles.
 
-n8n, PostgreSQL, Cloudinary, and GitHub → Coolify describe intended architecture.
-Their deployment configurations and live connections are not supplied by this
-checkout. Local regression success does not establish publishing authorization.
+PostgreSQL 16 integration was tested against an isolated local `TEST_ONLY`
+database during Tahap B/C. Production database, n8n, Cloudinary, and current
+Coolify connections require separate verification. A deployment report is a
+historical observation, not a live service check. Local regression success
+does not establish publishing authorization.
 
 ## Stage 6.1 audit and repository layout
 
@@ -90,10 +93,11 @@ repository root, with `backend.editing_worker` as its `:3003` entrypoint. Local
 Stage 6.3.5 recovery added the PostgreSQL schema, source admission, authenticated
 HTTP API, dispatcher, and nine role modules. Read the [API contract](docs/stage63/stage635-api-contract.md),
 [role map](backend/roles/README.md), and [checkpoints A–D](docs/stage63/README.md)
-before changing them. Tahap A–C passed their stated local scopes. Tahap D has
-**not passed**: its synthetic chain stopped at the Renderer capability-proof gate;
-full render, QA, Reviewer, recovery boundaries, and production readiness remain
-unproved. The checkpoint is a record, so recheck source and tests for current state.
+before changing them. Tahap A–D passed their stated local TEST_ONLY scopes;
+Tahap D now includes actual synthetic render, Technical QA, both Reviewer
+phases, and bounded revision selection. Docker/image readiness, live provider,
+full historical regression, and production readiness remain unproved. Recheck
+source and tests for current state.
 
 The [two-worker architecture](docs/stage63/stage634-two-worker-architecture.md)
 and [deployment guide](docs/stage63/stage635-deployment-guide.md) describe the

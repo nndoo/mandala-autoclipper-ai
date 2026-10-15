@@ -29,7 +29,7 @@ def _retry_director(ctx, attempt, findings):
     if attempt >= 3:
         return _select(ctx)
     diagnosis = ctx.write_json(
-        f'controller/{ctx.task["id"]}-diagnosis.json', findings,
+        f'controller/{ctx.task["id"]}-diagnosis.json', {'findings': findings},
         'revision_diagnosis')
     return _next('director', 'propose', attempt + 1,
                  _row(ctx, 'automatic_request'), _row(ctx, 'director_packet'), diagnosis)
@@ -45,7 +45,7 @@ def _retry_asr(ctx, regions):
     if any(counts.get(region, 0) >= 2 for region in regions):
         return _terminal()
     retry = ctx.write_json(f'controller/{ctx.task["id"]}-asr-regions.json',
-                           sorted(regions), 'asr_retry_regions')
+                           {'regions': sorted(regions)}, 'asr_retry_regions')
     return _next('speech-asr', 'transcribe', 0, _row(ctx, 'director_packet'), retry,
                  regions=sorted(regions))
 

@@ -6,8 +6,9 @@ Stage 6.3.5 recovery is documented by the [API contract](stage635-api-contract.m
 [A](stage635-stage-a-checkpoint-2026-10-15.md),
 [B](stage635-stage-b-checkpoint-2026-10-15.md),
 [C](stage635-stage-c-checkpoint-2026-10-15.md), and
-[D](stage635-stage-d-checkpoint-2026-10-15.md). A–C passed only their stated
-local scopes; **D remains incomplete**. The recovered
+[D terbaru](stage635-stage-d-completion-2026-10-16.md). A–D passed only their stated
+local scopes. The [partial D checkpoint](stage635-stage-d-checkpoint-2026-10-15.md)
+records the earlier Renderer blocker. The recovered
 [project checkpoint](PROJECT_CHECKPOINT_RECONSTRUCTED.md) and
 [implementation report](stage635-implementation-report.md) describe prior PC
 work and are not evidence of the current source or deployment. Verify current

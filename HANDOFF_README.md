@@ -1,40 +1,36 @@
-# Mandala Autoclipper — Stage 6.3.5 handoff antar-perangkat
+# Mandala Auto — handoff Stage 6.3.5 recovery
 
-## Kondisi kode (15 Oktober 2026)
-- GitHub private: `nndoo/mandala-autoclipper-ai`; `main` HEAD yang terakhir dicek: `0c92c6a617033e57b9b7fcc1b9388f5b81ccca12`.
-- `main` menyimpan Stage 6.3.4 (`:3002` Media Worker dan `:3003` runtime-only AI Editing Worker).
-- Perubahan source code Stage 6.3.5 dibuat **hanya di PC lama**, **tidak di-commit/push**, dan **tidak disertakan dalam paket ini**. Tidak bisa direstore dari GitHub. File tiga dokumen di paket ini berasal dari lampiran percakapan, bukan salinan source code.
-- Stage 6.3.5 harus direkonstruksi dari source Stage 5 di GitHub, dokumen kontrak, dan bukti pengujian. Tidak boleh mengklaim source Stage 6.3.5 sudah dipulihkan.
-- VPS Coolify menggunakan `backend/compose.yaml` dengan Base Directory `/backend`, Compose location `/compose.yaml`, mode Compose **Raw** agar originals volume existing tetap terpasang. Jangan mengubah deployment ini.
+Dokumen ini adalah pintu masuk **checkout Linux saat ini**, bukan instruksi
+clone awal. Baca [panduan AI agent](docs/AGENT_GUIDE.md) dan
+[katalog Markdown](docs/markdown-catalog.md) untuk memilih dokumen sesuai tugas.
+Periksa branch, `git status`, source, dan test terbaru; pekerjaan lokal dapat
+belum di-commit/push. Jangan menganggap checkout baru di perangkat lain akan
+memuat perubahan tersebut.
 
-## Cara melanjutkan di PC baru
+## Status yang tercatat sampai 16 Oktober 2026
 
-Clone repositori PRIVATE dengan autentikasi GitHub yang sah.
+| Tahap | Bukti lokal terakhir | Batas |
+| --- | --- | --- |
+| A | [Environment dan baseline](docs/stage63/stage635-stage-a-checkpoint-2026-10-15.md) PASS | Bukan proof image/service production |
+| B | [PostgreSQL 16 dan admission](docs/stage63/stage635-stage-b-checkpoint-2026-10-15.md) PASS | Database lokal `TEST_ONLY` |
+| C | [HTTP, queue, recovery](docs/stage63/stage635-stage-c-checkpoint-2026-10-15.md) PASS | Mock executor dan readiness yang disuntik test |
+| D | [Sembilan role](docs/stage63/stage635-stage-d-completion-2026-10-16.md) PASS lokal | Proof fisik, render/QA, Reviewer dan Controller diuji dengan replay TEST_ONLY; belum proof Docker/live |
 
-### Linux / Ubuntu
-```bash
-git clone https://github.com/nndoo/mandala-autoclipper-ai.git
-cd mandala-autoclipper-ai
-git switch -c wip/stage-6.3.5-recovery
-# Copy folder docs/stage63 dari ZIP ini ke folder docs/stage63 repo.
-git status --short
-```
+Pada PC Windows lama, implementasi Stage 6.3.5 pernah dikerjakan tetapi tidak
+di-push. [Laporan implementasi](docs/stage63/stage635-implementation-report.md)
+dan [checkpoint rekonstruksi](docs/stage63/PROJECT_CHECKPOINT_RECONSTRUCTED.md)
+adalah sumber sejarah, bukan bukti source yang sama ada atau berjalan di sini.
+Stage 6.3.4 editing worker `:3003` pernah dicatat sebagai deployment runtime-only;
+laporan itu tidak membuktikan sembilan role Stage 6.3.5 aktif di VPS.
 
-### Windows PowerShell
-```powershell
-git clone https://github.com/nndoo/mandala-autoclipper-ai.git
-cd mandala-autoclipper-ai
-git switch -c wip/stage-6.3.5-recovery
-# Copy folder docs\stage63 dari ZIP ini ke docs\stage63 repo.
-git status --short
-```
+## Batas kerja lanjutan
 
-Kemudian buka `CODEX_PROMPT.md` dan jalankan Codex **dari root repo**. Gunakan Linux/WSL2 untuk tes yang memerlukan `resource`, FFmpeg, dan Docker Engine. Jangan masukkan secrets atau media original dalam commit. Saat ingin push, audit dulu file staged; tidak ada kewajiban push/deploy dalam langkah pemulihan.
-
-## Bukti yang ikut paket
-- `docs/stage63/stage635-implementation-report.md`: apa yang pernah dibuat di PC lama; bukan kode.
-- `docs/stage63/stage635-api-contract.md`: endpoint dan aturan sembilan role.
-- `docs/stage63/stage635-deployment-guide.md`: migration/secret/storage dan batas deployment.
-- `docs/stage63/PROJECT_CHECKPOINT_RECONSTRUCTED.md`: rekonstruksi dari log terakhir di chat; **bukan** file asli PC lama.
-
-Jangan menulis migration ke PostgreSQL production, jangan melakukan panggilan 9Router berbayar atau publishing tanpa izin eksplisit.
+Kontrak internal ada di [API contract](docs/stage63/stage635-api-contract.md).
+[Deployment guide](docs/stage63/stage635-deployment-guide.md) adalah rencana
+untuk review berikutnya, belum instruksi eksekusi. Media Worker lama `:3002`,
+VPS/Coolify, n8n, dan database production tidak diubah oleh recovery lokal.
+Provider live, rendering media nyata, publishing, deployment, serta
+production readiness perlu tugas dan bukti tersendiri. Commit/push checkpoint
+WIP Stage 6.3.5 telah diminta secara eksplisit; audit file sensitif sebelum
+setiap push. Jangan menyalin secret,
+original media, atau historical receipt ke dokumentasi baru.

@@ -26,7 +26,9 @@ def execute(ctx):
             previous = workflow.read(prior)
     diagnosis_rows = [r for r in ctx.rows('revision_diagnosis')
                       if r['id'] in ctx.task['input_artifact_ids']]
-    diagnosis = workflow.read(ctx._verified_path(diagnosis_rows[0])) if diagnosis_rows else []
+    diagnosis_record = (workflow.read(ctx._verified_path(diagnosis_rows[0]))
+                        if diagnosis_rows else {'findings': []})
+    diagnosis = diagnosis_record.get('findings')
     if len(diagnosis_rows) > 1 or not isinstance(diagnosis, list):
         raise RoleBlocked('Revision diagnosis is ambiguous')
     prompt = workflow.core.director.safe_text(

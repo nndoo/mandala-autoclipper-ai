@@ -105,7 +105,10 @@ def execute(ctx):
     if retry_rows:
         if len(retry_rows) != 1:
             raise RoleBlocked('Ambiguous ASR retry regions')
-        selected = set(workflow.read(ctx._verified_path(retry_rows[0])))
+        retry = workflow.read(ctx._verified_path(retry_rows[0]))
+        if not isinstance(retry.get('regions'), list):
+            raise RoleBlocked('Invalid ASR retry region list')
+        selected = set(retry['regions'])
         if not selected or not selected <= {_region_id(i) for i, _ in required}:
             raise RoleBlocked('Invalid ASR retry region identity')
     _, config = asr.load_config(asr.DEFAULT_CONFIG)

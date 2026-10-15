@@ -1,8 +1,8 @@
 # Stage 6.3.5 — migration, konfigurasi, dan rencana Coolify
 
-**Status 15 Oktober 2026:** panduan ini belum dijalankan pada production.
-[Checkpoint Tahap D](stage635-stage-d-checkpoint-2026-10-15.md) masih
-incomplete; gerbang proof Renderer dan pengujian role penuh belum lulus.
+**Status 16 Oktober 2026:** panduan ini belum dijalankan pada production.
+[Checkpoint Tahap D](stage635-stage-d-completion-2026-10-16.md) lulus pada
+lingkungan lokal TEST_ONLY; proof image Docker dan provider live belum diuji.
 Jangan gunakan checklist di bawah sebagai pernyataan bahwa image/service saat
 ini siap deploy. Validasi ulang source, tests, proof, dan izin operator terlebih
 dahulu. Provider live memerlukan opt-in `MANDALA_EDITING_LIVE_ROLES_ENABLED=1`;
@@ -15,8 +15,9 @@ untuk tahap persetujuan/deployment berikutnya.
 
 Migration idempotent `backend/migrations/001_editing_jobs.sql` membuat schema
 terpisah `mandala_engine` dengan tabel `jobs`, `tasks`, `call_reservations`,
-`artifacts`, `permits`, `job_events`, dan `schema_migrations`. Tidak ada ALTER
-atau write terhadap `public.source_videos`. Terapkan memakai kredensial DB
+`artifacts`, `permits`, `job_events`, `schema_migrations`, dan
+`idempotency_keys`. Tidak ada ALTER atau write terhadap
+`public.source_videos`. Terapkan memakai kredensial DB
 editing khusus setelah backup dan review operator. Verifikasi
 `schema_migrations.version=1` dan hak akses worker hanya pada schema editing.
 Source DB harus memakai credential SELECT-only pada `public.source_videos`; kode

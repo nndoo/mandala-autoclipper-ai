@@ -4,8 +4,9 @@ This page preserves the Stage 6.1 and 6.3.4 layout record below. For the
 current local Stage 6.3.5 recovery, see the [agent guide](AGENT_GUIDE.md),
 [Stage 6.3 index](stage63/README.md), and source in `backend/editing_api.py`,
 `backend/editing_store.py`, `backend/editing_dispatch.py`, and `backend/roles/`.
-The Stage 6.3.5 [Tahap D checkpoint](stage63/stage635-stage-d-checkpoint-2026-10-15.md)
-is incomplete; older statements below such as "roles placeholder" are historical.
+The Stage 6.3.5 [Tahap D completion checkpoint](stage63/stage635-stage-d-completion-2026-10-16.md)
+records local TEST_ONLY PASS; older statements below such as "roles placeholder"
+are historical.
 
 Revisi aktif Stage 6.3.4: [dua worker](stage63/stage634-two-worker-architecture.md).
 `backend/editing_worker.py` adalah entrypoint service editing baru;

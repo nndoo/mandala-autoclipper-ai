@@ -1,16 +1,39 @@
-# Prompt Codex — pemulihan Stage 6.3.5 setelah PC lama tidak dapat diakses
+# Mandala Auto — konteks awal untuk AI agent
 
-Lanjutkan Mandala Auto Autoclipper dari repository GitHub, di PC baru.
+Bekerja dari root repository. Baca [`AGENTS.md`](AGENTS.md),
+[panduan baca](docs/AGENT_GUIDE.md), dan
+[katalog Markdown](docs/markdown-catalog.md), lalu kontrak, checkpoint,
+source, dan test yang terkait tugas pengguna. Selalu cek `git status` dan
+branch sebelum mengubah file; checkout dapat memuat pekerjaan lokal yang belum
+di-commit.
 
-**KONTEKS KRITIS:** Kode Stage 6.3.5 di PC lama HILANG/TIDAK TERSEDIA, karena belum commit/push. Jangan berpura-pura bahwa modul API/migration/role yang dideskripsikan dokumen sudah ada. GitHub `main` hanya menyimpan Stage 6.3.4 yang berhasil berjalan di Coolify. Kita sedang di branch baru `wip/stage-6.3.5-recovery`.
+## Konteks pemulihan Stage 6.3.5
 
-Baca `AGENTS.md`, `docs/stage63/PROJECT_CHECKPOINT_RECONSTRUCTED.md`, `docs/stage63/stage635-implementation-report.md`, `docs/stage63/stage635-api-contract.md`, `docs/stage63/stage635-deployment-guide.md`, dan source Stage 5 serta backend di repo.
+Source Stage 6.3.5 di PC Windows lama tidak ikut di-push. Laporan implementasi
+dan checkpoint rekonstruksi yang dipulihkan adalah riwayat, bukan salinan source.
+Pada checkout Linux ini, Tahap A–D direkonstruksi dan lulus dalam cakupan
+test lokal masing-masing. [Checkpoint Tahap D terbaru](docs/stage63/stage635-stage-d-completion-2026-10-16.md)
+mencatat proof fisik Stage 5, render MP4 sintetis, QA, dua phase Reviewer, dan
+Controller sampai terminal. Checkpoint D 15 Oktober adalah riwayat blocker
+sebelumnya. Status ini harus diverifikasi ulang terhadap source dan test terbaru;
+belum ada proof image Docker atau provider live.
 
-Tugas terarah:
-1. Audit persis fungsi Stage 5 dan backend Stage 6.3.4 yang sudah ada. Buat gap matrix kebutuhan Stage 6.3.5 vs source Git saat ini. Jangan menulis implementasi sebelum audit selesai.
-2. Rencanakan rekonstruksi minimal Stage 6.3.5 dari sumber existing, tanpa rewrite engine Stage 5. Sembilan role modular harus punya modul/endpoint terpisah, AV Evidence/ASR dan Renderer/Technical QA terpisah, Reviewer dapat phase source/edited. Gunakan kontrak API dari dokumen.
-3. Rekonstruksi bertahap dengan test: schema `mandala_engine`, source original SELECT-only, jobs/tasks/reservations/leases/idempotency/permits/artifacts, operator approval ber-token berbeda, task API asynchronous, bounded retries & unknown outcomes. No DB production.
-4. Uji di lingkungan Linux dengan mock provider, fixture sintetis, PostgreSQL isolated compatible dengan production PostgreSQL 16. Perbaiki Docker image/checks hanya bila bisa menjelaskan error nyata. Jangan klaim PASS sebelum full image + Stage 5 Linux regression + synthetic E2E + restart/recovery terverifikasi.
-5. Jangan menyentuh Coolify, Media Worker lama, n8n, database production, OpenClaw Instagram. Jangan paid inference, render source nyata, publish, commit/push/deploy tanpa persetujuan user.
+## Urutan kerja
 
-**Kerjakan audit + rencana GAP dahulu dan laporkan. Tunggu persetujuan user sebelum implementasi**, sehingga user dapat mengontrol scope pemulihan di PC baru.
+1. Tentukan scope dari pesan pengguna terbaru. Baca [kontrak HTTP](docs/stage63/stage635-api-contract.md),
+   [checkpoint A–D](docs/stage63/README.md), dan dokumentasi Stage 5 yang
+   spesifik pada komponen.
+2. Bandingkan kontrak dengan source dan test saat ini. Laporkan celah dengan
+   bukti; jangan mengulang engine Stage 5 yang telah ada.
+3. Gunakan PostgreSQL lokal, media sintetis, dan replay `TEST_ONLY` untuk test
+   yang relevan. Jangan memakai historical evidence sebagai fixture baru atau
+   menganggap proof sintetis sebagai izin inference, production, atau publish.
+4. Pisahkan status structural validation, render/QA, model, human review,
+   readiness service, dan production. Pertahankan receipt dan prompt historis.
+
+Jangan mengubah Media Worker `:3002`, VPS/Coolify, n8n, database production,
+atau menjalankan paid inference/publish tanpa tugas dan otorisasi tersendiri.
+Ikuti batasan tugas pengguna terbaru. Permintaan finalisasi Stage 6.3.5 saat
+ini mewajibkan checkpoint commit/push **hanya** ke
+`wip/stage-6.3.5-recovery` setelah tiap milestone yang sah; deployment ke
+Coolify tetap belum diizinkan.
