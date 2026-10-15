@@ -1,7 +1,8 @@
 # Stage 6.3 documentation
 
 For current navigation, start with the [AI agent reading guide](../AGENT_GUIDE.md).
-Stage 6.3.5 recovery is documented by the [API contract](stage635-api-contract.md),
+Stage 6.3.5 recovery has a [final recovery report](stage635-final-report.md),
+the [API contract](stage635-api-contract.md),
 [deployment guide](stage635-deployment-guide.md), and local checkpoints
 [A](stage635-stage-a-checkpoint-2026-10-15.md),
 [B](stage635-stage-b-checkpoint-2026-10-15.md),
