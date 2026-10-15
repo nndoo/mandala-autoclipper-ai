@@ -1,0 +1,517 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "automatic-editing-0.1.0"
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "concept": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 800
+    },
+    "decisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hook": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "shot_selection": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "pacing": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "transitions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "effects": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "text_hierarchy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "branding": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "ending": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        },
+        "audio": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800
+        }
+      },
+      "required": [
+        "hook",
+        "shot_selection",
+        "pacing",
+        "transitions",
+        "effects",
+        "text_hierarchy",
+        "branding",
+        "ending",
+        "audio"
+      ]
+    },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "start_sec": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "end_sec": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "speed": {
+            "type": "number",
+            "minimum": 0.8,
+            "maximum": 1.25
+          },
+          "transition_out": {
+            "enum": [
+              "cut",
+              "crossfade"
+            ]
+          },
+          "overlap_sec": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 0.5
+          },
+          "scale": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "center_x": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "center_y": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 800
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "minItems": 1,
+            "maxItems": 12
+          },
+          "grade": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "brightness",
+              "contrast",
+              "saturation"
+            ],
+            "properties": {
+              "brightness": {
+                "type": "number",
+                "minimum": -0.2,
+                "maximum": 0.2
+              },
+              "contrast": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 1.5
+              },
+              "saturation": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "start_sec",
+          "end_sec",
+          "speed",
+          "transition_out",
+          "overlap_sec",
+          "scale",
+          "center_x",
+          "center_y",
+          "rationale",
+          "evidence_refs"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 16
+    },
+    "overlays": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "shot_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "start_sec": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "end_sec": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 800
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            "minItems": 1,
+            "maxItems": 12
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "font": {
+                "enum": [
+                  "dejavu_sans",
+                  "dejavu_sans_bold"
+                ]
+              },
+              "size_px": {
+                "type": "integer",
+                "minimum": 20,
+                "maximum": 96
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "active_color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "outline_px": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x": {
+                "type": "number",
+                "minimum": 0.08,
+                "maximum": 0.82
+              },
+              "y": {
+                "type": "number",
+                "minimum": 0.08,
+                "maximum": 0.78
+              },
+              "enter": {
+                "enum": [
+                  "none",
+                  "fade",
+                  "pop",
+                  "slide"
+                ]
+              },
+              "exit": {
+                "enum": [
+                  "none",
+                  "fade",
+                  "pop",
+                  "slide"
+                ]
+              },
+              "enter_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "exit_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "font",
+              "size_px",
+              "color",
+              "active_color",
+              "outline_px",
+              "x",
+              "y",
+              "enter",
+              "exit",
+              "enter_sec",
+              "exit_sec"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "shot_id",
+          "start_sec",
+          "end_sec",
+          "text",
+          "purpose",
+          "evidence_refs",
+          "style"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 32
+    },
+    "subtitle_groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "shot_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "style": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "font": {
+                "enum": [
+                  "dejavu_sans",
+                  "dejavu_sans_bold"
+                ]
+              },
+              "size_px": {
+                "type": "integer",
+                "minimum": 20,
+                "maximum": 96
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "active_color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "outline_px": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x": {
+                "type": "number",
+                "minimum": 0.08,
+                "maximum": 0.82
+              },
+              "y": {
+                "type": "number",
+                "minimum": 0.08,
+                "maximum": 0.78
+              },
+              "enter": {
+                "enum": [
+                  "none",
+                  "fade",
+                  "pop",
+                  "slide"
+                ]
+              },
+              "exit": {
+                "enum": [
+                  "none",
+                  "fade",
+                  "pop",
+                  "slide"
+                ]
+              },
+              "enter_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "exit_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "font",
+              "size_px",
+              "color",
+              "active_color",
+              "outline_px",
+              "x",
+              "y",
+              "enter",
+              "exit",
+              "enter_sec",
+              "exit_sec"
+            ]
+          },
+          "line_breaks_after": {
+            "type": "array",
+            "maxItems": 2,
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 13
+            },
+            "description": "Phrase-only fallback: AI-selected word boundaries for wrapping the full timed provider segment; does not create word timestamps."
+          }
+        },
+        "required": [
+          "id",
+          "shot_id",
+          "unit_ids",
+          "style"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 128
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "original",
+            "continuous_source"
+          ]
+        },
+        "start_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 180
+        },
+        "gain_db": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 0
+        },
+        "fade_in_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "fade_out_sec": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        }
+      },
+      "required": [
+        "mode",
+        "start_sec",
+        "gain_db",
+        "fade_in_sec",
+        "fade_out_sec"
+      ]
+    },
+    "production_eligible": {
+      "const": false
+    },
+    "human_verified": {
+      "const": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "source_sha256",
+    "concept",
+    "decisions",
+    "shots",
+    "overlays",
+    "subtitle_groups",
+    "audio",
+    "production_eligible",
+    "human_verified"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI automatic private-preview proposal; never human verification"
+}

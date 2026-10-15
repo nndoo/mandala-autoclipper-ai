@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Independent Plan Validation V0.3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "inspection_completed",
+    "structural_validity",
+    "status",
+    "blocking_findings",
+    "review_findings",
+    "calculated_output_durations_sec",
+    "variant_differentiation",
+    "renderer_requirements",
+    "render_readiness",
+    "render_gate_passed",
+    "publish_ready",
+    "render_approved",
+    "publish_approved",
+    "limitations"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.3.0"
+    },
+    "inspection_completed": {
+      "const": true
+    },
+    "structural_validity": {
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "VALID_FOR_EDITORIAL_REVIEW",
+        "NEEDS_REVIEW",
+        "BLOCKED"
+      ]
+    },
+    "blocking_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "location"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "review_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "location"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "calculated_output_durations_sec": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "variant_differentiation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "renderer_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation",
+          "represented_in_plan",
+          "verification_status",
+          "execution_status"
+        ],
+        "properties": {
+          "operation": {
+            "type": "string"
+          },
+          "represented_in_plan": {
+            "const": true
+          },
+          "verification_status": {
+            "const": "unknown"
+          },
+          "execution_status": {
+            "const": "requires_implementation"
+          }
+        }
+      }
+    },
+    "render_readiness": {
+      "const": "BLOCKED_FOR_RENDER"
+    },
+    "render_gate_passed": {
+      "const": false
+    },
+    "publish_ready": {
+      "const": false
+    },
+    "render_approved": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "video_id",
+        "duration_sec",
+        "width",
+        "height",
+        "fps",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "duration_sec": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "evidence_packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

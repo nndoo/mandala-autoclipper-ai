@@ -1,0 +1,35 @@
+
+> mandala-9router-video@0.1.0 test
+> node --test tests/*.test.mjs
+
+✔ QA prompt binds exact request and MP4 (7.347417ms)
+✔ QA mode forwards bound Reviewer prompt, not default Analyst (23.585223ms)
+✔ QA missing receipt rejected before network (1.538427ms)
+✔ QA wrong MP4 rejected (2.182034ms)
+✔ QA changed request rejected (1.370626ms)
+✔ QA changed prompt hash rejected (1.887577ms)
+✔ QA role mismatch rejected (1.233042ms)
+✔ QA request outside project rejected (1.304624ms)
+✔ QA traversal rejected (1.29024ms)
+✔ QA secret file path rejected (1.708834ms)
+✔ QA symlink rejected (1.16372ms)
+✔ QA oversized prompt rejected (2.045569ms)
+✔ QA credential-like prompt rejected (1.328094ms)
+✔ QA missing approved root rejected (0.871782ms)
+✔ QA relative root rejected (0.587601ms)
+✔ QA loader relocation cannot change approved project boundary (1.500163ms)
+✔ structured prompt overrides generic description (24.164217ms)
+✔ forwards MP4 through tested image_url data URI compatibility path (28.446548ms)
+✔ rejects oversized input without making network request (0.526971ms)
+✔ rejects missing credentials (0.221098ms)
+✔ rejects failed upstream response without leaking payload (0.566985ms)
+✔ universal_v02 loads prompt and complete schema (25.83729ms)
+✔ unknown mode fails without network request (0.636562ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 99.97401

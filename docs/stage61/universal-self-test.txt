@@ -1,0 +1,9 @@
+=== VALID SYNTHETIC SAMPLE ===
+Errors: 0
+Warnings: 2
+
+=== INVALID TIMESTAMP TEST ===
+Detected errors: 1
+- editing_opportunities[0]: Timestamp exceeds source duration
+
+SELF-TEST: PASS

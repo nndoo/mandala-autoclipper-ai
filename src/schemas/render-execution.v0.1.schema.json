@@ -1,0 +1,403 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "variant_id": {
+      "enum": [
+        "A",
+        "B"
+      ]
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 1920
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 1920
+        },
+        "fps": {
+          "type": "integer",
+          "minimum": 10,
+          "maximum": 60
+        },
+        "fit": {
+          "enum": [
+            "pad",
+            "crop"
+          ]
+        },
+        "video_codec": {
+          "const": "libx264"
+        },
+        "audio_codec": {
+          "const": "aac"
+        },
+        "pixel_format": {
+          "const": "yuv420p"
+        },
+        "crf": {
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 30
+        },
+        "preset": {
+          "enum": [
+            "ultrafast",
+            "superfast",
+            "veryfast",
+            "faster",
+            "fast",
+            "medium"
+          ]
+        },
+        "audio_bitrate_kbps": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 256
+        },
+        "audio_sample_rate": {
+          "const": 48000
+        },
+        "audio_mode": {
+          "enum": [
+            "preserve",
+            "silent"
+          ]
+        },
+        "freeze_audio": {
+          "const": "silence"
+        },
+        "effect_scope": {
+          "const": "output_composite"
+        },
+        "timing_tolerance_frames": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "fps",
+        "fit",
+        "video_codec",
+        "audio_codec",
+        "pixel_format",
+        "crf",
+        "preset",
+        "audio_bitrate_kbps",
+        "audio_sample_rate",
+        "audio_mode",
+        "freeze_audio",
+        "effect_scope",
+        "timing_tolerance_frames"
+      ]
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "threads": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "timeout_sec": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 180
+        },
+        "memory_mib": {
+          "type": "integer",
+          "minimum": 512,
+          "maximum": 4096
+        },
+        "max_output_bytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 268435456
+        },
+        "disk_reserve_bytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 1073741824
+        }
+      },
+      "required": [
+        "threads",
+        "timeout_sec",
+        "memory_mib",
+        "max_output_bytes",
+        "disk_reserve_bytes"
+      ]
+    },
+    "operation_parameters": {
+      "type": "object",
+      "maxProperties": 32,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "text_layout": {
+            "const": "social_portrait.v01"
+          },
+          "color": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "brightness": {
+                "type": "number",
+                "minimum": -0.2,
+                "maximum": 0.2
+              },
+              "contrast": {
+                "type": "number",
+                "minimum": 0.5,
+                "maximum": 1.5
+              },
+              "saturation": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              }
+            },
+            "required": [
+              "brightness",
+              "contrast",
+              "saturation"
+            ]
+          },
+          "caption_source_window": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "start_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 180
+              },
+              "end_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 180
+              }
+            },
+            "required": [
+              "start_sec",
+              "end_sec"
+            ]
+          },
+          "font_size_px": {
+            "type": "integer",
+            "minimum": 8,
+            "maximum": 96
+          },
+          "fade": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "direction": {
+                "enum": [
+                  "in",
+                  "out"
+                ]
+              },
+              "start_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 180
+              },
+              "duration_sec": {
+                "type": "number",
+                "minimum": 0.01,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "direction",
+              "start_sec",
+              "duration_sec"
+            ]
+          },
+          "normalization": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "integrated_lufs": {
+                "type": "number",
+                "minimum": -30,
+                "maximum": -14
+              },
+              "true_peak_db": {
+                "type": "number",
+                "minimum": -6,
+                "maximum": -1
+              },
+              "loudness_range": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 15
+              }
+            },
+            "required": [
+              "integrated_lufs",
+              "true_peak_db",
+              "loudness_range"
+            ]
+          },
+          "text_style": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "font": {
+                "enum": [
+                  "dejavu_sans",
+                  "dejavu_sans_bold"
+                ]
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "outline_color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+              },
+              "outline_width_px": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "shadow": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "font",
+              "color",
+              "outline_color",
+              "outline_width_px",
+              "shadow"
+            ]
+          },
+          "text_animation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "enter": {
+                "enum": [
+                  "none",
+                  "fade"
+                ]
+              },
+              "exit": {
+                "enum": [
+                  "none",
+                  "fade"
+                ]
+              },
+              "enter_duration_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "exit_duration_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "enter",
+              "exit",
+              "enter_duration_sec",
+              "exit_duration_sec"
+            ]
+          }
+        },
+        "required": []
+      }
+    },
+    "assets": {
+      "type": "object",
+      "maxProperties": 8,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "rights": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "scope": {
+                "enum": [
+                  "TEST_ONLY",
+                  "PRODUCTION"
+                ]
+              },
+              "authorized": {
+                "const": true
+              },
+              "basis": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200
+              }
+            },
+            "required": [
+              "scope",
+              "authorized",
+              "basis"
+            ]
+          },
+          "duration_sec": {
+            "type": "number",
+            "minimum": 0.01,
+            "maximum": 180
+          }
+        },
+        "required": [
+          "path",
+          "sha256",
+          "rights",
+          "duration_sec"
+        ]
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "plan_sha256",
+    "variant_id",
+    "output",
+    "resources",
+    "operation_parameters",
+    "assets"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Rendering Execution Specification V0.1"
+}

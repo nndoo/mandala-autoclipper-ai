@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Private real-content preview manifest V0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "render_status",
+    "authorization_mode",
+    "source",
+    "plan_sha256",
+    "execution_spec_sha256",
+    "environment",
+    "code_receipts",
+    "verified_capabilities_used",
+    "requested_operations",
+    "applied_operations",
+    "timeline",
+    "output",
+    "execution",
+    "verification",
+    "production_approval_granted",
+    "publish_approved",
+    "editorial_quality_review",
+    "labels",
+    "authorization_sha256",
+    "evidence_packet_sha256",
+    "evidence_inputs",
+    "capabilities",
+    "validation_status"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "render_status": {
+      "const": "PREVIEW_ONLY_COMPLETED"
+    },
+    "authorization_mode": {
+      "const": "REAL_CONTENT_PREVIEW"
+    },
+    "source": {
+      "type": "object"
+    },
+    "plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_spec_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "code_receipts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "verified_capabilities_used": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      }
+    },
+    "requested_operations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object"
+      }
+    },
+    "applied_operations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object"
+      }
+    },
+    "timeline": {
+      "type": "object"
+    },
+    "output": {
+      "type": "object"
+    },
+    "execution": {
+      "type": "object"
+    },
+    "verification": {
+      "type": "object"
+    },
+    "production_approval_granted": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    },
+    "editorial_quality_review": {
+      "const": "PENDING_MANUAL_REVIEW"
+    },
+    "labels": {
+      "const": [
+        "PREVIEW_ONLY",
+        "NOT_APPROVED_FOR_PUBLICATION"
+      ]
+    },
+    "authorization_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "validation_status": {
+      "enum": [
+        "NEEDS_REVIEW",
+        "VALID_FOR_EDITORIAL_REVIEW"
+      ]
+    }
+  }
+}

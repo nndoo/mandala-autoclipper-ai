@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "checked_files": 2127,
+  "missing_or_changed": [],
+  "archive_copies_checked": 49,
+  "moved_environment_entries_checked": 4642,
+  "archive_missing_or_changed": [],
+  "verified_after_regression": true
+}

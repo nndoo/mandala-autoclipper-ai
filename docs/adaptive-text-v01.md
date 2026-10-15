@@ -1,0 +1,19 @@
+# Adaptive Text V0.1 — Stage 5.8B
+
+The existing V0.3 plan already has separate `subtitle` and `overlay` operation kinds. The Director now explicitly chooses either, both, or neither from content evidence. No dialogue/cinematic/genre template or source filename selects a text recipe.
+
+Speech subtitles require reviewed speech text and exact source/output timing support. Music-only or silent classifications do not force subtitles. Subtitle creative_copy and overlay ASR/verified speech quotations are rejected as role confusion. Placeholders with null text remain non-executable review proposals. Missing word timing remains unavailable; word highlighting is not implemented.
+
+Creative overlays can supply a non-factual hook/title/CTA without speech. Existing independent claim, source ledger and evidence gates remain authoritative. Model confidence, canonical transcript descriptions and an agent claiming a verified fact cannot authenticate product information. Unsupported product claims are blocked; no new product-fact evidence was supplied for the real sample. Keyword checks are deliberately conservative and incomplete: textual factual/meaning review remains required, and no semantic truth or publishing certification is claimed.
+
+`adaptive_text_v01.py` is shared by the independent plan validator and renderer compiler. The validator rejects concurrent populated text in the same named position. The compiler checks actual configured font/line envelopes for simultaneous rectangles, including subtitle-versus-overlay collisions. It rejects collisions or overflowing text; it never silently repositions, removes or changes an AI operation. No text is required when operations are absent.
+
+The optional execution operation parameter `text_layout=social_portrait.v01` reserves left 8%, right 18%, top 8% and bottom 22%. It also reserves 4 pixels for outline/shadow. DejaVu Sans, literal textfile input, expansion=none, white text, black outline/shadow and the existing control/size/resource guards are retained. Legacy coordinates remain unchanged when this parameter is absent. New subtitle drafts choose the social profile and wrap existing accepted words into at most 3 lines without creating word timestamps. Source-relative exact floating values are preserved in JSON; SRT serializes milliseconds. These are non-executable drafts until speech timing and private render admission pass.
+
+Safe-area rectangles are conservative font envelopes. They are not subject/face tracking and do not prove every TikTok/Instagram UI configuration is covered. Physical tests decode known synthetic red-source frames: timed hook and subtitle pixels appear, while reserved bottom/right areas remain unaffected. The first test detected outline spill; renderer positioning was fixed to reserve outline/shadow padding, and the unchanged reserved-space assertions then passed. No real editorial quality or acoustic speech correctness is inferred from these fixtures.
+
+A verified_quote now passes only when the independent source-bound subtitle review supports its exact text and source/output window with the existing timing error threshold. Formatting-only whitespace wrapping is permitted; changing any spoken word still fails. Model self-verification and unreviewed ASR text remain blocked. The compiler's synthetic verified-quote path is not a source-review receipt for a real video.
+
+New helper, prompt, validator and renderer changes are included in producer/capability receipts. Historical prepared requests/capability manifests retain their original code evidence and are not rewritten. Fresh prepared evidence must be created for current execution. Existing ASR generation/source/PCM, canonical and raw model artifacts remain untouched. All render/publish approvals remain false.
+
+Current artifacts: data/benchmarks/stage58/stage58b-adaptive-text.v01/. Stop before Stage 5.9.

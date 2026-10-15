@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Single local Showcase preview authorization V0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "task_id",
+    "authorization_mode",
+    "source_sha256",
+    "source_path",
+    "plan_sha256",
+    "execution_spec_sha256",
+    "evidence_packet_sha256",
+    "capabilities",
+    "code_receipts",
+    "original_blocked_plan",
+    "original_blocked_report",
+    "output_directory",
+    "maximum_final_candidates",
+    "local_preview_authorized",
+    "production_approval_granted",
+    "publish_approved",
+    "labels",
+    "prior_failure"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "task_id": {
+      "const": "stage55-one-local-showcase-preview-v01"
+    },
+    "authorization_mode": {
+      "const": "REAL_CONTENT_PREVIEW"
+    },
+    "source_sha256": {
+      "const": "58fa3abcb7ebacfc162057fa946fc144961eebc0211d43e08ba6021b872e171f"
+    },
+    "source_path": {
+      "const": "data/test-videos/cinematic-7693770515172887829.mp4"
+    },
+    "plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_spec_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "code_receipts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "original_blocked_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "original_blocked_report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "output_directory": {
+      "type": "string",
+      "pattern": "^data/render-tests/stage55/real-content-showcase\\.v[0-9]{2,}$"
+    },
+    "maximum_final_candidates": {
+      "const": 1
+    },
+    "local_preview_authorized": {
+      "const": true
+    },
+    "production_approval_granted": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    },
+    "labels": {
+      "const": [
+        "PREVIEW_ONLY",
+        "NOT_APPROVED_FOR_PUBLICATION"
+      ]
+    },
+    "prior_failure": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1200
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

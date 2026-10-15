@@ -1,0 +1,7 @@
+{
+  "name": "mandala-openclaw-runtime",
+  "private": true,
+  "dependencies": {
+    "openclaw": "2026.9.9"
+  }
+}

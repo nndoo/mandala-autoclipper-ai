@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Universal Video Analysis V0.2",
+  "description": "Content-aware audiovisual evidence for adaptive editing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "analysis_status",
+    "source",
+    "analysis_meta",
+    "content_profile",
+    "segments",
+    "events",
+    "editing_opportunities",
+    "claims",
+    "quality_issues"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.2.0"
+    },
+    "analysis_status": {
+      "enum": ["DRAFT_UNVERIFIED", "NEEDS_REVIEW"]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["video_id", "duration_sec"],
+      "properties": {
+        "video_id": {"type": "string", "minLength": 1},
+        "duration_sec": {"type": "number", "exclusiveMinimum": 0},
+        "width": {"type": ["integer", "null"], "minimum": 1},
+        "height": {"type": ["integer", "null"], "minimum": 1},
+        "fps": {"type": ["number", "null"], "exclusiveMinimum": 0}
+      }
+    },
+    "analysis_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "video_examined",
+        "audio_examined",
+        "asr_used",
+        "timing_precision",
+        "limitations"
+      ],
+      "properties": {
+        "video_examined": {"type": "boolean"},
+        "audio_examined": {"type": "boolean"},
+        "asr_used": {"type": "boolean"},
+        "timing_precision": {
+          "enum": [
+            "approximate",
+            "signal_estimated",
+            "frame_verified"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "content_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "content_tags",
+        "speech_presence",
+        "music_presence",
+        "editorial_goal_suggestions"
+      ],
+      "properties": {
+        "summary": {"type": "string"},
+        "content_tags": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "speech_presence": {"$ref": "#/$defs/presence"},
+        "music_presence": {"$ref": "#/$defs/presence"},
+        "editorial_goal_suggestions": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "segment_id",
+          "start_sec",
+          "end_sec",
+          "visual_description",
+          "audio_description",
+          "audio_layers",
+          "confidence"
+        ],
+        "properties": {
+          "segment_id": {"type": "string"},
+          "start_sec": {"type": "number", "minimum": 0},
+          "end_sec": {"type": "number", "minimum": 0},
+          "visual_description": {"type": "string"},
+          "audio_description": {"type": "string"},
+          "audio_layers": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "speech",
+                "music",
+                "ambience",
+                "sound_effect",
+                "silence",
+                "unknown"
+              ]
+            }
+          },
+          "confidence": {"$ref": "#/$defs/confidence"}
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_type",
+          "modality",
+          "start_sec",
+          "end_sec",
+          "description",
+          "confidence",
+          "timing_basis"
+        ],
+        "properties": {
+          "event_type": {"type": "string", "minLength": 1},
+          "modality": {
+            "enum": [
+              "visual",
+              "audio",
+              "audiovisual",
+              "on_screen_text"
+            ]
+          },
+          "start_sec": {"type": "number", "minimum": 0},
+          "end_sec": {"type": "number", "minimum": 0},
+          "description": {"type": "string"},
+          "transcript_text": {"type": ["string", "null"]},
+          "confidence": {"$ref": "#/$defs/confidence"},
+          "timing_basis": {"$ref": "#/$defs/timing_basis"}
+        }
+      }
+    },
+    "editing_opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "opportunity_type",
+          "start_sec",
+          "end_sec",
+          "reason",
+          "score",
+          "confidence",
+          "timing_basis"
+        ],
+        "properties": {
+          "opportunity_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start_sec": {"type": "number", "minimum": 0},
+          "end_sec": {"type": "number", "minimum": 0},
+          "reason": {"type": "string"},
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10
+          },
+          "confidence": {"$ref": "#/$defs/confidence"},
+          "timing_basis": {"$ref": "#/$defs/timing_basis"}
+        }
+      }
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text",
+          "origin",
+          "verification_status"
+        ],
+        "properties": {
+          "text": {"type": "string"},
+          "origin": {
+            "enum": [
+              "spoken",
+              "on_screen_text",
+              "visually_observed",
+              "external",
+              "model_inference"
+            ]
+          },
+          "verification_status": {
+            "enum": [
+              "unverified",
+              "verified",
+              "contradicted"
+            ]
+          }
+        }
+      }
+    },
+    "quality_issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["issue_type", "description", "severity"],
+        "properties": {
+          "issue_type": {"type": "string"},
+          "description": {"type": "string"},
+          "severity": {"enum": ["low", "medium", "high"]},
+          "start_sec": {"type": ["number", "null"], "minimum": 0},
+          "end_sec": {"type": ["number", "null"], "minimum": 0}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "presence": {
+      "enum": ["present", "absent", "uncertain"]
+    },
+    "confidence": {
+      "enum": ["high", "medium", "low"]
+    },
+    "timing_basis": {
+      "enum": [
+        "model_estimate",
+        "asr_estimate",
+        "signal_analysis",
+        "frame_verified",
+        "manual_verified",
+        "unknown"
+      ]
+    }
+  }
+}

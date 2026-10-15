@@ -1,0 +1,13 @@
+{
+  "record_version": "0.1.0",
+  "endpoint": "https://ipt02mbjindt5ldise8woehy.43.129.33.7.sslip.io/v1/audio/transcriptions",
+  "model": "groq/whisper-large-v3",
+  "response_format": "json",
+  "language": "id",
+  "temperature": 0,
+  "api_key_env": "MANDALA_ASR_API_KEY",
+  "openclaw_provider": "custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io",
+  "timeout_sec": 90,
+  "max_upload_bytes": 26214400,
+  "max_response_bytes": 8388608
+}

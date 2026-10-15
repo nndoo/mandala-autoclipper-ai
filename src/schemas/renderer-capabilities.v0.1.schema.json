@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "renderer_version": {
+      "const": "0.1.0"
+    },
+    "scope": {
+      "const": "LOCAL_TECHNICAL_SELF_TESTS_ONLY"
+    },
+    "environment": {
+      "type": "object"
+    },
+    "code_receipts": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "available",
+              "verified",
+              "unsupported",
+              "unavailable_missing_dependency",
+              "not_tested"
+            ]
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "proofs": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1200
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "sha256"
+              ]
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1200
+            }
+          }
+        },
+        "required": [
+          "status",
+          "available",
+          "proofs",
+          "limitations"
+        ]
+      }
+    },
+    "production_approval_granted": {
+      "const": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "renderer_version",
+    "scope",
+    "environment",
+    "code_receipts",
+    "operations",
+    "production_approval_granted"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Renderer Capability Registry V0.1"
+}

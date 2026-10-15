@@ -1,0 +1,188 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "source_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "output_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "origin": {
+          "const": "user_supplied_handoff"
+        },
+        "attachment_display_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "document_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "claim_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "origin",
+        "attachment_display_path",
+        "document_sha256",
+        "claim_scope"
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "feedback_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "category": {
+            "enum": [
+              "integrity",
+              "audio",
+              "visual",
+              "hook",
+              "story",
+              "pacing",
+              "captions",
+              "ending",
+              "factual_safety"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ]
+          },
+          "output_range": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "start_sec": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 180
+                  },
+                  "end_sec": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 180
+                  }
+                },
+                "required": [
+                  "start_sec",
+                  "end_sec"
+                ]
+              }
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "confirmation": {
+            "enum": [
+              "confirmed_user_handoff",
+              "reported_previous_visual_review"
+            ]
+          },
+          "recommendation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "target": {
+                "enum": [
+                  "plan_change",
+                  "renderer_adjustment",
+                  "source_limitation",
+                  "missing_evidence",
+                  "rights_factual_review"
+                ]
+              },
+              "change": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "required_operation": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                ]
+              },
+              "feasibility": {
+                "enum": [
+                  "verified_current_capability",
+                  "requires_implementation",
+                  "requires_editorial_review",
+                  "unknown",
+                  "not_applicable"
+                ]
+              },
+              "review_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "target",
+              "change",
+              "required_operation",
+              "feasibility",
+              "review_required"
+            ]
+          }
+        },
+        "required": [
+          "feedback_id",
+          "category",
+          "severity",
+          "output_range",
+          "description",
+          "confirmation",
+          "recommendation"
+        ]
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "source_sha256",
+    "output_sha256",
+    "provenance",
+    "observations"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video-quality-human-feedback.v0.1.schema.json"
+}

@@ -1,0 +1,968 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "source": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ]
+        }
+      ]
+    },
+    "rendered_output": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ]
+        }
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "evidence_ledger": {
+      "type": "object"
+    },
+    "integrity": {
+      "type": "object"
+    },
+    "technical": {
+      "type": "object"
+    },
+    "ai": {
+      "type": "object"
+    },
+    "human": {
+      "type": "object"
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "technical_integrity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "audio_continuity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "visual_continuity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "hook": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "story": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "pacing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "captions": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "ending": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        },
+        "factual_safety": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "PASS",
+                "NEEDS_REVIEW",
+                "REVISE",
+                "BLOCKED",
+                "INCOMPLETE",
+                "UNAVAILABLE",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "provenance": {
+              "enum": [
+                "deterministic_validation",
+                "signal_measurement",
+                "human_feedback",
+                "model_unverified",
+                "mixed",
+                "unavailable"
+              ]
+            },
+            "confidence": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "not_applicable"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            },
+            "evidence_refs": {
+              "type": "array",
+              "maxItems": 128,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              }
+            }
+          },
+          "required": [
+            "status",
+            "provenance",
+            "confidence",
+            "reason",
+            "evidence_refs"
+          ]
+        }
+      },
+      "required": [
+        "technical_integrity",
+        "audio_continuity",
+        "visual_continuity",
+        "hook",
+        "story",
+        "pacing",
+        "captions",
+        "ending",
+        "factual_safety"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "issue_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "category": {
+            "enum": [
+              "integrity",
+              "audio",
+              "visual",
+              "hook",
+              "story",
+              "pacing",
+              "captions",
+              "ending",
+              "factual_safety"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "critical",
+              "high",
+              "medium",
+              "low",
+              "info"
+            ]
+          },
+          "output_range": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "start_sec": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 180
+                  },
+                  "end_sec": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 180
+                  }
+                },
+                "required": [
+                  "start_sec",
+                  "end_sec"
+                ]
+              }
+            ]
+          },
+          "source_ranges": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "shot_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "source_start_sec": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 180
+                },
+                "source_end_sec": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 180
+                }
+              },
+              "required": [
+                "shot_id",
+                "source_start_sec",
+                "source_end_sec"
+              ]
+            }
+          },
+          "event_type": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "evidence_refs": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          "detection_method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "origin": {
+            "enum": [
+              "signal_measurement",
+              "timeline_check",
+              "deterministic_validation",
+              "human_feedback",
+              "model_unverified"
+            ]
+          },
+          "confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "not_applicable"
+            ]
+          },
+          "human_confirmation": {
+            "enum": [
+              "not_confirmed",
+              "confirmed_user_handoff",
+              "reported_previous_visual_review"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "possible_cause": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "cause_confidence": {
+            "enum": [
+              "low",
+              "medium",
+              "high",
+              "not_applicable"
+            ]
+          },
+          "recommendation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "target": {
+                "enum": [
+                  "plan_change",
+                  "renderer_adjustment",
+                  "source_limitation",
+                  "missing_evidence",
+                  "rights_factual_review"
+                ]
+              },
+              "change": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000
+              },
+              "required_operation": {
+                "oneOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2000
+                  }
+                ]
+              },
+              "feasibility": {
+                "enum": [
+                  "verified_current_capability",
+                  "requires_implementation",
+                  "requires_editorial_review",
+                  "unknown",
+                  "not_applicable"
+                ]
+              },
+              "review_required": {
+                "const": true
+              }
+            },
+            "required": [
+              "target",
+              "change",
+              "required_operation",
+              "feasibility",
+              "review_required"
+            ]
+          },
+          "timing_precision": {
+            "enum": [
+              "signal_estimated",
+              "approximate",
+              "not_applicable"
+            ]
+          },
+          "review_required": {
+            "const": true
+          }
+        },
+        "required": [
+          "issue_id",
+          "category",
+          "severity",
+          "output_range",
+          "source_ranges",
+          "event_type",
+          "evidence_refs",
+          "detection_method",
+          "origin",
+          "confidence",
+          "human_confirmation",
+          "description",
+          "possible_cause",
+          "cause_confidence",
+          "recommendation",
+          "timing_precision",
+          "review_required"
+        ]
+      }
+    },
+    "technical_qa_status": {
+      "enum": [
+        "PASS",
+        "NEEDS_REVIEW",
+        "REVISE",
+        "BLOCKED",
+        "INCOMPLETE",
+        "UNAVAILABLE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "ai_editorial_status": {
+      "enum": [
+        "INCOMPLETE",
+        "NEEDS_REVIEW",
+        "REVISE",
+        "BLOCKED"
+      ]
+    },
+    "human_review_status": {
+      "enum": [
+        "PASS",
+        "NEEDS_REVIEW",
+        "REVISE",
+        "BLOCKED",
+        "INCOMPLETE",
+        "UNAVAILABLE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "overall_decision": {
+      "enum": [
+        "PASS",
+        "NEEDS_REVIEW",
+        "REVISE",
+        "BLOCKED",
+        "INCOMPLETE",
+        "UNAVAILABLE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "production_eligible": {
+      "const": false
+    },
+    "publishing_eligible": {
+      "const": false
+    },
+    "render_approved": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    },
+    "limitations": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2000
+      }
+    },
+    "processing": {
+      "type": "object"
+    },
+    "code_receipts": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "source",
+    "rendered_output",
+    "inputs",
+    "evidence_ledger",
+    "integrity",
+    "technical",
+    "ai",
+    "human",
+    "dimensions",
+    "issues",
+    "technical_qa_status",
+    "ai_editorial_status",
+    "human_review_status",
+    "overall_decision",
+    "production_eligible",
+    "publishing_eligible",
+    "render_approved",
+    "publish_approved",
+    "limitations",
+    "processing",
+    "code_receipts"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video-quality-report.v0.1.schema.json"
+}

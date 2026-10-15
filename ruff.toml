@@ -1,0 +1,5 @@
+# Start with syntax and name-resolution checks; existing formatting is preserved.
+target-version = "py314"
+
+[lint]
+select = ["E9", "F821", "F822", "F823"]

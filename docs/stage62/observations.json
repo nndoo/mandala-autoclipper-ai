@@ -1,0 +1,255 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Jakarta",
+  "scope": "read-only local source + Coolify container + PostgreSQL metadata + n8n UI audit",
+  "ssh": {
+    "attempted_host": "43.129.33.7",
+    "mode": "BatchMode + StrictHostKeyChecking=yes",
+    "authenticated": false,
+    "ssh_agent_identities": 0,
+    "failure": "ED25519 host key unknown; no host key or authentication configuration modified",
+    "fallback": "Authenticated Coolify service terminal"
+  },
+  "coolify": {
+    "version_label": "4.3.19",
+    "worker_resource": "autoclipper-media-worker",
+    "resource_uuid": "muxr6rvojjjdrjrp24yjimak",
+    "ui_health": "Running (healthy)",
+    "build_base": "python:3.12-slim-bookworm",
+    "source_file": "/tmp/worker.py",
+    "source_lines": 409,
+    "source_sha256": "718d15e45ad4fb24935e65e6bc227ac7b3bd12e1b070844c24aecf9120c5e975",
+    "http_server": "http.server.ThreadingHTTPServer",
+    "port": 3002,
+    "download_dependencies_compose": [
+      "yt-dlp[default,curl-cffi]==2026.8.19",
+      "curl-cffi>=0.11,<0.17",
+      "psycopg[binary]>=3.2,<4"
+    ]
+  },
+  "runtime": {
+    "python": "3.12.15",
+    "platform": "Linux x86_64",
+    "uid": 0,
+    "home": "/root",
+    "node_on_path": false,
+    "npm_on_path": false,
+    "openclaw_on_path": false,
+    "expected_isolated_openclaw_wrapper_exists": false,
+    "ffmpeg": "5.1.9-0+deb12u1",
+    "ffprobe_on_path": true,
+    "prlimit_on_path": true,
+    "deps_present": {
+      "psycopg": "3.3.6",
+      "requests": "2.34.2"
+    },
+    "deps_not_found_by_metadata": [
+      "numpy",
+      "scipy",
+      "jsonschema"
+    ],
+    "dejavu_regular_and_bold": true,
+    "filters_observed": [
+      "afade",
+      "atempo",
+      "ass",
+      "crop",
+      "drawtext",
+      "eq",
+      "overlay",
+      "scale",
+      "subtitles",
+      "xfade",
+      "concat"
+    ],
+    "encoders_observed": [
+      "libx264",
+      "aac"
+    ],
+    "filter_availability_is_physical_capability_proof": false
+  },
+  "resources": {
+    "cgroup_memory_max_bytes": 536870912,
+    "cgroup_cpu_max": "max 100000",
+    "disk_data_bytes": {
+      "total": 84423806976,
+      "used": 54746435584,
+      "free": 26117652480
+    },
+    "source_tmp_and_originals_same_device": true,
+    "engine_capacity_qualified": false,
+    "host_ram_cpu_inventory": "NOT_INSPECTED"
+  },
+  "storage": {
+    "volume": "muxr6rvojjjdrjrp24yjimak_autoclipper-data",
+    "container_mount": "/data",
+    "source_root": "/data/source",
+    "originals": "/data/source/originals",
+    "backup_restore_test": "NOT_RUN"
+  },
+  "api": {
+    "health_get": {
+      "url": "http://127.0.0.1:3002/health",
+      "status_code": 200,
+      "body": {
+        "status": "ok",
+        "service": "autoclipper-media-worker"
+      }
+    },
+    "source_routes_read_from_source": [
+      "POST /source/discover",
+      "POST /source/download",
+      "POST /source/file"
+    ],
+    "new_role_routes": "NOT_IMPLEMENTED",
+    "download_size_limit_bytes": 157286400,
+    "download_duration_range_seconds": [
+      1,
+      1200
+    ],
+    "minimum_source_dimension": 320,
+    "download_payload_fields": [
+      "videoId",
+      "claimToken"
+    ],
+    "source_file_payload_fields": [
+      "videoId",
+      "claimToken"
+    ],
+    "download_metadata_fields": [
+      "sizeBytes",
+      "sha256",
+      "durationSeconds",
+      "width",
+      "height",
+      "videoCodec",
+      "audioPresent"
+    ],
+    "source_claim_checks": [
+      "source_key",
+      "platform=tiktok",
+      "username",
+      "video_id",
+      "status=RESERVED",
+      "claim_token",
+      "lease_expires_at>NOW()"
+    ],
+    "source_file_state": "ORIGINAL_READY",
+    "discovery_download_and_file_requests": "NOT_RUN"
+  },
+  "postgresql": {
+    "connection_success": true,
+    "read_only": true,
+    "server_version": "16.15",
+    "database": "mandala_autoclipper",
+    "public_tables_observed": [
+      "source_videos"
+    ],
+    "source_column_names": [
+      "source_key",
+      "platform",
+      "username",
+      "video_id",
+      "source_url",
+      "title",
+      "status",
+      "discovered_at",
+      "updated_at",
+      "claimed_at",
+      "completed_at",
+      "last_error",
+      "claim_token",
+      "lease_expires_at",
+      "attempt_count",
+      "last_heartbeat_at",
+      "original_local_path",
+      "original_size_bytes",
+      "original_sha256",
+      "original_duration_seconds",
+      "original_width",
+      "original_height",
+      "original_video_codec",
+      "original_audio_present",
+      "original_downloaded_at"
+    ],
+    "credential_presence": {
+      "PGHOST": true,
+      "PGPORT": true,
+      "PGDATABASE": true,
+      "PGUSER": true,
+      "PGPASSWORD": true
+    },
+    "row_content": "NOT_READ",
+    "migrations": "NOT_RUN"
+  },
+  "n8n": {
+    "workflow_url": "https://n8n-lf4qpqzmntrt6iqw9hasvdfd.43.129.33.7.sslip.io/workflow/ZAeqJqTuH83tu5rY",
+    "name": "Mandala Auto - Autonomous AI Autoclipper",
+    "active_in_ui_context": false,
+    "trigger": "manual",
+    "configured_images": {
+      "n8n": "n8nio/n8n:2.42.4",
+      "runners": "n8nio/runners:2.10.2",
+      "postgresql": "postgres:16-alpine"
+    },
+    "images_health": "Running (healthy) in Coolify UI",
+    "connected_node_names": [
+      "When clicking Execute workflow",
+      "Edit Fields",
+      "TikTok - Discover Videos",
+      "Format Source Metadata",
+      "PostgreSQL - Upsert Source Videos",
+      "PostgreSQL - Select & Reserve Video",
+      "Media Worker - Download Original",
+      "PostgreSQL - Save Original Metadata",
+      "Original Saved?",
+      "Media Worker - Get Original File",
+      "Cloudinary - Upload Original"
+    ],
+    "disconnected_node": {
+      "name": "Execute a SQL query",
+      "purpose": "Inspect existing Cloudinary/asset/upload columns",
+      "input_connected": false
+    },
+    "reserve_query": {
+      "claim": "FOR UPDATE SKIP LOCKED LIMIT 1",
+      "candidate_state": "DISCOVERED",
+      "new_state": "RESERVED",
+      "claim_token": "gen_random_uuid()",
+      "lease_minutes": 30,
+      "attempt_count": "incremented"
+    },
+    "save_metadata_query": {
+      "parameterized": true,
+      "required_state": "RESERVED",
+      "new_state": "ORIGINAL_READY",
+      "checks": [
+        "source_key",
+        "claim_token",
+        "video_id",
+        "unexpired_lease",
+        "success=true",
+        "old_sha_null_or_equal"
+      ],
+      "lease_extension_minutes": 30
+    },
+    "workflow_execution": "NOT_RUN",
+    "cloudinary_upload": "NOT_RUN",
+    "credential_values": "NOT_READ_OR_EXPORTED"
+  },
+  "limitations": [
+    "Container audit is not host SSH inventory",
+    "No fresh engine regression or physical capability tests on VPS",
+    "No remote AI/ASR semantic or transport call",
+    "No workflow execution or upload success verification",
+    "using-n8n-skills-official not available in searched installed skills; official docs used for design"
+  ],
+  "sources": {
+    "n8n_http_request": "https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.httprequest",
+    "n8n_wait": "https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.wait",
+    "n8n_task_runners": "https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-task-runners.md",
+    "postgres_select": "https://www.postgresql.org/docs/16/sql-select.html",
+    "coolify_services": "https://coolify.io/docs/services/how-services-work",
+    "coolify_storage": "https://coolify.io/docs/core/persistent-storage/storage-mounts/overview"
+  }
+}

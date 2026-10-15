@@ -1,0 +1,3 @@
+-r ../requirements-av.txt
+yt-dlp[default,curl-cffi]==2026.8.19
+psycopg[binary]==3.3.6

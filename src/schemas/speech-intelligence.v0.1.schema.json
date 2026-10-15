@@ -1,0 +1,969 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mandala:speech-intelligence:0.1",
+  "title": "Generalized speech evidence and semantic operation safety V0.1",
+  "$defs": {
+    "ref": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "video_id": {
+          "type": "string"
+        },
+        "duration_sec": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "video_id",
+        "duration_sec",
+        "width",
+        "height",
+        "fps"
+      ],
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "video_id": {
+              "type": "string"
+            },
+            "duration_sec": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "fps": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "path",
+            "sha256",
+            "video_id",
+            "duration_sec",
+            "width",
+            "height",
+            "fps"
+          ],
+          "additionalProperties": false
+        },
+        "request": {
+          "type": "object",
+          "properties": {
+            "video": {
+              "type": "string"
+            },
+            "metadata": {
+              "type": "string"
+            },
+            "analysis": {
+              "type": "string"
+            },
+            "speech_bundle": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "human_review": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "video",
+            "metadata",
+            "analysis",
+            "speech_bundle",
+            "human_review"
+          ],
+          "additionalProperties": false
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "method": {
+          "const": "source_bound_speech_assessment_v01"
+        },
+        "code_receipts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ref"
+          },
+          "maxItems": 4096
+        },
+        "classification": {
+          "type": "object"
+        },
+        "classification_basis": {
+          "const": "canonical_model_unverified"
+        },
+        "generation_provenance": {
+          "enum": [
+            "client_recorded",
+            "unavailable"
+          ]
+        },
+        "pcm": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "pcm_parameters": {
+          "type": "object"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "segment_id": {
+                "type": "string"
+              },
+              "start_sec": {
+                "type": "number"
+              },
+              "end_sec": {
+                "type": "number"
+              },
+              "text": {
+                "type": "string"
+              },
+              "language": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "reported_speaker": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "reported_confidence": {
+                "type": "object",
+                "properties": {
+                  "avg_logprob": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "no_speech_prob": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "compression_ratio": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "avg_logprob",
+                  "no_speech_prob",
+                  "compression_ratio"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "segment_id",
+              "start_sec",
+              "end_sec",
+              "text",
+              "language",
+              "reported_speaker",
+              "reported_confidence"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "words": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "word_id": {
+                "type": "string"
+              },
+              "segment_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "start_sec": {
+                "type": "number"
+              },
+              "end_sec": {
+                "type": "number"
+              },
+              "word": {
+                "type": "string"
+              },
+              "reported_probability": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 1
+              },
+              "segment_association_basis": {
+                "enum": [
+                  "reported_parent",
+                  "unique_timestamp_containment",
+                  "unavailable"
+                ]
+              }
+            },
+            "required": [
+              "word_id",
+              "segment_id",
+              "start_sec",
+              "end_sec",
+              "word",
+              "reported_probability",
+              "segment_association_basis"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "untimed_text": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "region_id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "region_id",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "structure_status": {
+          "enum": [
+            "checked",
+            "failed"
+          ]
+        },
+        "structure_issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4096
+        },
+        "transcription_confidence": {
+          "const": "provider_reported_or_unavailable"
+        },
+        "alignment_confidence": {
+          "enum": [
+            "unverified",
+            "unavailable"
+          ]
+        },
+        "timestamp_precision": {
+          "enum": [
+            "asr_estimate",
+            "unavailable"
+          ]
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4096
+        },
+        "human_review": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/review_submission"
+            }
+          ]
+        },
+        "legacy_eligibility": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "eligibility": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_APPLICABLE",
+                "INSUFFICIENT_EVIDENCE",
+                "NEEDS_HUMAN_REVIEW"
+              ]
+            },
+            "transcript_for_review": {
+              "type": "boolean"
+            },
+            "reviewed_transcript": {
+              "type": "boolean"
+            },
+            "segment_alignment": {
+              "type": "boolean"
+            },
+            "word_alignment": {
+              "type": "boolean"
+            },
+            "semantic_cuts": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "status",
+            "transcript_for_review",
+            "reviewed_transcript",
+            "segment_alignment",
+            "word_alignment",
+            "semantic_cuts"
+          ],
+          "additionalProperties": false
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4096
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        },
+        "audio_content": {
+          "type": "object",
+          "properties": {
+            "reported_music_presence": {
+              "enum": [
+                "present",
+                "absent",
+                "uncertain"
+              ]
+            },
+            "reported_speech_presence": {
+              "enum": [
+                "present",
+                "absent",
+                "uncertain"
+              ]
+            },
+            "regions": {
+              "type": "array",
+              "maxItems": 4096,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "segment_id": {
+                    "type": "string"
+                  },
+                  "start_sec": {
+                    "type": "number"
+                  },
+                  "end_sec": {
+                    "type": "number"
+                  },
+                  "reported_audio_layers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "segment_id",
+                  "start_sec",
+                  "end_sec",
+                  "reported_audio_layers"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "reported_music_presence",
+            "reported_speech_presence",
+            "regions"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "contract_version",
+        "source",
+        "request",
+        "inputs",
+        "method",
+        "code_receipts",
+        "classification",
+        "classification_basis",
+        "generation_provenance",
+        "pcm",
+        "pcm_parameters",
+        "segments",
+        "words",
+        "untimed_text",
+        "structure_status",
+        "structure_issues",
+        "transcription_confidence",
+        "alignment_confidence",
+        "timestamp_precision",
+        "uncertainties",
+        "human_review",
+        "legacy_eligibility",
+        "eligibility",
+        "limitations",
+        "render_approved",
+        "publish_approved",
+        "audio_content"
+      ],
+      "additionalProperties": false
+    },
+    "review_submission": {
+      "type": "object",
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "origin": {
+          "const": "human_source_review"
+        },
+        "reviewer_identity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "evidence_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "review_method": {
+          "enum": ["source_audio_listening_and_waveform", "user_supplied_review_notes"]
+        },
+        "text_reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "segment_id": {
+                "type": "string"
+              },
+              "original_text_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "reviewed_text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "accuracy_confirmed": {
+                "type": "boolean"
+              },
+              "word_coverage_confirmed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "segment_id",
+              "original_text_sha256",
+              "reviewed_text",
+              "accuracy_confirmed"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "boundary_reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time_sec": {
+                "type": "number"
+              },
+              "max_error_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "accuracy_confirmed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "time_sec",
+              "max_error_sec",
+              "accuracy_confirmed"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "word_reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "word_id": {
+                "type": "string"
+              },
+              "word_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "max_error_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "accuracy_confirmed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "word_id",
+              "word_sha256",
+              "max_error_sec",
+              "accuracy_confirmed"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "selection_reviews": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_windows": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  },
+                  "minItems": 2,
+                  "maxItems": 2
+                },
+                "maxItems": 4096
+              },
+              "decision": {
+                "enum": [
+                  "supported",
+                  "unsafe"
+                ]
+              },
+              "sentence_complete": {
+                "type": "boolean"
+              },
+              "qa_context_preserved": {
+                "type": "boolean"
+              },
+              "meaning_preserved": {
+                "type": "boolean"
+              },
+              "multi_speaker_reviewed": {
+                "type": "boolean"
+              },
+              "music_overlap_reviewed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "source_windows",
+              "decision",
+              "sentence_complete",
+              "qa_context_preserved",
+              "meaning_preserved",
+              "multi_speaker_reviewed",
+              "music_overlap_reviewed"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "context_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "question_answer",
+                  "required_context",
+                  "phrase_dependency"
+                ]
+              },
+              "segment_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 2,
+                "maxItems": 64,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "kind",
+              "segment_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "subtitle_source_reviews": {
+          "type": "array",
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "properties": {
+              "segment_id": {"type": "string"},
+              "source_start_sec": {"type": "number"},
+              "source_end_sec": {"type": "number"},
+              "text": {"type": "string", "minLength": 1},
+              "max_error_sec": {"type": "number", "minimum": 0, "maximum": 1},
+              "accuracy_confirmed": {"type": "boolean"}
+            },
+            "required": ["segment_id", "source_start_sec", "source_end_sec", "text", "max_error_sec", "accuracy_confirmed"],
+            "additionalProperties": false
+          }
+        },
+        "subtitle_reviews": {
+          "type": "array",
+          "maxItems": 4096,
+          "items": {
+            "type": "object",
+            "properties": {
+              "variant_id": {
+                "type": "string"
+              },
+              "operation_id": {
+                "type": "string"
+              },
+              "source_start_sec": {
+                "type": "number"
+              },
+              "source_end_sec": {
+                "type": "number"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "max_error_sec": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "accuracy_confirmed": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "variant_id",
+              "operation_id",
+              "source_start_sec",
+              "source_end_sec",
+              "text",
+              "max_error_sec",
+              "accuracy_confirmed"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "contract_version",
+        "origin",
+        "reviewer_identity",
+        "source_sha256",
+        "evidence_sha256",
+        "review_method",
+        "text_reviews",
+        "boundary_reviews",
+        "word_reviews",
+        "selection_reviews",
+        "context_links"
+      ],
+      "additionalProperties": false
+    },
+    "review_receipt": {
+      "type": "object",
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "origin": {
+          "const": "explicit_human_acceptance"
+        },
+        "accepted_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accepted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "report": {
+          "$ref": "#/$defs/ref"
+        },
+        "submission": {
+          "$ref": "#/$defs/ref"
+        },
+        "code_receipts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ref"
+          },
+          "maxItems": 4096
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      },
+      "required": [
+        "contract_version",
+        "origin",
+        "accepted_by",
+        "accepted_at",
+        "report",
+        "submission",
+        "code_receipts",
+        "render_approved",
+        "publish_approved"
+      ],
+      "additionalProperties": false
+    },
+    "plan_report": {
+      "type": "object",
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "video_id": {
+              "type": "string"
+            },
+            "duration_sec": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "width": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "fps": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "path",
+            "sha256",
+            "video_id",
+            "duration_sec",
+            "width",
+            "height",
+            "fps"
+          ],
+          "additionalProperties": false
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "speech_evidence_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "enum": [
+            "SAFE_SUPPORTED_OPERATION",
+            "NEEDS_HUMAN_REVIEW",
+            "INSUFFICIENT_EVIDENCE",
+            "BLOCKED_UNSAFE_OPERATION",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "affected_operations_blocked": {
+          "type": "boolean"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "SAFE_SUPPORTED_OPERATION",
+                  "NEEDS_HUMAN_REVIEW",
+                  "INSUFFICIENT_EVIDENCE",
+                  "BLOCKED_UNSAFE_OPERATION",
+                  "NOT_APPLICABLE"
+                ]
+              },
+              "blocking": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "code",
+              "location",
+              "status",
+              "blocking"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 4096
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4096
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      },
+      "required": [
+        "contract_version",
+        "source",
+        "plan_sha256",
+        "speech_evidence_sha256",
+        "status",
+        "affected_operations_blocked",
+        "findings",
+        "limitations",
+        "render_approved",
+        "publish_approved"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

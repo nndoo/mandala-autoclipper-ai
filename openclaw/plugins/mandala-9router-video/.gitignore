@@ -1,0 +1,5 @@
+node_modules/
+dist/
+src/provider-id.generated.ts
+openclaw.plugin.json
+*.log

@@ -1,0 +1,266 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "validation_status",
+    "source",
+    "checks",
+    "artifacts",
+    "eligibility",
+    "director_input",
+    "original_director_input",
+    "warnings",
+    "limitations",
+    "render_approved",
+    "publish_approved"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "validation_status": {
+      "const": "passed"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "video_id",
+        "duration_sec",
+        "width",
+        "height",
+        "fps",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duration_sec": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_sha256",
+        "ffprobe_metadata",
+        "canonical_schema_and_timing",
+        "artifact_schema_and_derivation",
+        "source_timeline"
+      ],
+      "properties": {
+        "source_sha256": {
+          "const": true
+        },
+        "ffprobe_metadata": {
+          "const": true
+        },
+        "canonical_schema_and_timing": {
+          "const": true
+        },
+        "artifact_schema_and_derivation": {
+          "const": true
+        },
+        "source_timeline": {
+          "const": true
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "music-rhythm.v01.json",
+        "visual-timing.v01.json",
+        "audiovisual-correlation.v01.json"
+      ],
+      "properties": {
+        "music-rhythm.v01.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "visual-timing.v01.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        "audiovisual-correlation.v01.json": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "music_rhythm",
+        "visual_timing",
+        "audiovisual_correlation",
+        "scope",
+        "independent_fact_verification"
+      ],
+      "properties": {
+        "music_rhythm": {
+          "type": "boolean"
+        },
+        "visual_timing": {
+          "const": true
+        },
+        "audiovisual_correlation": {
+          "const": true
+        },
+        "scope": {
+          "const": "source_bound_structurally_checked_uncertain_evidence"
+        },
+        "independent_fact_verification": {
+          "const": false
+        }
+      }
+    },
+    "director_input": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "original_director_input": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "const": [
+        "Unsigned local hashes and deterministic replay establish consistency, not independent authentication",
+        "Canonical semantics and regional speech/music classifications remain unverified AI interpretations",
+        "Signal peaks are not musical beats, speech boundaries, or speech-safe cuts",
+        "Downscaled sampled-frame differences cannot verify editorial boundaries, camera movement types or reveals",
+        "Temporal proximity does not prove intentional audiovisual synchronization or editing quality",
+        "No text/timing review, renderer capability verification, render or publish approval is performed"
+      ]
+    },
+    "render_approved": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Adaptive AV Validation V0.1"
+}

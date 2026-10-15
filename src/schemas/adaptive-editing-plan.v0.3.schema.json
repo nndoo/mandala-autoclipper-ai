@@ -1,0 +1,1336 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "plan_status",
+    "source",
+    "evidence_packet_sha256",
+    "editorial_concept",
+    "intended_message",
+    "proposed_variant_count",
+    "variants",
+    "missing_evidence",
+    "required_reviews",
+    "factual_claims",
+    "renderer_capabilities",
+    "render_readiness",
+    "publish_ready",
+    "render_approved",
+    "publish_approved"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.3.0"
+    },
+    "plan_status": {
+      "const": "DRAFT_UNVALIDATED"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "video_id",
+        "duration_sec",
+        "width",
+        "height",
+        "fps",
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "duration_sec": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "evidence_packet_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "editorial_concept": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1200
+    },
+    "intended_message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1200
+    },
+    "proposed_variant_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "variant_id",
+          "title",
+          "editorial_concept",
+          "intended_message",
+          "narrative_strategy",
+          "hook",
+          "shots",
+          "estimated_output_duration_sec",
+          "operations",
+          "audio_strategy",
+          "ending",
+          "required_reviews"
+        ],
+        "properties": {
+          "variant_id": {
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "editorial_concept": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "intended_message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "narrative_strategy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "hook": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "shot_id",
+              "source_start_sec",
+              "source_end_sec",
+              "timing_precision",
+              "evidence_refs",
+              "rationale"
+            ],
+            "properties": {
+              "shot_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200
+              },
+              "source_start_sec": {
+                "type": "number",
+                "minimum": 0
+              },
+              "source_end_sec": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "timing_precision": {
+                "enum": [
+                  "approximate",
+                  "signal_estimated",
+                  "asr_estimate",
+                  "frame_verified",
+                  "manual_verified"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 12,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1200
+                },
+                "uniqueItems": true
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200
+              }
+            }
+          },
+          "shots": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "shot_id",
+                "order",
+                "source_start_sec",
+                "source_end_sec",
+                "timing_precision",
+                "evidence_refs",
+                "rationale",
+                "timing",
+                "speech_safe",
+                "review_required"
+              ],
+              "properties": {
+                "shot_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 60
+                },
+                "order": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 32
+                },
+                "source_start_sec": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "source_end_sec": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "timing_precision": {
+                  "enum": [
+                    "approximate",
+                    "signal_estimated",
+                    "asr_estimate",
+                    "frame_verified",
+                    "manual_verified"
+                  ]
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 12,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1200
+                  },
+                  "uniqueItems": true
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1200
+                },
+                "timing": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "speed",
+                    "freeze_sec",
+                    "transition_out",
+                    "overlap_sec"
+                  ],
+                  "properties": {
+                    "speed": {
+                      "type": "number",
+                      "minimum": 0.8,
+                      "maximum": 1.25
+                    },
+                    "freeze_sec": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 2
+                    },
+                    "transition_out": {
+                      "enum": [
+                        "cut",
+                        "crossfade"
+                      ]
+                    },
+                    "overlap_sec": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 0.5
+                    }
+                  }
+                },
+                "speech_safe": {
+                  "const": false
+                },
+                "review_required": {
+                  "const": true
+                }
+              }
+            }
+          },
+          "estimated_output_duration_sec": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 180
+          },
+          "operations": {
+            "type": "array",
+            "minItems": 0,
+            "maxItems": 32,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "overlay"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "caption",
+                        "position"
+                      ],
+                      "properties": {
+                        "caption": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "text",
+                            "kind",
+                            "verification_status",
+                            "evidence_refs",
+                            "publish_ready"
+                          ],
+                          "properties": {
+                            "text": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "maxLength": 300
+                            },
+                            "kind": {
+                              "enum": [
+                                "creative_copy",
+                                "canonical_unverified",
+                                "asr_draft",
+                                "verified_quote",
+                                "placeholder",
+                                "external_claim"
+                              ]
+                            },
+                            "verification_status": {
+                              "enum": [
+                                "unverified",
+                                "verified"
+                              ]
+                            },
+                            "evidence_refs": {
+                              "type": "array",
+                              "minItems": 1,
+                              "maxItems": 12,
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 1200
+                              },
+                              "uniqueItems": true
+                            },
+                            "publish_ready": {
+                              "const": false
+                            }
+                          }
+                        },
+                        "position": {
+                          "enum": [
+                            "top",
+                            "center",
+                            "bottom"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "subtitle"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "caption",
+                        "position"
+                      ],
+                      "properties": {
+                        "caption": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "text",
+                            "kind",
+                            "verification_status",
+                            "evidence_refs",
+                            "publish_ready"
+                          ],
+                          "properties": {
+                            "text": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "maxLength": 300
+                            },
+                            "kind": {
+                              "enum": [
+                                "creative_copy",
+                                "canonical_unverified",
+                                "asr_draft",
+                                "verified_quote",
+                                "placeholder",
+                                "external_claim"
+                              ]
+                            },
+                            "verification_status": {
+                              "enum": [
+                                "unverified",
+                                "verified"
+                              ]
+                            },
+                            "evidence_refs": {
+                              "type": "array",
+                              "minItems": 1,
+                              "maxItems": 12,
+                              "items": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 1200
+                              },
+                              "uniqueItems": true
+                            },
+                            "publish_ready": {
+                              "const": false
+                            }
+                          }
+                        },
+                        "position": {
+                          "enum": [
+                            "top",
+                            "center",
+                            "bottom"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "zoom"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "scale",
+                        "center_x",
+                        "center_y"
+                      ],
+                      "properties": {
+                        "scale": {
+                          "type": "number",
+                          "minimum": 1,
+                          "maximum": 2
+                        },
+                        "center_x": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "center_y": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "crop"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "x",
+                        "y",
+                        "width",
+                        "height"
+                      ],
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "y": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "width": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 1
+                        },
+                        "height": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 1
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "audio_gain"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "gain_db"
+                      ],
+                      "properties": {
+                        "gain_db": {
+                          "type": "number",
+                          "minimum": -24,
+                          "maximum": 12
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "audio_duck"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "gain_db"
+                      ],
+                      "properties": {
+                        "gain_db": {
+                          "type": "number",
+                          "minimum": -24,
+                          "maximum": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "denoise"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "strength"
+                      ],
+                      "properties": {
+                        "strength": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "music_bed"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "asset_reference",
+                        "gain_db"
+                      ],
+                      "properties": {
+                        "asset_reference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        },
+                        "gain_db": {
+                          "type": "number",
+                          "minimum": -24,
+                          "maximum": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "sound_effect"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "asset_reference",
+                        "gain_db"
+                      ],
+                      "properties": {
+                        "asset_reference": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        },
+                        "gain_db": {
+                          "type": "number",
+                          "minimum": -24,
+                          "maximum": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "color_grade"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "intent"
+                      ],
+                      "properties": {
+                        "intent": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "operation_id",
+                    "kind",
+                    "shot_id",
+                    "output_start_sec",
+                    "output_end_sec",
+                    "evidence_refs",
+                    "rationale",
+                    "capability_status",
+                    "parameters"
+                  ],
+                  "properties": {
+                    "operation_id": {
+                      "$ref": "#/$defs/operation_fields/operation_id"
+                    },
+                    "kind": {
+                      "const": "custom"
+                    },
+                    "shot_id": {
+                      "$ref": "#/$defs/operation_fields/shot_id"
+                    },
+                    "output_start_sec": {
+                      "$ref": "#/$defs/operation_fields/output_start_sec"
+                    },
+                    "output_end_sec": {
+                      "$ref": "#/$defs/operation_fields/output_end_sec"
+                    },
+                    "evidence_refs": {
+                      "$ref": "#/$defs/operation_fields/evidence_refs"
+                    },
+                    "rationale": {
+                      "$ref": "#/$defs/operation_fields/rationale"
+                    },
+                    "capability_status": {
+                      "$ref": "#/$defs/operation_fields/capability_status"
+                    },
+                    "parameters": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "name",
+                        "implementation_requirements"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        },
+                        "implementation_requirements": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "audio_strategy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "intent",
+              "sync_basis",
+              "evidence_refs"
+            ],
+            "properties": {
+              "intent": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200
+              },
+              "sync_basis": {
+                "enum": [
+                  "none",
+                  "onset_candidate",
+                  "estimated_rhythm",
+                  "verified_beat_grid"
+                ]
+              },
+              "evidence_refs": {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 12,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1200
+                }
+              }
+            }
+          },
+          "ending": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "intent",
+              "cta"
+            ],
+            "properties": {
+              "intent": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1200
+              },
+              "cta": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "text",
+                      "kind",
+                      "verification_status",
+                      "evidence_refs",
+                      "publish_ready"
+                    ],
+                    "properties": {
+                      "text": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "maxLength": 300
+                      },
+                      "kind": {
+                        "enum": [
+                          "creative_copy",
+                          "canonical_unverified",
+                          "asr_draft",
+                          "verified_quote",
+                          "placeholder",
+                          "external_claim"
+                        ]
+                      },
+                      "verification_status": {
+                        "enum": [
+                          "unverified",
+                          "verified"
+                        ]
+                      },
+                      "evidence_refs": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 12,
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 1200
+                        },
+                        "uniqueItems": true
+                      },
+                      "publish_ready": {
+                        "const": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "required_reviews": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 32,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1200
+            }
+          }
+        }
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 32,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      },
+      "uniqueItems": true
+    },
+    "required_reviews": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      }
+    },
+    "factual_claims": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text",
+          "kind",
+          "verification_status",
+          "evidence_refs"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "kind": {
+            "enum": [
+              "source_metadata",
+              "source_quote",
+              "vehicle_or_business_claim"
+            ]
+          },
+          "verification_status": {
+            "enum": [
+              "unverified",
+              "verified"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 12,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1200
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "renderer_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification_status",
+        "supported_operations"
+      ],
+      "properties": {
+        "verification_status": {
+          "const": "unknown"
+        },
+        "supported_operations": {
+          "const": []
+        }
+      }
+    },
+    "render_readiness": {
+      "const": "BLOCKED_FOR_RENDER"
+    },
+    "publish_ready": {
+      "const": false
+    },
+    "render_approved": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Adaptive Editing Plan V0.3",
+  "$defs": {
+    "operation_fields": {
+      "operation_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 60
+      },
+      "shot_id": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 60
+      },
+      "output_start_sec": {
+        "type": "number",
+        "minimum": 0,
+        "description": "ABSOLUTE final output timeline seconds, NOT shot-local and NOT source time. Must be inside the named shot output window. Later shots start after preceding playback durations minus overlaps."
+      },
+      "output_end_sec": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "description": "ABSOLUTE final output timeline seconds, NOT shot-local and NOT source time. Must be inside the named shot output window. Later shots start after preceding playback durations minus overlaps."
+      },
+      "evidence_refs": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 12,
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "uniqueItems": true
+      },
+      "rationale": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      },
+      "capability_status": {
+        "enum": [
+          "unknown",
+          "requires_implementation",
+          "blocked_missing_evidence",
+          "supported"
+        ]
+      }
+    }
+  }
+}

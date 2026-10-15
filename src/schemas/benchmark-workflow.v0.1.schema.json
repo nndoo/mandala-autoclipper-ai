@@ -1,0 +1,2394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mandala:benchmark-workflow:0.1.0",
+  "$defs": {
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output_range",
+        "visual_components",
+        "audio_components",
+        "visual_status",
+        "audio_status",
+        "unmapped_visual",
+        "unmapped_audio",
+        "limitations"
+      ],
+      "properties": {
+        "output_range": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "start_sec",
+                "end_sec"
+              ],
+              "properties": {
+                "start_sec": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "end_sec": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "visual_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_id",
+              "kind",
+              "source",
+              "output_range",
+              "source_range",
+              "speed",
+              "treatment",
+              "timing_basis",
+              "acoustic_fact_verified"
+            ],
+            "properties": {
+              "component_id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "source_passage",
+                  "held_frame",
+                  "planned_silence",
+                  "continuous_audio_bed",
+                  "mixed_asset"
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "path",
+                      "sha256"
+                    ],
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "output_range": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "start_sec",
+                  "end_sec"
+                ],
+                "properties": {
+                  "start_sec": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "end_sec": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              },
+              "source_range": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "start_sec",
+                      "end_sec"
+                    ],
+                    "properties": {
+                      "start_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "end_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "speed": {
+                "type": "number",
+                "minimum": 0
+              },
+              "treatment": {
+                "type": "object"
+              },
+              "timing_basis": {
+                "const": "declared_execution_mapping"
+              },
+              "acoustic_fact_verified": {
+                "const": false
+              }
+            }
+          }
+        },
+        "audio_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "component_id",
+              "kind",
+              "source",
+              "output_range",
+              "source_range",
+              "speed",
+              "treatment",
+              "timing_basis",
+              "acoustic_fact_verified"
+            ],
+            "properties": {
+              "component_id": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "source_passage",
+                  "held_frame",
+                  "planned_silence",
+                  "continuous_audio_bed",
+                  "mixed_asset"
+                ]
+              },
+              "source": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "path",
+                      "sha256"
+                    ],
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "output_range": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "start_sec",
+                  "end_sec"
+                ],
+                "properties": {
+                  "start_sec": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "end_sec": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                }
+              },
+              "source_range": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "start_sec",
+                      "end_sec"
+                    ],
+                    "properties": {
+                      "start_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "end_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "speed": {
+                "type": "number",
+                "minimum": 0
+              },
+              "treatment": {
+                "type": "object"
+              },
+              "timing_basis": {
+                "const": "declared_execution_mapping"
+              },
+              "acoustic_fact_verified": {
+                "const": false
+              }
+            }
+          }
+        },
+        "visual_status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "UNAVAILABLE"
+          ]
+        },
+        "audio_status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "UNAVAILABLE",
+            "SILENT"
+          ]
+        },
+        "unmapped_visual": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "start_sec",
+              "end_sec"
+            ],
+            "properties": {
+              "start_sec": {
+                "type": "number",
+                "minimum": 0
+              },
+              "end_sec": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "unmapped_audio": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "start_sec",
+              "end_sec"
+            ],
+            "properties": {
+              "start_sec": {
+                "type": "number",
+                "minimum": 0
+              },
+              "end_sec": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "legacy_report",
+        "source",
+        "rendered_output",
+        "issue_mappings",
+        "overall_decision",
+        "human_review_pending",
+        "consumer_contract",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved",
+        "method_version",
+        "validation_scope",
+        "derivation_refs",
+        "code_receipts"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.2.0"
+        },
+        "legacy_report": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "rendered_output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "issue_mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "issue_id",
+              "category",
+              "origin",
+              "modality_hint",
+              "legacy_issue_sha256",
+              "mapping"
+            ],
+            "properties": {
+              "issue_id": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "origin": {
+                "type": "string"
+              },
+              "modality_hint": {
+                "enum": [
+                  "audio",
+                  "visual",
+                  "context"
+                ]
+              },
+              "legacy_issue_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "mapping": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "output_range",
+                  "visual_components",
+                  "audio_components",
+                  "visual_status",
+                  "audio_status",
+                  "unmapped_visual",
+                  "unmapped_audio",
+                  "limitations"
+                ],
+                "properties": {
+                  "output_range": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "start_sec",
+                          "end_sec"
+                        ],
+                        "properties": {
+                          "start_sec": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "end_sec": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        }
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "visual_components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "component_id",
+                        "kind",
+                        "source",
+                        "output_range",
+                        "source_range",
+                        "speed",
+                        "treatment",
+                        "timing_basis",
+                        "acoustic_fact_verified"
+                      ],
+                      "properties": {
+                        "component_id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "enum": [
+                            "source_passage",
+                            "held_frame",
+                            "planned_silence",
+                            "continuous_audio_bed",
+                            "mixed_asset"
+                          ]
+                        },
+                        "source": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "path",
+                                "sha256"
+                              ],
+                              "properties": {
+                                "path": {
+                                  "type": "string"
+                                },
+                                "sha256": {
+                                  "type": "string",
+                                  "pattern": "^[a-f0-9]{64}$"
+                                }
+                              }
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "output_range": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "start_sec",
+                            "end_sec"
+                          ],
+                          "properties": {
+                            "start_sec": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "end_sec": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          }
+                        },
+                        "source_range": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "start_sec",
+                                "end_sec"
+                              ],
+                              "properties": {
+                                "start_sec": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "end_sec": {
+                                  "type": "number",
+                                  "minimum": 0
+                                }
+                              }
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "speed": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "treatment": {
+                          "type": "object"
+                        },
+                        "timing_basis": {
+                          "const": "declared_execution_mapping"
+                        },
+                        "acoustic_fact_verified": {
+                          "const": false
+                        }
+                      }
+                    }
+                  },
+                  "audio_components": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "component_id",
+                        "kind",
+                        "source",
+                        "output_range",
+                        "source_range",
+                        "speed",
+                        "treatment",
+                        "timing_basis",
+                        "acoustic_fact_verified"
+                      ],
+                      "properties": {
+                        "component_id": {
+                          "type": "string"
+                        },
+                        "kind": {
+                          "enum": [
+                            "source_passage",
+                            "held_frame",
+                            "planned_silence",
+                            "continuous_audio_bed",
+                            "mixed_asset"
+                          ]
+                        },
+                        "source": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "path",
+                                "sha256"
+                              ],
+                              "properties": {
+                                "path": {
+                                  "type": "string"
+                                },
+                                "sha256": {
+                                  "type": "string",
+                                  "pattern": "^[a-f0-9]{64}$"
+                                }
+                              }
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "output_range": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "required": [
+                            "start_sec",
+                            "end_sec"
+                          ],
+                          "properties": {
+                            "start_sec": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "end_sec": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          }
+                        },
+                        "source_range": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "additionalProperties": false,
+                              "required": [
+                                "start_sec",
+                                "end_sec"
+                              ],
+                              "properties": {
+                                "start_sec": {
+                                  "type": "number",
+                                  "minimum": 0
+                                },
+                                "end_sec": {
+                                  "type": "number",
+                                  "minimum": 0
+                                }
+                              }
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "speed": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "treatment": {
+                          "type": "object"
+                        },
+                        "timing_basis": {
+                          "const": "declared_execution_mapping"
+                        },
+                        "acoustic_fact_verified": {
+                          "const": false
+                        }
+                      }
+                    }
+                  },
+                  "visual_status": {
+                    "enum": [
+                      "COMPLETE",
+                      "PARTIAL",
+                      "UNAVAILABLE"
+                    ]
+                  },
+                  "audio_status": {
+                    "enum": [
+                      "COMPLETE",
+                      "PARTIAL",
+                      "UNAVAILABLE",
+                      "SILENT"
+                    ]
+                  },
+                  "unmapped_visual": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "start_sec",
+                        "end_sec"
+                      ],
+                      "properties": {
+                        "start_sec": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "end_sec": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  },
+                  "unmapped_audio": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "start_sec",
+                        "end_sec"
+                      ],
+                      "properties": {
+                        "start_sec": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "end_sec": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  },
+                  "limitations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "overall_decision": {
+          "type": "string"
+        },
+        "human_review_pending": {
+          "const": true
+        },
+        "consumer_contract": {
+          "type": "string"
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        },
+        "method_version": {
+          "const": "source-components-0.1.0"
+        },
+        "validation_scope": {
+          "const": "STRUCTURE_AND_REFERENCE_BOUND_MAPPING_REPLAY"
+        },
+        "derivation_refs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "code_receipts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "source",
+        "metadata",
+        "sample_kind",
+        "prepared",
+        "characteristics",
+        "evidence_availability",
+        "rights_status",
+        "permitted_operations",
+        "analysis_readiness",
+        "rendering_eligibility",
+        "human_reviews",
+        "benchmark_eligibility"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "sample_kind": {
+          "enum": [
+            "real_content",
+            "synthetic_control",
+            "unknown_local"
+          ]
+        },
+        "prepared": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "characteristics": {
+          "type": "object"
+        },
+        "evidence_availability": {
+          "type": "object"
+        },
+        "rights_status": {
+          "const": "UNKNOWN"
+        },
+        "permitted_operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "analysis_readiness": {
+          "enum": [
+            "REPLAY_VERIFIED",
+            "UNAVAILABLE"
+          ]
+        },
+        "rendering_eligibility": {
+          "enum": [
+            "CONDITIONAL",
+            "SOURCE_WHOLE_ONLY_OR_BLOCKED",
+            "NOT_ELIGIBLE"
+          ]
+        },
+        "human_reviews": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "benchmark_eligibility": {
+          "enum": [
+            "HISTORICAL_AND_LIVE_GATED",
+            "HISTORICAL_ONLY",
+            "TECHNICAL_CONTROL_ONLY",
+            "NOT_READY"
+          ]
+        }
+      }
+    },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "entries",
+        "discovered_media",
+        "missing_real_categories",
+        "inputs",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dataset_id",
+              "source",
+              "metadata",
+              "sample_kind",
+              "prepared",
+              "characteristics",
+              "evidence_availability",
+              "rights_status",
+              "permitted_operations",
+              "analysis_readiness",
+              "rendering_eligibility",
+              "human_reviews",
+              "benchmark_eligibility"
+            ],
+            "properties": {
+              "dataset_id": {
+                "type": "string"
+              },
+              "source": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "path",
+                  "sha256"
+                ],
+                "properties": {
+                  "path": {
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              },
+              "metadata": {
+                "type": "object"
+              },
+              "sample_kind": {
+                "enum": [
+                  "real_content",
+                  "synthetic_control",
+                  "unknown_local"
+                ]
+              },
+              "prepared": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "path",
+                      "sha256"
+                    ],
+                    "properties": {
+                      "path": {
+                        "type": "string"
+                      },
+                      "sha256": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{64}$"
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "characteristics": {
+                "type": "object"
+              },
+              "evidence_availability": {
+                "type": "object"
+              },
+              "rights_status": {
+                "const": "UNKNOWN"
+              },
+              "permitted_operations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "analysis_readiness": {
+                "enum": [
+                  "REPLAY_VERIFIED",
+                  "UNAVAILABLE"
+                ]
+              },
+              "rendering_eligibility": {
+                "enum": [
+                  "CONDITIONAL",
+                  "SOURCE_WHOLE_ONLY_OR_BLOCKED",
+                  "NOT_ELIGIBLE"
+                ]
+              },
+              "human_reviews": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "benchmark_eligibility": {
+                "enum": [
+                  "HISTORICAL_AND_LIVE_GATED",
+                  "HISTORICAL_ONLY",
+                  "TECHNICAL_CONTROL_ONLY",
+                  "NOT_READY"
+                ]
+              }
+            }
+          }
+        },
+        "discovered_media": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "missing_real_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      }
+    },
+    "human": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "output",
+        "baseline",
+        "performed",
+        "reviewer",
+        "reviewed_at",
+        "ratings",
+        "better_than_baseline",
+        "suitable_for_public_posting",
+        "comments",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved",
+        "improvements"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "performed": {
+          "type": "boolean"
+        },
+        "reviewer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ratings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hook",
+            "clarity",
+            "cuts",
+            "audio",
+            "visual",
+            "overall"
+          ],
+          "properties": {
+            "hook": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            },
+            "clarity": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            },
+            "cuts": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            },
+            "audio": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            },
+            "visual": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            },
+            "overall": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "not_applicable",
+                    "unavailable"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "better_than_baseline": {
+          "anyOf": [
+            {
+              "enum": [
+                "yes",
+                "no",
+                "uncertain",
+                "not_applicable"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "suitable_for_public_posting": {
+          "anyOf": [
+            {
+              "enum": [
+                "yes",
+                "no",
+                "uncertain"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "range",
+              "text"
+            ],
+            "properties": {
+              "range": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "start_sec",
+                      "end_sec"
+                    ],
+                    "properties": {
+                      "start_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "end_sec": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        },
+        "improvements": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visual",
+            "audio",
+            "overall"
+          ],
+          "properties": {
+            "visual": {
+              "enum": [
+                "yes",
+                "no",
+                "uncertain",
+                "not_applicable",
+                null
+              ]
+            },
+            "audio": {
+              "enum": [
+                "yes",
+                "no",
+                "uncertain",
+                "not_applicable",
+                null
+              ]
+            },
+            "overall": {
+              "enum": [
+                "yes",
+                "no",
+                "uncertain",
+                "not_applicable",
+                null
+              ]
+            }
+          }
+        }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "source",
+        "parent",
+        "current",
+        "identical_visual_frames_and_timing",
+        "same_ordered_visual_pixels",
+        "visual_delta",
+        "visual_improvement",
+        "audio_mapping_changed",
+        "audio_quality_improvement",
+        "overall_improvement",
+        "disagreements",
+        "human_review_pending",
+        "method",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved",
+        "declared_shot_selection_changed",
+        "declared_visual_timing_changed",
+        "audio_processing_changed",
+        "technical_audio_mapping_result",
+        "absolute_quality_dimensions",
+        "human_review"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "parent": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "current": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "identical_visual_frames_and_timing": {
+          "type": "boolean"
+        },
+        "same_ordered_visual_pixels": {
+          "type": "boolean"
+        },
+        "visual_delta": {
+          "enum": [
+            "IDENTICAL",
+            "TIMING_CHANGED",
+            "PIXELS_CHANGED"
+          ]
+        },
+        "visual_improvement": {
+          "enum": [
+            "NOT_ESTABLISHED_IDENTICAL",
+            "HUMAN_REPORTED",
+            "UNVERIFIED"
+          ]
+        },
+        "audio_mapping_changed": {
+          "type": "boolean"
+        },
+        "audio_quality_improvement": {
+          "enum": [
+            "HUMAN_REPORTED",
+            "UNVERIFIED_REQUIRES_LISTENING"
+          ]
+        },
+        "overall_improvement": {
+          "enum": [
+            "HUMAN_REPORTED",
+            "NOT_ESTABLISHED"
+          ]
+        },
+        "disagreements": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "human_review_pending": {
+          "type": "boolean"
+        },
+        "method": {
+          "type": "string"
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        },
+        "declared_shot_selection_changed": {
+          "type": "boolean"
+        },
+        "declared_visual_timing_changed": {
+          "type": "boolean"
+        },
+        "audio_processing_changed": {
+          "type": "boolean"
+        },
+        "technical_audio_mapping_result": {
+          "type": "string"
+        },
+        "absolute_quality_dimensions": {
+          "type": "object"
+        },
+        "human_review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/human"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "sequence",
+        "run_id",
+        "state",
+        "reason",
+        "registry",
+        "entry_id",
+        "mode",
+        "remaining_budget",
+        "attempts",
+        "action_reserved",
+        "artifacts",
+        "previous",
+        "created_at",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "registry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "entry_id": {
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "historical_replay",
+            "live_e2e"
+          ]
+        },
+        "remaining_budget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "director_calls",
+            "reviewer_calls",
+            "renders",
+            "processing_sec"
+          ],
+          "properties": {
+            "director_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reviewer_calls": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "renders": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "processing_sec": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1800
+            }
+          }
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "action_reserved": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifacts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "previous": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "sha256"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      }
+    },
+    "permit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "mode",
+        "source",
+        "registry",
+        "plan",
+        "validation",
+        "generation",
+        "spec",
+        "capabilities",
+        "destination",
+        "permission_text",
+        "created_at",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "mode": {
+          "const": "STAGE58_PRIVATE_PREVIEW"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "registry": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "plan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "generation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "spec": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "destination": {
+          "type": "string"
+        },
+        "permission_text": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "dataset_id",
+        "source",
+        "mode",
+        "layers",
+        "failures",
+        "engineering_complete",
+        "multi_genre_validated",
+        "quality_decision",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "dataset_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "mode": {
+          "enum": [
+            "historical_replay",
+            "live_e2e",
+            "synthetic_control"
+          ]
+        },
+        "layers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "technical",
+            "content_preservation",
+            "editorial",
+            "autonomy_grounding",
+            "human"
+          ],
+          "properties": {
+            "technical": {
+              "type": "object"
+            },
+            "content_preservation": {
+              "type": "object"
+            },
+            "editorial": {
+              "type": "object"
+            },
+            "autonomy_grounding": {
+              "type": "object"
+            },
+            "human": {
+              "type": "object"
+            }
+          }
+        },
+        "failures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "category",
+              "component",
+              "evidence",
+              "description"
+            ],
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "component": {
+                "type": "string"
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                }
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "engineering_complete": {
+          "type": "boolean"
+        },
+        "multi_genre_validated": {
+          "const": false
+        },
+        "quality_decision": {
+          "type": "string"
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract_version",
+        "mode",
+        "source",
+        "output",
+        "plan",
+        "validation",
+        "generation",
+        "spec",
+        "packet",
+        "permit",
+        "consumed_permit",
+        "capabilities",
+        "timeline",
+        "verification",
+        "execution",
+        "code_receipts",
+        "production_eligible",
+        "publishing_eligible",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "contract_version": {
+          "const": "0.1.0"
+        },
+        "mode": {
+          "const": "STAGE58_PRIVATE_PREVIEW"
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "output": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "plan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "generation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "spec": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "packet": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "permit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "consumed_permit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "timeline": {
+          "type": "object"
+        },
+        "verification": {
+          "type": "object"
+        },
+        "execution": {
+          "type": "object"
+        },
+        "code_receipts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        "production_eligible": {
+          "const": false
+        },
+        "publishing_eligible": {
+          "const": false
+        },
+        "render_approved": {
+          "const": false
+        },
+        "publish_approved": {
+          "const": false
+        }
+      }
+    }
+  }
+}

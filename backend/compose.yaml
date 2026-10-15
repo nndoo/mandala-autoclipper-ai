@@ -1,0 +1,42 @@
+# Local Git-backed equivalent of the observed VPS Compose service; not deployed.
+services:
+  autoclipper-media-worker:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        MANDALA_PROVIDER_ID: '${AUTOCLIPPER_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+    restart: unless-stopped
+    init: true
+    environment:
+      TZ: Asia/Jakarta
+      PYTHONUNBUFFERED: '1'
+      MALLOC_ARENA_MAX: '2'
+      PGHOST: '${AUTOCLIPPER_PGHOST:-}'
+      PGPORT: '${AUTOCLIPPER_PGPORT:-5432}'
+      PGUSER: '${AUTOCLIPPER_PGUSER:-}'
+      PGPASSWORD: '${AUTOCLIPPER_PGPASSWORD:-}'
+      PGDATABASE: '${AUTOCLIPPER_PGDATABASE:-mandala_autoclipper}'
+      AUTOCLIPPER_SOURCE_USERNAME: '${AUTOCLIPPER_SOURCE_USERNAME:-mandala.auto.kediri}'
+      AUTOCLIPPER_SOURCE_CHANNEL_ID: '${AUTOCLIPPER_SOURCE_CHANNEL_ID:-MS4wLjABAAAARRCOc1BxQyl9stiiH_Ow0X6508sdblTUyU7zoTpuwDnuasR9zOUesydpwPbbBVOo}'
+      AUTOCLIPPER_SOURCE_ROOT: '${AUTOCLIPPER_SOURCE_ROOT:-/data/source}'
+      AUTOCLIPPER_MAX_SOURCE_BYTES: '${AUTOCLIPPER_MAX_SOURCE_BYTES:-157286400}'
+      AUTOCLIPPER_WORKER_PORT: '${AUTOCLIPPER_WORKER_PORT:-3002}'
+      AUTOCLIPPER_OPENCLAW_PROVIDER_ID: '${AUTOCLIPPER_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+    volumes:
+      - autoclipper_data:/data
+      # Same volume inside the future Stage 5 project root; no media copy.
+      - autoclipper_data:/app/data
+    expose:
+      - '3002'
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3002/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    mem_limit: 3584m
+    cpus: 1.5
+
+volumes:
+  autoclipper_data:

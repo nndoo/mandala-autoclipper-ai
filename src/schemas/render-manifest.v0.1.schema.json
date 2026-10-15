@@ -1,0 +1,155 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "renderer_version": {
+      "const": "0.1.0"
+    },
+    "render_status": {
+      "enum": [
+        "TEST_ONLY_COMPLETED",
+        "AUTHORIZED_RENDER_COMPLETED"
+      ]
+    },
+    "authorization_mode": {
+      "enum": [
+        "TEST_ONLY",
+        "PRODUCTION"
+      ]
+    },
+    "fixture_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "type": "object"
+    },
+    "plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "execution_spec_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evidence_identifiers": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      }
+    },
+    "environment": {
+      "type": "object"
+    },
+    "code_receipts": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1200
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "verified_capabilities_used": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      }
+    },
+    "requested_operations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object"
+      }
+    },
+    "applied_operations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object"
+      }
+    },
+    "unsupported_operations": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1200
+      }
+    },
+    "timeline": {
+      "type": "object"
+    },
+    "output": {
+      "type": "object"
+    },
+    "execution": {
+      "type": "object"
+    },
+    "verification": {
+      "type": "object"
+    },
+    "production_approval_granted": {
+      "const": false
+    },
+    "publish_approved": {
+      "const": false
+    },
+    "editorial_quality_review": {
+      "const": "NOT_PERFORMED"
+    }
+  },
+  "required": [
+    "contract_version",
+    "renderer_version",
+    "render_status",
+    "authorization_mode",
+    "fixture_id",
+    "source",
+    "plan_sha256",
+    "execution_spec_sha256",
+    "evidence_identifiers",
+    "environment",
+    "code_receipts",
+    "verified_capabilities_used",
+    "requested_operations",
+    "applied_operations",
+    "unsupported_operations",
+    "timeline",
+    "output",
+    "execution",
+    "verification",
+    "production_approval_granted",
+    "publish_approved",
+    "editorial_quality_review"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Render Manifest V0.1"
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mandala Adaptive Director Input V0.3",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "source",
+    "evidence",
+    "editorial_policy",
+    "renderer_capabilities"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "0.3.0"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "video_id",
+        "duration_sec",
+        "width",
+        "height",
+        "fps"
+      ],
+      "properties": {
+        "video_id": {"type": "string", "minLength": 1},
+        "duration_sec": {"type": "number", "exclusiveMinimum": 0},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "fps": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["universal_analysis"],
+      "properties": {
+        "universal_analysis": {"$ref": "#/$defs/artifact"},
+        "transcript": {
+          "anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]
+        },
+        "speech_alignment": {
+          "anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]
+        },
+        "music_rhythm": {
+          "anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]
+        },
+        "visual_timing": {
+          "anyOf": [{"$ref": "#/$defs/artifact"}, {"type": "null"}]
+        }
+      }
+    },
+    "editorial_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal",
+        "max_variants",
+        "allow_fewer_variants",
+        "preserve_complete_utterances",
+        "allow_unverified_claims",
+        "render_approved",
+        "publish_approved"
+      ],
+      "properties": {
+        "goal": {"type": "string", "minLength": 1},
+        "max_variants": {"type": "integer", "minimum": 1, "maximum": 2},
+        "allow_fewer_variants": {"type": "boolean"},
+        "preserve_complete_utterances": {"const": true},
+        "allow_unverified_claims": {"const": false},
+        "render_approved": {"const": false},
+        "publish_approved": {"const": false}
+      }
+    },
+    "renderer_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verification_status",
+        "supported_operations"
+      ],
+      "properties": {
+        "verification_status": {
+          "enum": ["unknown", "verified"]
+        },
+        "supported_operations": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "timing_precision"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "timing_precision": {
+          "enum": [
+            "approximate",
+            "asr_estimate",
+            "signal_estimated",
+            "frame_verified",
+            "manual_verified",
+            "not_applicable"
+          ]
+        }
+      }
+    }
+  }
+}

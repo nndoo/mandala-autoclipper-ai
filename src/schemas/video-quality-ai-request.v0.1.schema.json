@@ -1,0 +1,117 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "0.1.0"
+    },
+    "kind": {
+      "const": "stage56_multimodal_qa_request"
+    },
+    "packet_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "edited_output",
+            "original_source"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 20971520
+        },
+        "duration_sec": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 180
+        },
+        "video_offered": {
+          "const": true
+        },
+        "audio_offered": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "role",
+        "path",
+        "sha256",
+        "bytes",
+        "duration_sec",
+        "video_offered",
+        "audio_offered"
+      ]
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 65536
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "code_receipts": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "sha256"
+        ]
+      }
+    },
+    "live_inference_performed": {
+      "const": false
+    },
+    "production_eligible": {
+      "const": false
+    },
+    "publishing_eligible": {
+      "const": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "kind",
+    "packet_sha256",
+    "media",
+    "prompt",
+    "prompt_sha256",
+    "code_receipts",
+    "live_inference_performed",
+    "production_eligible",
+    "publishing_eligible"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "video-quality-ai-request.v0.1.schema.json"
+}

@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+RUNTIME_DIR="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
+export PATH="$RUNTIME_DIR/tools/node-v24.21.0/bin:$RUNTIME_DIR/bin:$PATH"
+exec "$RUNTIME_DIR/tools/node-v24.21.0/bin/node" "$RUNTIME_DIR/node_modules/openclaw/openclaw.mjs" "$@"

@@ -1,0 +1,35 @@
+...........................................................................................................................................................................................................................................................................................................................................................................................................................................................BLOCKED: consult immutable sanitized Director diagnostics
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................BLOCKED: speech source, contract, review or output integrity failure
+......................................................................................................................................................................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 1323 tests in 94.335s
+
+OK
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "INSUFFICIENT_EVIDENCE", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"status": "REVIEW_RECORDED", "render_approved": false, "publish_approved": false}
+{"overall_decision": "BLOCKED", "technical_status": "BLOCKED", "ai_editorial_status": "INCOMPLETE", "production_eligible": false, "publishing_eligible": false}
+{"overall_decision": "REVISE", "technical_status": "PASS", "ai_editorial_status": "INCOMPLETE", "production_eligible": false, "publishing_eligible": false}
