@@ -1,0 +1,65 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+coverage/
+data/
+media/
+*.mp4
+*.mov
+*.wav
+*.mp3
+*.webm
+.ruff_cache/
+__pycache__/
+*.py[cod]
+docs/migration-local/
+
+# Local historical archives are backed up separately, like data/.
+archive/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.tmp
+*.swp
+*~
+
+# Historical snapshots already preserved with hashes under archive/stage61/.
+# Keep their original paths locally; do not duplicate them in the source commit.
+*.before-*
+*.bak
+
+# Private runtime state and credentials (the blank .env.example stays versioned).
+.venv*/
+.openclaw/
+.ssh/
+private/
+runtime-private/
+openclaw.json
+auth-profiles.json
+credentials.json
+secrets.json
+secrets.yaml
+secrets.yml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Generated media/job state; retain documentation and regression source.
+/outputs/
+/tmp/
+/temp/
+*.m4a
+*.mkv
+*.avi
+*.flac
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store
