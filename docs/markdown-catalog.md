@@ -80,7 +80,7 @@ jangan menjadikannya klaim kesiapan terkini.
 
 ## Stage 6.3 — riwayat, kontrak pendukung, dan checkpoint
 
-Mulai dari [indeks Stage 6.3](stage63/README.md); catatan A–D mengikat klaim
+Mulai dari [indeks Stage 6.3](stage63/README.md); catatan A–E mengikat klaim
 test ke cakupan masing-masing. Checkpoint D 15 Oktober bersifat parsial;
 checkpoint D 16 Oktober mencatat PASS lokal TEST_ONLY.
 
@@ -99,6 +99,7 @@ checkpoint D 16 Oktober mencatat PASS lokal TEST_ONLY.
 - [stage635-stage-c-checkpoint-2026-10-15.md](stage63/stage635-stage-c-checkpoint-2026-10-15.md)
 - [stage635-stage-d-checkpoint-2026-10-15.md](stage63/stage635-stage-d-checkpoint-2026-10-15.md)
 - [stage635-stage-d-completion-2026-10-16.md](stage63/stage635-stage-d-completion-2026-10-16.md)
+- [stage635-stage-e-checkpoint-2026-10-16.md](stage63/stage635-stage-e-checkpoint-2026-10-16.md)
 - [vps-compose-observed.md](stage63/vps-compose-observed.md)
 
 ## OpenClaw agent instructions dan prompt — content dipertahankan

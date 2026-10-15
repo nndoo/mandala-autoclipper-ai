@@ -357,6 +357,24 @@ class Stage635PostgresTests(unittest.TestCase):
                                state='RECONCILIATION_REQUIRED')
         self.assertEqual(self.store.get_job(job['id'])['state'], 'RECONCILIATION_REQUIRED')
 
+    def test_reserved_but_unsent_call_expiry_is_not_retried(self):
+        job, task = self.approved_task()
+        claimed = self.store.claim_task('crashed-before-send')
+        reservation = self.store.reserve_call(
+            task['id'], 'crashed-before-send', claimed['lease_epoch'],
+            kind='analyst', attempt=1, request_sha256='a' * 64)
+        self.expire(task['id'])
+        self.assertEqual(self.store.recover_expired(),
+                         [(task['id'], 'RECONCILIATION_REQUIRED')])
+        self.assertEqual(self.store.get_job(job['id'])['state'],
+                         'RECONCILIATION_REQUIRED')
+        self.assertIsNone(self.store.claim_task('replacement-worker'))
+        with psycopg.connect(self.edit_dsn) as conn:
+            state = conn.execute(
+                'SELECT state FROM mandala_engine.call_reservations WHERE id = %s',
+                (reservation,)).fetchone()[0]
+        self.assertEqual(state, 'OUTCOME_UNKNOWN')
+
     def test_reserved_paid_call_spends_budget_and_expiry_quarantines(self):
         job, task = self.approved_task()
         claimed = self.store.claim_task('worker-a')

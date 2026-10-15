@@ -133,6 +133,8 @@ class Stage635RolesIntegration(unittest.TestCase):
                                            provider=self.provider, proof=self.proof)
         self.dispatch = Dispatcher(self.store, self.admission, executor=self.executor,
                                    ready=lambda: True)
+        if self._testMethodName.startswith('test_http_'):
+            return
         request = {'contract_version': 'stage6.3.5-v1', 'source_key': self.source_key,
                    'expected_sha256': self.sha}
         self.job, _ = self.admission.admit(request, principal='workflow',
@@ -333,6 +335,158 @@ class Stage635RolesIntegration(unittest.TestCase):
         self.assertEqual(self.store.get_job(self.job_id)['state'],
                          'RECONCILIATION_REQUIRED')
         self.assertIsNone(self.dispatch.run_once())
+
+    def test_http_end_to_end_real_role_executor(self):
+        import threading
+        import urllib.error
+        import urllib.request
+        from psycopg import sql
+        from psycopg.conninfo import make_conninfo
+        from backend.editing_api import EditingService
+        from backend.editing_worker import create_server
+        from test_automatic_editing_v01 import proposal
+        import run_automatic_editing_v01 as workflow
+
+        source_role = 'stage635_e2e_source_' + uuid.uuid4().hex[:8]
+        source_password = uuid.uuid4().hex
+        with psycopg.connect(self.dsn) as conn:
+            conn.execute(sql.SQL('CREATE ROLE {} LOGIN PASSWORD {}').format(
+                sql.Identifier(source_role), sql.Literal(source_password)))
+            conn.execute(sql.SQL('GRANT CONNECT ON DATABASE {} TO {}').format(
+                sql.Identifier('mandala_stage635_test'), sql.Identifier(source_role)))
+            conn.execute(sql.SQL('GRANT USAGE ON SCHEMA public TO {}').format(
+                sql.Identifier(source_role)))
+            conn.execute(sql.SQL('GRANT SELECT ON public.source_videos TO {}').format(
+                sql.Identifier(source_role)))
+        def drop_source_role():
+            with psycopg.connect(self.dsn) as conn:
+                conn.execute(sql.SQL('REVOKE SELECT ON public.source_videos FROM {}').format(
+                    sql.Identifier(source_role)))
+                conn.execute(sql.SQL('REVOKE USAGE ON SCHEMA public FROM {}').format(
+                    sql.Identifier(source_role)))
+                conn.execute(sql.SQL('REVOKE CONNECT ON DATABASE {} FROM {}').format(
+                    sql.Identifier('mandala_stage635_test'), sql.Identifier(source_role)))
+                conn.execute(sql.SQL('DROP ROLE {}').format(sql.Identifier(source_role)))
+        self.addCleanup(drop_source_role)
+        source_dsn = make_conninfo(self.dsn, user=source_role, password=source_password)
+        admission = SourceAdmission(source_dsn, self.store, storage_root=self.source_root)
+        executor = Stage5RoleExecutor(self.store, admission, provider=self.provider,
+                                      proof=self.proof)
+        workflow_token = uuid.uuid4().hex * 2
+        operator_token = uuid.uuid4().hex * 2
+        service = EditingService(store=self.store, admission=admission,
+            workflow_token=workflow_token, operator_token=operator_token,
+            proof_path=self.proof, runtime_check=lambda: True, executor=executor)
+        dispatcher = Dispatcher(self.store, admission, executor=executor, ready=service.ready)
+        server = create_server(service)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        def stop_server():
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=5)
+        self.addCleanup(stop_server)
+        base = f'http://127.0.0.1:{server.server_port}'
+
+        def request(method, path, body=None, *, key=None, operator=False,
+                    authorized=True):
+            headers = {}
+            if authorized:
+                headers['Authorization'] = 'Bearer ' + workflow_token
+            if operator:
+                headers['X-Operator-Token'] = operator_token
+            if key:
+                headers['Idempotency-Key'] = key
+            data = None
+            if body is not None:
+                headers['Content-Type'] = 'application/json'
+                data = json.dumps(body).encode()
+            req = urllib.request.Request(base + path, data=data,
+                                         headers=headers, method=method)
+            try:
+                with urllib.request.urlopen(req, timeout=30) as response:
+                    return response.status, json.load(response)
+            except urllib.error.HTTPError as error:
+                try:
+                    return error.code, json.load(error)
+                finally:
+                    error.close()
+
+        self.assertEqual(request('GET', '/health', authorized=False)[0], 200)
+        self.assertEqual(request('GET', '/health/ready', authorized=False)[0], 200)
+        admission_body = {'contract_version': 'stage6.3.5-v1',
+                          'source_key': self.source_key, 'expected_sha256': self.sha}
+        key = 'test-only-admission-' + uuid.uuid4().hex
+        status, body = request('POST', '/v1/jobs', admission_body, key=key)
+        self.assertEqual(status, 201, body)
+        self.job_id = body['job']['id']
+        self.addCleanup(self._cleanup_job)
+        self.assertEqual(request('POST', '/v1/jobs', admission_body, key=key)[1]['job']['id'],
+                         self.job_id)
+        approval = {'decision': 'approve_paid_inference', 'human_reviewed': True}
+        approve_path = f'/v1/jobs/{self.job_id}/approve-inference'
+        self.assertEqual(request('POST', approve_path, approval)[0], 401)
+        self.assertEqual(request('POST', approve_path, approval, operator=True)[0], 200)
+
+        seen = []
+        for _ in range(25):
+            status, body = request('GET', f'/v1/jobs/{self.job_id}')
+            self.assertEqual(status, 200)
+            job = body['job']
+            action = job['next_action']
+            if action is None:
+                break
+            role = action['role']
+            root = self.output_root / str(self.job_id)
+            if role == 'director':
+                packet = workflow.read(root / 'packet.json')
+                self.provider.replies['director'] = [json.dumps(proposal(packet))]
+            if role == 'reviewer':
+                manifest = workflow.read(root / 'proposal-01/render/manifest.json')
+                reply = {'media_sha256': manifest['output']['sha256'],
+                         'video_examined': True, 'audio_examined': True,
+                         'revision_required': False, 'issues': [],
+                         'assessment': 'Synthetic TEST_ONLY output review; no real model observation.',
+                         'human_verified': False, 'production_eligible': False}
+                self.provider.replies['reviewer'] = [json.dumps({'text': json.dumps(reply)})]
+            task_body = {'contract_version': 'stage6.3.5-v1',
+                         'expected_job_version': job['version'],
+                         'phase': action['phase'], 'attempt': action['attempt'],
+                         'input_artifact_ids': action['input_artifact_ids']}
+            if 'regions' in action:
+                task_body['regions'] = action['regions']
+            task_key = 'test-only-task-' + uuid.uuid4().hex
+            route = f'/v1/jobs/{self.job_id}/roles/{role}'
+            status, queued = request('POST', route, task_body, key=task_key)
+            self.assertEqual(status, 202, queued)
+            task_id = queued['task']['id']
+            self.assertEqual(request('GET', f'/v1/tasks/{task_id}')[1]['task']['state'],
+                             'QUEUED')
+            self.assertEqual(str(dispatcher.run_once()), task_id)
+            state = request('GET', f'/v1/tasks/{task_id}')[1]['task']['state']
+            seen.append((role, state))
+            self.assertEqual(state, 'SUCCEEDED', seen)
+            if len(seen) == 1:
+                replay = request('POST', route, task_body, key=task_key)
+                self.assertEqual((replay[0], replay[1]['task']['id']), (202, task_id))
+        else:
+            self.fail('HTTP role chain exceeded bounded task count')
+        self.assertEqual(len(seen), 16)
+        final = request('GET', f'/v1/jobs/{self.job_id}')[1]['job']
+        self.assertIn(final['state'],
+                      ('AUTO_PREVIEW_COMPLETED', 'AUTO_PREVIEW_COMPLETED_WITH_NOTES'))
+        self.assertEqual(final['technical_qa'], 'PASS')
+        self.assertFalse(final['human_verified'])
+        self.assertFalse(final['production_eligible'])
+        status, body = request('GET', f'/v1/jobs/{self.job_id}/artifacts')
+        self.assertEqual(status, 200)
+        self.assertGreater(len(body['artifacts']), 10)
+        for artifact in body['artifacts']:
+            sha, size = self.store._file_reference(artifact['relative_path'])
+            self.assertEqual((sha, size),
+                             (artifact['sha256'], artifact['byte_count']))
+        service.proof_check = lambda path: (_ for _ in ()).throw(OSError())
+        self.assertEqual(request('GET', '/health/ready', authorized=False)[0], 503)
 
     def test_synthetic_private_preview_role_chain(self):
         import run_automatic_editing_v01 as workflow
