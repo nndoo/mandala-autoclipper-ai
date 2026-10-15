@@ -1,6 +1,21 @@
-# Stage 6.3.1 — import Media Worker existing
+# Stage 6.3 documentation
 
-**Keputusan aktif Stage 6.3.4:**
+For current navigation, start with the [AI agent reading guide](../AGENT_GUIDE.md).
+Stage 6.3.5 recovery is documented by the [API contract](stage635-api-contract.md),
+[deployment guide](stage635-deployment-guide.md), and local checkpoints
+[A](stage635-stage-a-checkpoint-2026-10-15.md),
+[B](stage635-stage-b-checkpoint-2026-10-15.md),
+[C](stage635-stage-c-checkpoint-2026-10-15.md), and
+[D](stage635-stage-d-checkpoint-2026-10-15.md). A–C passed only their stated
+local scopes; **D remains incomplete**. The recovered
+[project checkpoint](PROJECT_CHECKPOINT_RECONSTRUCTED.md) and
+[implementation report](stage635-implementation-report.md) describe prior PC
+work and are not evidence of the current source or deployment. Verify current
+code and tests for operational status.
+
+## Stage 6.3.1 — historical import record
+
+**Keputusan pada Stage 6.3.4:**
 [Media Worker permanen + editing worker baru](stage634-two-worker-architecture.md).
 [Finalisasi sembilan role dan kesiapan build](stage634-final-readiness.md).
 Dokumen di bawah menyimpan riwayat import dan pengujian sebelumnya.

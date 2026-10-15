@@ -218,7 +218,7 @@ def timed_units(payload,start,end,region_id):
     return timing,units
 
 
-def model_review(media,output,context,*,speech=False):
+def model_review(media,output,context,*,speech=False,invoke=None):
     info=core.media_info(media,audio.LIMITS);media_ref=reference(media)
     response_schema={'type':'object','additionalProperties':False,'required':['media_sha256','video_examined','audio_examined','revision_required','issues','assessment','human_verified','production_eligible'],
         'properties':{'media_sha256':{'const':media_ref['sha256']},'video_examined':{'const':True},'audio_examined':{'const':True},
@@ -251,7 +251,7 @@ def model_review(media,output,context,*,speech=False):
     write(output/'reservation.json',{'type':'source_speech_reviewer' if speech else 'output_reviewer','maximum_calls':1,'human_verified':False})
     raw=''
     try:
-        raw=reviewer.invoke(request,output/'request.json',approved=True)
+        raw=(invoke or reviewer.invoke)(request,output/'request.json',approved=True)
         save_text(output/'raw-response.json',raw)
         response=core.director.parse_response(raw)
         import jsonschema

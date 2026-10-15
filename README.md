@@ -4,6 +4,11 @@ Python video analysis, speech evidence, editing plans, FFmpeg rendering, and QA,
 with an OpenClaw TypeScript adapter for the tested 9Router video compatibility
 transport. Run commands from the project root.
 
+New agent or device? Start with the [AI agent reading guide](docs/AGENT_GUIDE.md),
+[handoff](HANDOFF_README.md), and [Markdown catalog](docs/markdown-catalog.md).
+The latest local [Stage 6.3.5 Tahap D checkpoint](docs/stage63/stage635-stage-d-checkpoint-2026-10-15.md)
+is **incomplete**; local tests do not establish production readiness.
+
 ## Local setup
 
 The current Linux environment uses Python 3.14.2, Node 24.21.0 for isolated
@@ -77,26 +82,23 @@ Historical evidence keeps its original paths; local archives and data need separ
 backups. `.dockerignore` excludes local evidence, credentials and dependency caches
 from a future build context. Stage 6.1 does not deploy or integrate n8n.
 
-## Stage 6.3 source and Docker preparation
+## Stage 6.3 editing worker and recovery
 
-The existing Media Worker remains a permanent source/download service.
-`backend/Dockerfile` now builds ONLY the new `mandala-ai-editing-worker` from
-the repository root, with `backend.editing_worker` as its port 3003 entrypoint;
-its builder regenerates the plugin binding. Runtime
-dependencies are pinned in `backend/requirements.lock.txt` and the two npm
-lockfiles. Nine editing roles are planned, with AV Evidence and Speech/ASR as
-separate modules and HTTP nodes in the same main n8n workflow. AI role endpoints
-remain future work; only runtime preflight and
-`/health` exist in the editing service. Original storage is mounted read-only at
-`/data` and `/app/original-store`; a separate editing volume owns `/app/data`.
-See the [final two-worker architecture](docs/stage63/stage634-two-worker-architecture.md)
-for Compose/canary setup and approval gates. No cutover of the old worker is planned.
-The [final pre-push review](docs/stage63/stage634-final-readiness.md) records the
-nine-role mapping, full regression and remaining image build gates.
+The existing Media Worker remains the source/download service on `:3002`.
+`backend/Dockerfile` builds the separate `mandala-ai-editing-worker` from the
+repository root, with `backend.editing_worker` as its `:3003` entrypoint. Local
+Stage 6.3.5 recovery added the PostgreSQL schema, source admission, authenticated
+HTTP API, dispatcher, and nine role modules. Read the [API contract](docs/stage63/stage635-api-contract.md),
+[role map](backend/roles/README.md), and [checkpoints A–D](docs/stage63/README.md)
+before changing them. Tahap A–C passed their stated local scopes. Tahap D has
+**not passed**: its synthetic chain stopped at the Renderer capability-proof gate;
+full render, QA, Reviewer, recovery boundaries, and production readiness remain
+unproved. The checkpoint is a record, so recheck source and tests for current state.
 
-See [Git source readiness](docs/stage63/git-readiness.md), the explicit
-[safe file list](docs/stage63/git-safe-files.txt), and
-[Docker runtime preparation](docs/stage63/stage634-docker-runtime.md).
-`.dockerignore` admits runtime/build source only; private configuration, media,
-historical archives, and generated outputs remain outside the image. A first Git
-commit does not restore `data/` or prove a Docker build or VPS runtime test.
+The [two-worker architecture](docs/stage63/stage634-two-worker-architecture.md)
+and [deployment guide](docs/stage63/stage635-deployment-guide.md) describe the
+intended mount and deployment boundaries, not authorization to deploy. No role
+integration with production n8n is established by this checkout. Historical
+[Git readiness](docs/stage63/git-readiness.md) and
+[Docker runtime preparation](docs/stage63/stage634-docker-runtime.md) describe
+Stage 6.3.4 preparation; they are not proof of the current image or service.

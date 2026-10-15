@@ -76,12 +76,22 @@ class ServiceTests(unittest.TestCase):
             server.server_close()
             thread.join(timeout=5)
 
-    def test_failed_preflight_does_not_open_http_service(self):
-        with patch.object(app, 'inspect', return_value={'status': 'BLOCKED'}), \
-                patch.object(app, 'ThreadingHTTPServer') as server, patch('builtins.print'):
-            with self.assertRaises(SystemExit):
-                app.main()
-            server.assert_not_called()
+    def test_missing_configuration_keeps_liveness_and_readiness_separate(self):
+        server = app.create_server(app.EditingService())
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            base = f'http://127.0.0.1:{server.server_port}'
+            with urllib.request.urlopen(base + '/health', timeout=5) as response:
+                self.assertFalse(json.load(response)['roles_ready'])
+            with self.assertRaises(urllib.error.HTTPError) as error:
+                urllib.request.urlopen(base + '/health/ready', timeout=5)
+            self.assertEqual(error.exception.code, 503)
+            error.exception.close()
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=5)
 
 
 class PreflightTests(unittest.TestCase):

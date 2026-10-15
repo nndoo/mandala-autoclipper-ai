@@ -2,6 +2,14 @@
 
 Mandala's current implementation is a Python video pipeline plus an OpenClaw TypeScript adapter. Start with source and documentation for the component being changed. README services describe intended architecture; verify a service connection before treating it as operational.
 
+For a new task, use [the AI agent reading guide](docs/AGENT_GUIDE.md) and
+[Markdown catalog](docs/markdown-catalog.md) to locate the relevant contract,
+current checkpoint, and source. Stage 6.3.5 recovery is local and incremental:
+the [Tahap D checkpoint](docs/stage63/stage635-stage-d-checkpoint-2026-10-15.md)
+records an incomplete result, not production readiness. Dated reports and
+reconstructed checkpoints document what was observed at their time; verify
+current code and tests before treating their claims as current state.
+
 ## Environments and checks
 
 - Use `.venv-av/bin/python` for media analysis, rendering, QA, and Python tests. It supplies NumPy, SciPy, and jsonschema; the system Python does not supply the numerical packages.

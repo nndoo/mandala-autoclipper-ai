@@ -1,3 +1,3 @@
 -r ../requirements-av.txt
-# Reserved driver for the planned editing job store; no DB connection at startup.
+# Driver for the isolated Stage 6.3.5 editing job store.
 psycopg[binary]==3.3.6

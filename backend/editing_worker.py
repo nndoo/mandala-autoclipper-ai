@@ -1,39 +1,33 @@
-"""Editing runtime canary entrypoint; role/job routes are not implemented yet."""
+"""Editing worker process on internal port 3003."""
 
-import json
 import os
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import threading
+from http.server import ThreadingHTTPServer
 
-from backend.runtime_check import inspect
+from backend.editing_api import EditingService, Handler
+from backend.editing_dispatch import Dispatcher
 
 
-class Handler(BaseHTTPRequestHandler):
-    def respond(self, status, payload):
-        body = json.dumps(payload).encode('utf-8')
-        self.send_response(status)
-        self.send_header('Content-Type', 'application/json')
-        self.send_header('Content-Length', str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
-    def do_GET(self):
-        if self.path == '/health':
-            self.respond(200, {'status': 'ok', 'service': 'mandala-ai-editing-worker',
-                               'phase': 'runtime-preparation', 'roles_ready': False})
-        else:
-            self.respond(404, {'error': 'Endpoint not implemented'})
-
-    def do_POST(self):
-        self.respond(404, {'error': 'Endpoint not implemented'})
+def create_server(service, *, host='127.0.0.1', port=0, start_dispatcher=False):
+    server = ThreadingHTTPServer((host, port), Handler)
+    server.service = service
+    if start_dispatcher and service.executor is not None:
+        dispatcher = Dispatcher(service.store, service.admission,
+                                executor=service.executor, ready=service.ready)
+        thread = threading.Thread(target=dispatcher.run, daemon=True)
+        thread.start()
+        server.dispatcher = dispatcher
+        server.dispatch_thread = thread
+    return server
 
 
 def main():
-    result = inspect(check_storage=True, require_service_env=True)
-    print(json.dumps(result), flush=True)
-    if result['status'] != 'PASS':
-        raise SystemExit(1)
     port = int(os.getenv('MANDALA_EDITING_PORT', '3003'))
-    ThreadingHTTPServer(('0.0.0.0', port), Handler).serve_forever()
+    if port != 3003:
+        raise SystemExit('Editing worker must listen on port 3003')
+    server = create_server(EditingService.from_env(), host='0.0.0.0', port=port,
+                           start_dispatcher=True)
+    server.serve_forever()
 
 
 if __name__ == '__main__':
