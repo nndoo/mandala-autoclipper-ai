@@ -1,6 +1,8 @@
 # mandala-ai-editing-worker only; never replaces the existing source Media Worker.
 # Pinned linux/amd64 manifests match the observed VPS architecture.
 FROM --platform=linux/amd64 node:24.21.0-bookworm-slim@sha256:51b1100cc2a83d370c6a60952e3f2989c8a43159d0e38586e090f3b3326efefd AS node-runtime
+# Keep the build/global CLI on the same security update as OpenClaw's locked npm.
+RUN npm install --global npm@11.21.1 && npm cache clean --force
 
 FROM --platform=linux/amd64 python:3.14.2-slim-bookworm@sha256:34bb71a7de6dbecc839d8d6f8aaff8c4bf67ce01634764eaf929cb64d3ae315e AS base
 

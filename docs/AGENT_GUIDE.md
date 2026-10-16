@@ -1,14 +1,14 @@
 # Panduan baca untuk AI agent
 
 Dokumen ini adalah pintu masuk navigasi, bukan bukti eksekusi. Diperbarui pada
-16 Oktober 2026 dari checkpoint A–F dan audit F terbaru; periksa `git status`, source, dan hasil
+16 Oktober 2026 dari checkpoint A–F final; periksa `git status`, source, dan hasil
 test terbaru sebelum menganggap status di bawah masih berlaku.
 
 ## Mulai dari sini
 
 1. Baca [`AGENTS.md`](../AGENTS.md) untuk aturan kerja, runtime, dan preservasi evidence.
 2. Baca [`README.md`](../README.md) untuk struktur proyek dan setup. Gunakan [`HANDOFF_README.md`](../HANDOFF_README.md) bila melanjutkan dari perangkat/chat lain.
-3. Untuk Stage 6.3.5, mulai dari [audit kesiapan F terbaru](stage63/stage635-stage-f-readiness-audit-2026-10-16.md), [laporan recovery sebelumnya](stage63/stage635-final-report.md), dan [kontrak API](stage63/stage635-api-contract.md), lalu checkpoint A–F sesuai kebutuhan. Selalu cocokkan klaim checkpoint dengan source dan test saat ini.
+3. Untuk Stage 6.3.5, mulai dari [checkpoint F final](stage63/stage635-stage-f-final-checkpoint-2026-10-16.md), [laporan akhir](stage63/stage635-final-report.md), dan [kontrak API](stage63/stage635-api-contract.md), lalu checkpoint A–E sesuai kebutuhan. [Audit F sebelumnya](stage63/stage635-stage-f-readiness-audit-2026-10-16.md) menyimpan riwayat blocker. Selalu cocokkan klaim checkpoint dengan source dan test saat ini.
 4. Baca source komponen yang akan diubah. Jika dokumen dan source berbeda, laporkan selisihnya; jangan diam-diam menganggap laporan lama sebagai implementasi aktif.
 
 ## Status yang tidak boleh disatukan
@@ -19,7 +19,7 @@ test terbaru sebelum menganggap status di bawah masih berlaku.
 | Tahap A/B/C Stage 6.3.5 | Checkpoint dan test lokal | PASS sesuai cakupan lokal masing-masing |
 | Tahap D Stage 6.3.5 | Uji role, render, QA, recovery dan proof | PASS lokal TEST_ONLY pada checkpoint 16 Oktober; belum proof Docker/provider live |
 | Tahap E Stage 6.3.5 | Alur HTTP dan regresi B–E dengan media sintetis | PASS lokal TEST_ONLY; belum pemeriksaan mount/image Docker |
-| Tahap F Stage 6.3.5 | Build, canary Docker, regression, audit readiness | Build/canary PASS lokal; keputusan tahap BLOCKED oleh regresi historis dan audit dependensi |
+| Tahap F Stage 6.3.5 | Build, canary Docker, regression, audit readiness | PASS lokal TEST_ONLY setelah evidence dipulihkan dan npm diperbarui; belum izin deployment |
 | Inference provider live | Receipt call yang terikat source dan approval | Belum diuji dalam recovery ini |
 | Human/produksi/publishing | Persetujuan dan bukti terpisah | Tidak diberikan oleh test, model, atau private preview |
 
@@ -37,7 +37,7 @@ menggambarkan pekerjaan di PC lama yang tidak ikut ter-push. Keduanya
 | Sembilan role | [Kontrak API](stage63/stage635-api-contract.md), [role map](../backend/roles/README.md), [Stage 5 otomatis](automatic-editing-v01.md), source `backend/roles/` dan `scripts/run_automatic_editing_v01.py` |
 | Speech/timing | [Remote ASR](remote-speech-asr-v01.md), [speech provenance](speech-evidence-provenance-gate.md), source generator/validator terkait |
 | Render, QA, Reviewer | [Renderer](renderer-v01.md), [QA Stage 5.6](stage-5.6-qa-workflow.md), [private preview](real-content-showcase-preview-v01.md), source renderer/QA dan receipt validator |
-| Docker/Coolify | [Dua worker](stage63/stage634-two-worker-architecture.md), [checkpoint F](stage63/stage635-stage-f-checkpoint-2026-10-16.md), [deployment guide 6.3.5](stage63/stage635-deployment-guide.md), Dockerfile/Compose aktual dan bukti runtime terbaru |
+| Docker/Coolify | [Dua worker](stage63/stage634-two-worker-architecture.md), [checkpoint F final](stage63/stage635-stage-f-final-checkpoint-2026-10-16.md), [deployment guide 6.3.5](stage63/stage635-deployment-guide.md), Dockerfile/Compose aktual dan bukti runtime terbaru |
 | Sejarah/arsip | [Katalog seluruh Markdown](markdown-catalog.md); buka laporan bertanggal hanya untuk klaim tahap dan waktu tersebut |
 
 ## Aturan membaca evidence

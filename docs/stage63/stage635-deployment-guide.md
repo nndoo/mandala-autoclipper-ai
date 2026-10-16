@@ -1,13 +1,9 @@
 # Stage 6.3.5 — migration, konfigurasi, dan rencana Coolify
 
 **Status 16 Oktober 2026:** panduan ini belum dijalankan pada production.
-[Checkpoint Tahap E](stage635-stage-e-checkpoint-2026-10-16.md) lulus pada
-lingkungan lokal TEST_ONLY. Build dan canary image Docker lokal juga telah
-diverifikasi; rincian serta batasnya ada di
-[checkpoint Tahap F](stage635-stage-f-checkpoint-2026-10-16.md). [Audit kesiapan
-F terbaru](stage635-stage-f-readiness-audit-2026-10-16.md) tetap menyatakan
-BLOCKED. Jangan gunakan
-hasil lokal sebagai izin deploy. Provider live memerlukan opt-in
+[Checkpoint F final](stage635-stage-f-final-checkpoint-2026-10-16.md) mencatat
+PASS lokal TEST_ONLY untuk full regression, build/canary image, dan audit npm.
+Hasil lokal belum menjadi izin deploy. Provider live memerlukan opt-in
 `MANDALA_EDITING_LIVE_ROLES_ENABLED=1`; canary memakai executor replay yang
 disuntik eksplisit, tanpa panggilan provider.
 
@@ -50,9 +46,9 @@ ulang bila kode/lingkungan berubah. Proof sintetis tidak memberi izin publish.
 `/health/ready` sebagai gate operasional. Dalam canary lokal, CMD default
 memberi health 200 dan ready 503 karena executor live tidak diaktifkan;
 executor replay TEST_ONLY memberi ready 200 setelah DB, storage, dan proof
-lulus. Lima temuan audit transitive pada paket `npm` (tiga high, dua moderate)
-telah diklasifikasi di audit kesiapan F, tetapi belum dimitigasi dalam
-image; uji `npm audit fix` pada salinan lockfile tidak menghilangkannya.
+lulus. Lima temuan lama pada npm yang dibundel OpenClaw tidak lagi dilaporkan
+oleh audit image setelah npm 11.21.1; batas advisori cache yang diperselisihkan
+dan jalur yang diuji dicatat pada [checkpoint final](stage635-stage-f-final-checkpoint-2026-10-16.md).
 
 ## Checklist deploy setelah izin pengguna
 

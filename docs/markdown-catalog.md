@@ -101,8 +101,9 @@ checkpoint D 16 Oktober mencatat PASS lokal TEST_ONLY.
 - [stage635-stage-d-completion-2026-10-16.md](stage63/stage635-stage-d-completion-2026-10-16.md)
 - [stage635-stage-e-checkpoint-2026-10-16.md](stage63/stage635-stage-e-checkpoint-2026-10-16.md)
 - [stage635-stage-f-checkpoint-2026-10-16.md](stage63/stage635-stage-f-checkpoint-2026-10-16.md)
-- [stage635-stage-f-readiness-audit-2026-10-16.md](stage63/stage635-stage-f-readiness-audit-2026-10-16.md) — audit regresi dan npm terbaru; F tetap BLOCKED.
-- [stage635-final-report.md](stage63/stage635-final-report.md) — keputusan D/E PASS lokal, F BLOCKED.
+- [stage635-stage-f-readiness-audit-2026-10-16.md](stage63/stage635-stage-f-readiness-audit-2026-10-16.md) — audit historis sebelum pemulihan evidence dan patch npm; F saat itu BLOCKED.
+- [stage635-stage-f-final-checkpoint-2026-10-16.md](stage63/stage635-stage-f-final-checkpoint-2026-10-16.md) — bukti dan batas PASS lokal TEST_ONLY final.
+- [stage635-final-report.md](stage63/stage635-final-report.md) — keputusan akhir A–F lokal dan risiko tersisa.
 - [vps-compose-observed.md](stage63/vps-compose-observed.md)
 
 ## OpenClaw agent instructions dan prompt — content dipertahankan

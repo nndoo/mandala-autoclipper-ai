@@ -3,5 +3,10 @@
   "private": true,
   "dependencies": {
     "openclaw": "2026.9.9"
+  },
+  "overrides": {
+    "openclaw": {
+      "npm": "11.21.1"
+    }
   }
 }

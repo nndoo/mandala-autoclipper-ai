@@ -1,5 +1,10 @@
 # Stage 6.3.5F — audit regresi dan dependensi runtime
 
+**Catatan pembaruan:** ini adalah audit historis sebelum pemulihan evidence
+dan pembaruan npm. [Checkpoint F final](stage635-stage-f-final-checkpoint-2026-10-16.md)
+mencatat hasil verifikasi berikutnya. Angka BLOCKED di bawah berlaku pada
+saat audit ini dibuat.
+
 Tanggal: 16 Oktober 2026 (Asia/Jakarta). Branch:
 `wip/stage-6.3.5-recovery`. **Deployment readiness: BLOCKED.** D/E tetap
 PASS dalam cakupan lokal TEST_ONLY. Build dan canary Docker pada [checkpoint

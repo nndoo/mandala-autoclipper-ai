@@ -5,8 +5,10 @@ Mandala's current implementation is a Python video pipeline plus an OpenClaw Typ
 For a new task, use [the AI agent reading guide](docs/AGENT_GUIDE.md) and
 [Markdown catalog](docs/markdown-catalog.md) to locate the relevant contract,
 current checkpoint, and source. Stage 6.3.5 recovery is local and incremental:
-the [latest Tahap F readiness audit](docs/stage63/stage635-stage-f-readiness-audit-2026-10-16.md)
-records local Docker checks but a BLOCKED deployment readiness decision. Dated reports and
+the [final Tahap F checkpoint](docs/stage63/stage635-stage-f-final-checkpoint-2026-10-16.md)
+records PASS in the local TEST_ONLY scope. Deployment and production authorization
+are separate. The earlier [readiness audit](docs/stage63/stage635-stage-f-readiness-audit-2026-10-16.md)
+records blockers before evidence recovery and the npm update. Dated reports and
 reconstructed checkpoints document what was observed at their time; verify
 current code and tests before treating their claims as current state.
 
