@@ -4,7 +4,9 @@
 [Checkpoint Tahap E](stage635-stage-e-checkpoint-2026-10-16.md) lulus pada
 lingkungan lokal TEST_ONLY. Build dan canary image Docker lokal juga telah
 diverifikasi; rincian serta batasnya ada di
-[checkpoint Tahap F](stage635-stage-f-checkpoint-2026-10-16.md). Jangan gunakan
+[checkpoint Tahap F](stage635-stage-f-checkpoint-2026-10-16.md). [Audit kesiapan
+F terbaru](stage635-stage-f-readiness-audit-2026-10-16.md) tetap menyatakan
+BLOCKED. Jangan gunakan
 hasil lokal sebagai izin deploy. Provider live memerlukan opt-in
 `MANDALA_EDITING_LIVE_ROLES_ENABLED=1`; canary memakai executor replay yang
 disuntik eksplisit, tanpa panggilan provider.
@@ -49,8 +51,8 @@ ulang bila kode/lingkungan berubah. Proof sintetis tidak memberi izin publish.
 memberi health 200 dan ready 503 karena executor live tidak diaktifkan;
 executor replay TEST_ONLY memberi ready 200 setelah DB, storage, dan proof
 lulus. Lima temuan audit transitive pada paket `npm` (tiga high, dua moderate)
-masih perlu triase sebelum keputusan deployment; uji `npm audit fix` pada
-salinan lockfile tidak menghilangkannya.
+telah diklasifikasi di audit kesiapan F, tetapi belum dimitigasi dalam
+image; uji `npm audit fix` pada salinan lockfile tidak menghilangkannya.
 
 ## Checklist deploy setelah izin pengguna
 

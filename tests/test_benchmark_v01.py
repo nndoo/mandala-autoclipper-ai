@@ -2,6 +2,7 @@
 import copy
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -191,7 +192,13 @@ class RunControls(unittest.TestCase):
 
 class DatasetAndSecurity(unittest.TestCase):
     def test_ineligible_canary_does_not_block_real_dataset(self):
-        with patch.object(core,'media_info',side_effect=core.Error('MOCK FPS policy')),patch.object(core,'probe',return_value={'streams':[{'codec_type':'video','r_frame_rate':'1/1'}]}):result=bench.discovery_metadata('data/test-videos/video-canary.mp4')
+        e.ROOT.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=e.ROOT,prefix='stage58-canary-test-') as tmp:
+            source=Path(tmp)/'video-canary.mp4'
+            subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-f','lavfi','-i',
+                'testsrc2=size=64x64:rate=1:duration=1','-c:v','mpeg4',str(source)],
+                check=True,timeout=15)
+            with patch.object(core,'media_info',side_effect=core.Error('MOCK FPS policy')),patch.object(core,'probe',return_value={'streams':[{'codec_type':'video','r_frame_rate':'1/1'}]}):result=bench.discovery_metadata(str(source.relative_to(PROJECT)))
         self.assertEqual(result['status'],'BLOCKED_MEDIA_POLICY');self.assertEqual(result['ffprobe_video'][0]['r_frame_rate'],'1/1')
     def test_valid_prepared_directory_registration(self):
         path=PROJECT/'data/analyses/director/adaptive-v03/showcase.prepared.v03'

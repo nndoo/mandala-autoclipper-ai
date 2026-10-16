@@ -1,7 +1,8 @@
 # Stage 6.3 documentation
 
 For current navigation, start with the [AI agent reading guide](../AGENT_GUIDE.md).
-Stage 6.3.5 recovery has a [final recovery report](stage635-final-report.md),
+Stage 6.3.5 recovery has a [latest F readiness audit](stage635-stage-f-readiness-audit-2026-10-16.md),
+[earlier recovery report](stage635-final-report.md),
 the [API contract](stage635-api-contract.md),
 [deployment guide](stage635-deployment-guide.md), and local checkpoints
 [A](stage635-stage-a-checkpoint-2026-10-15.md),
@@ -9,7 +10,7 @@ the [API contract](stage635-api-contract.md),
 [C](stage635-stage-c-checkpoint-2026-10-15.md),
 [D](stage635-stage-d-completion-2026-10-16.md),
 [E](stage635-stage-e-checkpoint-2026-10-16.md), and
-[F terbaru](stage635-stage-f-checkpoint-2026-10-16.md). A–E passed only their stated
+[F checkpoint awal](stage635-stage-f-checkpoint-2026-10-16.md). A–E passed only their stated
 local scopes; F is BLOCKED for deployment readiness. The [partial D checkpoint](stage635-stage-d-checkpoint-2026-10-15.md)
 records the earlier Renderer blocker. The recovered
 [project checkpoint](PROJECT_CHECKPOINT_RECONSTRUCTED.md) and

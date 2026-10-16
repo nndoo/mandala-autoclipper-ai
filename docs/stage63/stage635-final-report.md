@@ -1,5 +1,9 @@
 # Laporan akhir pekerjaan recovery Stage 6.3.5
 
+Audit lanjutan Tahap F pada 16 Oktober ada di [laporan kesiapan terbaru](stage635-stage-f-readiness-audit-2026-10-16.md).
+Angka di bawah merekam checkpoint sebelumnya; gunakan laporan terbaru untuk
+hasil regresi setelah perbaikan fixture test.
+
 Tanggal: 16 Oktober 2026 (Asia/Jakarta). Branch:
 `wip/stage-6.3.5-recovery`. **Tahap D PASS, Tahap E PASS, Tahap F BLOCKED.**
 PASS D/E berlaku untuk integrasi lokal dengan media sintetis, PostgreSQL 16

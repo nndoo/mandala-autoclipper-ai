@@ -101,6 +101,7 @@ checkpoint D 16 Oktober mencatat PASS lokal TEST_ONLY.
 - [stage635-stage-d-completion-2026-10-16.md](stage63/stage635-stage-d-completion-2026-10-16.md)
 - [stage635-stage-e-checkpoint-2026-10-16.md](stage63/stage635-stage-e-checkpoint-2026-10-16.md)
 - [stage635-stage-f-checkpoint-2026-10-16.md](stage63/stage635-stage-f-checkpoint-2026-10-16.md)
+- [stage635-stage-f-readiness-audit-2026-10-16.md](stage63/stage635-stage-f-readiness-audit-2026-10-16.md) — audit regresi dan npm terbaru; F tetap BLOCKED.
 - [stage635-final-report.md](stage63/stage635-final-report.md) — keputusan D/E PASS lokal, F BLOCKED.
 - [vps-compose-observed.md](stage63/vps-compose-observed.md)
 

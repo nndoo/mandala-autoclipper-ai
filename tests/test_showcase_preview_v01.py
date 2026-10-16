@@ -16,6 +16,7 @@ c=p.core
 class PreviewSafety(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        p.AUDIT.mkdir(parents=True,exist_ok=True)
         cls.tmp=tempfile.TemporaryDirectory(dir=p.AUDIT,prefix='.preview-tests-')
         cls.root=Path(cls.tmp.name)
         cls.cap=cls.root/'capabilities.json';c.shared.write_json(cls.cap,{'offline_mock':True})

@@ -1,7 +1,10 @@
 """Offline Stage 5.7 checks. All model/human objects below are synthetic fixtures."""
+import atexit
 import copy
+from functools import cache
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -27,12 +30,28 @@ def setUpModule():
 def tearDownModule():network.stop()
 
 
+@cache
+def source_fixture():
+    ri.ROOT.mkdir(parents=True,exist_ok=True)
+    temporary=tempfile.TemporaryDirectory(dir=ri.ROOT,prefix='stage57-source-test-')
+    atexit.register(temporary.cleanup)
+    source=Path(temporary.name)/'source.mp4'
+    subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-f','lavfi','-i',
+        'testsrc2=size=64x64:rate=30:duration=12','-f','lavfi','-i',
+        'sine=frequency=440:sample_rate=48000:duration=12','-c:v','libx264',
+        '-pix_fmt','yuv420p','-c:a','aac','-shortest',str(source)],
+        check=True,timeout=30)
+    return source
+
+
 def reference(uid):return {'path':'data/'+uid+'.json','sha256':'a'*64}
 
 
 def sample():
     packet=fixtures.packet('absent','present')
-    packet['source']['path']='data/test-videos/cinematic-7693770515172887829.mp4'
+    source=source_fixture()
+    packet['source'].update(path=str(source.relative_to(PROJECT)),
+        sha256=core.intake.gate.sha256_file(source))
     parent=fixtures.plan(packet)
     brief={'revision_id':'offline-revision','source':packet['source'],'parent_plan':reference('parent-plan'),
         'parent_render':reference('v1'),'qa_report':reference('qa'),'issues':[{'issue_id':'audio-1'}],

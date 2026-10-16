@@ -1,14 +1,14 @@
 # Panduan baca untuk AI agent
 
 Dokumen ini adalah pintu masuk navigasi, bukan bukti eksekusi. Diperbarui pada
-16 Oktober 2026 dari checkpoint A–F; periksa `git status`, source, dan hasil
+16 Oktober 2026 dari checkpoint A–F dan audit F terbaru; periksa `git status`, source, dan hasil
 test terbaru sebelum menganggap status di bawah masih berlaku.
 
 ## Mulai dari sini
 
 1. Baca [`AGENTS.md`](../AGENTS.md) untuk aturan kerja, runtime, dan preservasi evidence.
 2. Baca [`README.md`](../README.md) untuk struktur proyek dan setup. Gunakan [`HANDOFF_README.md`](../HANDOFF_README.md) bila melanjutkan dari perangkat/chat lain.
-3. Untuk Stage 6.3.5, mulai dari [laporan akhir recovery](stage63/stage635-final-report.md) dan [kontrak API](stage63/stage635-api-contract.md), lalu [checkpoint A](stage63/stage635-stage-a-checkpoint-2026-10-15.md), [B](stage63/stage635-stage-b-checkpoint-2026-10-15.md), [C](stage63/stage635-stage-c-checkpoint-2026-10-15.md), [D selesai lokal](stage63/stage635-stage-d-completion-2026-10-16.md), [E sintetis lokal](stage63/stage635-stage-e-checkpoint-2026-10-16.md), dan [F terblokir untuk deployment](stage63/stage635-stage-f-checkpoint-2026-10-16.md). Selalu cocokkan klaim checkpoint dengan source dan test saat ini.
+3. Untuk Stage 6.3.5, mulai dari [audit kesiapan F terbaru](stage63/stage635-stage-f-readiness-audit-2026-10-16.md), [laporan recovery sebelumnya](stage63/stage635-final-report.md), dan [kontrak API](stage63/stage635-api-contract.md), lalu checkpoint A–F sesuai kebutuhan. Selalu cocokkan klaim checkpoint dengan source dan test saat ini.
 4. Baca source komponen yang akan diubah. Jika dokumen dan source berbeda, laporkan selisihnya; jangan diam-diam menganggap laporan lama sebagai implementasi aktif.
 
 ## Status yang tidak boleh disatukan
