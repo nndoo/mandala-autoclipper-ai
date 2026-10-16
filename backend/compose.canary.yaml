@@ -4,6 +4,11 @@ services:
   mandala-ai-editing-worker:
     restart: 'no'
 
+networks:
+  database:
+    external: false
+    name: mandala-stage635-canary-database
+
 volumes:
   originals:
     external: false

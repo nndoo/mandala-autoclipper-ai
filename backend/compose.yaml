@@ -1,4 +1,4 @@
-# Proposed NEW editing service only. The permanent Media Worker is not managed here.
+# Editing service only. The permanent Media Worker is not managed here.
 services:
   mandala-ai-editing-worker:
     build:
@@ -14,6 +14,12 @@ services:
       MALLOC_ARENA_MAX: '2'
       MANDALA_EDITING_PORT: '3003'
       MANDALA_OPENCLAW_PROVIDER_ID: '${MANDALA_OPENCLAW_PROVIDER_ID:-custom-ipt02mbjindt5ldise8woehy-43-129-33-7-sslip-io}'
+      MANDALA_EDITING_DATABASE_URL: '${MANDALA_EDITING_DATABASE_URL:-}'
+      MANDALA_SOURCE_DATABASE_URL: '${MANDALA_SOURCE_DATABASE_URL:-}'
+      MANDALA_EDITING_API_TOKEN: '${MANDALA_EDITING_API_TOKEN:-}'
+      MANDALA_EDITING_OPERATOR_TOKEN: '${MANDALA_EDITING_OPERATOR_TOKEN:-}'
+      MANDALA_EDITING_PROOF: '${MANDALA_EDITING_PROOF:-}'
+      MANDALA_EDITING_LIVE_ROLES_ENABLED: '${MANDALA_EDITING_LIVE_ROLES_ENABLED:-0}'
       # Reuse intake's Stage 3 logical path; this service never downloads media.
       AUTOCLIPPER_SOURCE_ROOT: /data/source
     volumes:
@@ -36,6 +42,9 @@ services:
           nocopy: true
     expose:
       - '3003'
+    networks:
+      - default
+      - database
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/health', timeout=5)"]
       interval: 30s
@@ -44,6 +53,11 @@ services:
       start_period: 120s
     mem_limit: 3584m
     cpus: 1.5
+
+networks:
+  database:
+    external: true
+    name: '${MANDALA_DATABASE_NETWORK:-coolify}'
 
 volumes:
   originals:
