@@ -1,11 +1,24 @@
 """Stage 6.3.5 DB dispatcher with fenced Stage 5 role execution."""
 
+import logging
 import stat
 import threading
+import traceback
 import uuid
 
 from backend.editing_store import Fenced
 from backend.media_worker.intake_adapter import IntakeError
+
+logger = logging.getLogger(__name__)
+
+
+def _safe_exception_frames(exc, limit=8):
+    """Return frame locations without exception messages or local variables."""
+    frames = traceback.extract_tb(exc.__traceback__, limit=limit)
+    return " <- ".join(
+        f"{frame.filename.rsplit('/', 1)[-1]}:{frame.lineno}:{frame.name}"
+        for frame in frames
+    ) or "unavailable"
 
 
 ROLE_PHASES = {
@@ -104,8 +117,10 @@ class Dispatcher:
         stop, lost = threading.Event(), threading.Event()
         heartbeat = threading.Thread(target=self._heartbeat, args=(task, stop, lost), daemon=True)
         heartbeat.start()
+        stage = 'load_job'
         try:
             job = self.store.get_job(task['job_id'])
+            stage = 'revalidate_source'
             try:
                 self.admission.revalidate(job)
             except (IntakeError, ValueError):
@@ -116,24 +131,45 @@ class Dispatcher:
                 return task['id']
             if lost.is_set():
                 return task['id']
+            stage = 'mark_effect_started'
             self.store.mark_effect_started(task['id'], self.worker_id, task['lease_epoch'])
             if lost.is_set():
                 return task['id']
+            stage = 'execute_role'
             outcome = self.executor.execute(task, job)
             if not lost.is_set():
+                stage = 'persist_task_outcome'
                 self.store.finish_task(task['id'], self.worker_id, task['lease_epoch'],
                                        **outcome)
         except Fenced:
             pass
-        except Exception:
+        except Exception as exc:
+            logger.error(
+                "Editing task exception: task_id=%s job_id=%s role=%s phase=%s "
+                "lease_epoch=%s stage=%s exception_type=%s frames=%s",
+                task.get('id'), task.get('job_id'), task.get('role'),
+                task.get('phase'), task.get('lease_epoch'), stage,
+                type(exc).__name__, _safe_exception_frames(exc),
+            )
             if not lost.is_set():
                 try:
+                    stage = 'persist_reconciliation'
                     self.store.finish_task(task['id'], self.worker_id,
                                            task['lease_epoch'],
                                            state='RECONCILIATION_REQUIRED',
                                            failure_class='EXECUTOR_UNCERTAIN')
                 except Fenced:
                     pass
+                except Exception as record_exc:
+                    logger.error(
+                        "Could not persist reconciliation state: task_id=%s "
+                        "job_id=%s role=%s phase=%s lease_epoch=%s "
+                        "exception_type=%s frames=%s",
+                        task.get('id'), task.get('job_id'), task.get('role'),
+                        task.get('phase'), task.get('lease_epoch'),
+                        type(record_exc).__name__,
+                        _safe_exception_frames(record_exc),
+                    )
         finally:
             stop.set()
             heartbeat.join(timeout=1)
