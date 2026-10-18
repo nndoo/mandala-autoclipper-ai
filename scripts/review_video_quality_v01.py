@@ -26,9 +26,15 @@ MODEL='openclaw'
 
 class InferenceFailure(c.Error):
     """Bounded diagnostics contain classifications, never raw stderr/secrets."""
-    def __init__(self,diagnostic,stdout=''):
-        super().__init__('Reviewer invocation failed: '+diagnostic['reason'])
-        self.diagnostic=diagnostic;self.stdout=stdout
+    def __init__(self, diagnostic, stdout=''):
+        reason = diagnostic.get('reason', 'unknown')
+        status = diagnostic.get('http_status')
+        message = f'Reviewer invocation failed: {reason}'
+        if status is not None:
+            message += f' (HTTP {status})'
+        super().__init__(message)
+        self.diagnostic = diagnostic
+        self.stdout = stdout
 
 
 def stderr_reason(text):
@@ -76,7 +82,24 @@ def capture_inference(command,*,env,timeout=180,max_bytes=131072,max_stderr=1638
         **({'reason':reason} if reason else stderr_reason(buffers['stderr'].decode('utf8','replace')))}
     try:raw=c.director.safe_text(buffers['stdout'].decode('utf8'),max_bytes)
     except (c.Error,UnicodeError):raw='';diagnostic['reason']='stdout_encoding_or_credential_policy'
-    if reason or process.returncode or not raw:raise InferenceFailure(diagnostic,raw)
+    if reason or process.returncode or not raw:
+        # Emit only sanitized, bounded diagnostic metadata. Never log raw stderr,
+        # prompts, tokens, or provider response bodies.
+        safe_fields = {
+            'reason': diagnostic.get('reason'),
+            'http_status': diagnostic.get('http_status'),
+            'process_exit_code': diagnostic.get('process_exit_code'),
+            'stdout_bytes': diagnostic.get('stdout_bytes'),
+            'stderr_bytes': diagnostic.get('stderr_bytes'),
+            'elapsed_sec': diagnostic.get('elapsed_sec'),
+        }
+        print(
+            'Reviewer inference diagnostic: ' +
+            json.dumps(safe_fields, sort_keys=True, separators=(',', ':')),
+            file=sys.stderr,
+            flush=True,
+        )
+        raise InferenceFailure(diagnostic, raw)
     return raw
 
 
