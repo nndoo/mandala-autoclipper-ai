@@ -20,11 +20,19 @@ class LiveProvider:
         self._require()
         import review_video_quality_v01 as reviewer
         import run_adaptive_director_v03 as director
+
         runtime = director.RUNTIME
         executable = runtime / 'bin/openclaw'
         node = runtime / 'tools/node-v24.21.0/bin'
-        if not executable.is_file() or not node.is_file():
+        node_executable = node / 'node'
+
+        if (
+            not executable.is_file()
+            or not node.is_dir()
+            or not node_executable.is_file()
+        ):
             raise RuntimeError('Isolated OpenClaw runtime unavailable')
+
         env = os.environ.copy()
         env['PATH'] = f'{node}:{runtime / "bin"}:{env.get("PATH", "")}'
         env['NODE_OPTIONS'] = '--max-old-space-size=256'
